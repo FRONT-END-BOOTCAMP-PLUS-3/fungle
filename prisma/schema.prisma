@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model communityComment {
+  id                   Int                    @id @default(autoincrement())
+  comment              String
+  createdAt            DateTime               @default(now())
+  userId               String
+  postId               Int
+  parentId             String?
+  communityPost        communityPost          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user                 user                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  communityCommentLike communityCommentLike[]
+}
+
+model communityCommentLike {
+  communityCommentId Int
+  userId             String
+  communityComment   communityComment @relation(fields: [communityCommentId], references: [id], onDelete: Cascade)
+  user               user             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([communityCommentId, userId])
+}
+
+model communityPost {
+  id                 Int                  @id @default(autoincrement())
+  userId             String
+  title              String
+  content            String
+  createdAt          DateTime             @default(now())
+  view               Int                  @default(0)
+  communityComment   communityComment[]
+  user               user                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  communityPostGenre communityPostGenre[]
+  communityPostLike  communityPostLike[]
+}
+
+model communityPostGenre {
+  postId        Int
+  genreId       Int
+  genre         genre         @relation(fields: [genreId], references: [id], onDelete: Cascade, map: "CommunityPostGenre_genreId_fkey")
+  communityPost communityPost @relation(fields: [postId], references: [id], onDelete: Cascade, map: "CommunityPostGenre_postId_fkey")
+
+  @@id([postId, genreId], map: "CommunityPostGenre_pkey")
+}
+
+model communityPostLike {
+  userId        String
+  postId        Int
+  communityPost communityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user          user          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
+}
+
+model funding {
+  id          Int           @id @default(autoincrement())
+  userId      String
+  novelId     Int           @unique
+  amount      Int
+  status      String        @default("pending")
+  createdAt   DateTime      @default(now())
+  endDate     DateTime
+  novel       novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  fundingUser fundingUser[]
+}
+
+model fundingUser {
+  id        Int      @id @default(autoincrement())
+  userId    String?
+  fundingId Int
+  amount    Int
+  createdAt DateTime @default(now())
+  funding   funding  @relation(fields: [fundingId], references: [id], onDelete: NoAction)
+  user      user?    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, fundingId])
+}
+
+model genre {
+  id                 Int                  @id @default(autoincrement())
+  genreName          String
+  communityPostGenre communityPostGenre[]
+  novelGenre         novelGenre[]
+}
+
+model novel {
+  id             Int            @id @default(autoincrement())
+  createdAt      DateTime       @default(now())
+  image          String?
+  title          String
+  serialDay      String
+  novelIntroduce String
+  serialStatus   String
+  userId         String
+  funding        funding?
+  user           user           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  novelComment   novelComment[]
+  novelEpisode   novelEpisode[]
+  novelGenre     novelGenre[]
+  novelLike      novelLike[]
+}
+
+model novelComment {
+  id               Int                @id @default(autoincrement())
+  novelEpisodeId   Int
+  userId           String
+  novelId          Int
+  content          String
+  createdAt        DateTime           @default(now())
+  novelEpisode     novelEpisode       @relation(fields: [novelEpisodeId], references: [id])
+  novel            novel              @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  user             user               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  novelCommentLike novelCommentLike[]
+}
+
+model novelCommentLike {
+  novelCommentId Int
+  userId         String
+  novelComment   novelComment @relation(fields: [novelCommentId], references: [id], onDelete: Cascade)
+  user           user         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([novelCommentId, userId])
+}
+
+model novelEpisode {
+  id           Int            @id @default(autoincrement())
+  novelId      Int
+  userId       String
+  episode      Int
+  content      String
+  view         Int            @default(0)
+  createdAt    DateTime       @default(now())
+  novelComment novelComment[]
+  novel        novel          @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  user         user           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([novelId, episode])
+}
+
+model novelGenre {
+  genreId Int
+  novelId Int
+  genre   genre @relation(fields: [genreId], references: [id])
+  novel   novel @relation(fields: [novelId], references: [id], onDelete: Cascade)
+
+  @@id([genreId, novelId])
+}
+
+model novelLike {
+  userId  String
+  novelId Int
+  novel   novel  @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  user    user   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, novelId])
+}
+
+model user {
+  id                   String                 @id @default(uuid())
+  nickname             String                 @unique
+  userEmail            String                 @unique
+  password             String
+  createdAt            DateTime               @default(now())
+  type                 String                 @default("user")
+  introduce            String
+  communityComment     communityComment[]
+  communityCommentLike communityCommentLike[]
+  communityPost        communityPost[]
+  communityPostLike    communityPostLike[]
+  fundingUser          fundingUser[]
+  novel                novel[]
+  novelComment         novelComment[]
+  novelCommentLike     novelCommentLike[]
+  novelEpisode         novelEpisode[]
+  novelLike            novelLike[]
+}
