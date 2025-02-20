@@ -12,7 +12,7 @@ const slideIn = keyframes`
 `;
 
 export const SidebarContainer = styled.div<{ $isOpen: boolean }>`
-  width: 280px;
+  width: 17.5rem;
   height: 100vh;
   background: var(--white-color);
   border-right: solid 0.0625rem var(--gray-300);
@@ -52,7 +52,7 @@ export const SidebarItem = styled.li`
   font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--black-color);
-  padding: 15px 10px;
+  padding: 0.9375rem 0.625rem;
   cursor: pointer;
   transition: background 0.3s ease;
 
