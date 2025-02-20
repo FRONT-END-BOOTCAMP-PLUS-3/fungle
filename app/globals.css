@@ -219,7 +219,7 @@ td {
 }
 
 .container {
-  max-width: 375px;
+  max-width: 23.4375rem;
   width: 100%;
   height: 100vh;
   margin: 0 auto;
