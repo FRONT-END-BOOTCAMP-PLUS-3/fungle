@@ -72,7 +72,7 @@ body {
   --disabled-color: var(--gray-300);
 
   --error-color: #FF0000;
- --leace-color : #F44336;
+  --leave-color : #F44336;
   --success-color: #00C471;
 }
 
@@ -114,7 +114,7 @@ body {
   h3 { font-size: 1.875rem; }
   h4 { font-size: 1.5rem; }
   h5 { font-size: 1.25rem; font-weight: 400; }
-  h6 { font-size: 1.25rem; font-weight: 400; }
+  h6 { font-size: 1.125rem; font-weight: 400; }
 
   /* Typography */
   .body1 { font-size: 1rem; font-weight: 400; }
