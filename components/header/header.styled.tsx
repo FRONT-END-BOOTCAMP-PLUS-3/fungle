@@ -12,7 +12,6 @@ export const HeaderWrapper = styled.header`
 
 export const HeaderContent = styled.div`
   width: 100%;
-  //   max-width: 64rem;
   width: 100%;
   display: flex;
   align-items: center;
