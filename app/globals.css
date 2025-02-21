@@ -219,9 +219,13 @@ td {
 }
 
 .container {
-  max-width: 375px;
   width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: #fff;
+}
+@media (min-width: 1024px) {
+  .container {
+    width: 23.4375rem;
+  }
 }
