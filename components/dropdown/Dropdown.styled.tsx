@@ -15,7 +15,7 @@ export const StyledButton = styled.button<{ size: "default" | "small" }>`
   position: relative;
   width: 100%;
   padding: ${({ size }) => (size === "small" ? "0.5rem" : "0.625rem")};
-  border: 0.0625rem solid var(--primary-color);
+  border: 0.0625rem solid var(--gray-300);
   border-radius: 0.625rem;
   background: var(--white-color);
   cursor: pointer;

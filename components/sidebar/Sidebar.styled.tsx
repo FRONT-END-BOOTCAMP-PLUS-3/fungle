@@ -2,12 +2,12 @@ import styled, { keyframes } from "styled-components";
 
 const slideIn = keyframes`
   from {
-    transform: translateX(-100%); 
     opacity: 0;
+    transform: translateX(-100%); 
   }
   to {
     transform: translateX(0);
-    opacity: 1; 
+    opacity: 1;
   }
 `;
 
@@ -18,12 +18,14 @@ export const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   border-right: solid 0.0625rem var(--gray-300);
   display: flex;
   flex-direction: column;
-  position: relative;
-  transform: translateX(-100%); 
-  opacity: 0; 
-  transition: transform 0.7s ease, opacity 0.7s ease; 
-  animation: ${({ $isOpen }) => ($isOpen ? slideIn : 'none')} 0.7s forwards; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: transform 0.7s ease-out, opacity 0.7s ease-out;
+  animation: ${({ $isOpen }) => ($isOpen ? slideIn : "none")} 0.7s forwards;
+  z-index: 1000;
 `;
+
 
 
 export const SidebarHeader = styled.div`

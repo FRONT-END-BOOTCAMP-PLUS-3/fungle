@@ -16,12 +16,11 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
-  // ✅ 항상 최상단에서 실행하여 React Hook 규칙 준수
   const pathname = usePathname();
   const router = useRouter();
-  const [hoveredItem, setHoveredItem] = useState<string>(""); // ✅ 빈 문자열로 초기화하여 타입 충돌 방지
+  const [hoveredItem, setHoveredItem] = useState<string>(""); 
 
-  if (!$isOpen) return <></>; // ✅ 빈 Fragment를 반환하여 Hook 실행 보장
+  if (!$isOpen) return <></>;
 
   const menuItems = [
     { name: "홈", icon: "/icon/home.svg", path: "/" },
@@ -50,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
               key={item.name}
               className={isActive ? "active" : ""}
               onMouseEnter={() => setHoveredItem(item.name)}
-              onMouseLeave={() => setHoveredItem("")} // ✅ 수정: null 대신 빈 문자열로 리셋
+              onMouseLeave={() => setHoveredItem("")} 
               onClick={() => {
                 router.push(item.path);
                 $setIsOpen(false);
