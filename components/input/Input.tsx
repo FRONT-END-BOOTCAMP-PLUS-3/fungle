@@ -5,6 +5,7 @@ interface InputProps {
   placeholder?: string;
   src?: string;
   size?: string;
+  hideLabel?: boolean;
 }
 
 const Input = ({
@@ -12,11 +13,17 @@ const Input = ({
   placeholder = "입력",
   src,
   size = "big",
+  hideLabel = false,
 }: InputProps) => {
   return (
     <Container>
-      {label && <Label>{label}</Label>}
-      <InputComponent placeholder={placeholder} src={src} $size={size} />
+      {label && <Label $srOnly={hideLabel}>{label}</Label>}
+      <InputComponent
+        placeholder={placeholder}
+        src={src}
+        $size={size}
+        aria-label={label}
+      />
     </Container>
   );
 };
