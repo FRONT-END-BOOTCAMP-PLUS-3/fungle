@@ -35,6 +35,7 @@ model communityPost {
   content            String
   createdAt          DateTime             @default(now())
   view               Int                  @default(0)
+  status String @default("recruiting") // recruiting, completed
   communityComment   communityComment[]
   user               user                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   communityPostGenre communityPostGenre[]
