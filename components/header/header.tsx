@@ -19,6 +19,8 @@ const Header = () => {
 
   const pathname = usePathname();
   const router = useRouter();
+  const hideHeader =
+    pathname === "/login" || pathname === "/signup" || pathname === "/";
 
   useEffect(() => {
     if (pathname === "/user") {
@@ -36,6 +38,10 @@ const Header = () => {
     setIsLoggedIn(false);
     router.push("/");
   };
+
+  if (hideHeader) {
+    return null;
+  }
 
   return (
     <>
