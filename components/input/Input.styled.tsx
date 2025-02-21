@@ -19,10 +19,10 @@ interface InputProps {
 export const InputComponent = styled.input<InputProps>`
   width: ${(props) =>
     props.$size === "big"
-      ? "335px"
+      ? "20.938rem"
       : props.$size === "medium"
-      ? "245px"
-      : "100px"};
+      ? "15.313rem"
+      : "6.25rem"};
   border-color: var(--gray-300);
   border-radius: 0.625rem;
   font-size: var(--font-size-placeholder);
