@@ -5,14 +5,37 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const Label = styled.label`
+export const Label = styled.label<{ $srOnly?: boolean }>`
   font-weight: 700;
   margin-bottom: 0.5rem;
   font-size: var(--font-size-lg);
+
+  ${({ $srOnly }) =>
+    $srOnly &&
+    `
+      overflow: hidden;
+      position: absolute;
+      clip: rect(1px, 1px, 1px, 1px);
+      clip-path: circle(0);
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      white-space: nowrap;
+    `}
 `;
 
-export const InputComponent = styled.input<{ src?: string }>`
-  width: 100%;
+interface InputProps {
+  src?: string;
+  $size?: string;
+}
+
+export const InputComponent = styled.input<InputProps>`
+  width: ${(props) =>
+    props.$size === "big"
+      ? "20.938rem"
+      : props.$size === "medium"
+      ? "15.313rem"
+      : "6.25rem"};
   border-color: var(--gray-300);
   border-radius: 0.625rem;
   font-size: var(--font-size-placeholder);
