@@ -11,8 +11,18 @@ export const Label = styled.label`
   font-size: var(--font-size-lg);
 `;
 
-export const InputComponent = styled.input<{ src?: string }>`
-  width: 100%;
+interface InputProps {
+  src?: string;
+  $size?: string;
+}
+
+export const InputComponent = styled.input<InputProps>`
+  width: ${(props) =>
+    props.$size === "big"
+      ? "335px"
+      : props.$size === "medium"
+      ? "245px"
+      : "100px"};
   border-color: var(--gray-300);
   border-radius: 0.625rem;
   font-size: var(--font-size-placeholder);
