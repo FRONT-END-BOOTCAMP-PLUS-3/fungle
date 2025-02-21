@@ -32,7 +32,7 @@ interface InputProps {
 export const InputComponent = styled.input<InputProps>`
   width: ${(props) =>
     props.$size === "big"
-      ? "20.938rem"
+      ? "100%"
       : props.$size === "medium"
       ? "15.313rem"
       : "6.25rem"};

@@ -7,7 +7,7 @@ export interface StyledItemProps {
 
 export const DropdownWrapper = styled.div<{ size: "default" | "small" }>`
   position: relative;
-  width: ${({ size }) => (size === "small" ? "5.25rem" : "20.9375rem")};  
+  width: ${({ size }) => (size === "small" ? "5.25rem" : "100%")};
   height: 2.5rem;
 `;
 
