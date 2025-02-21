@@ -12,7 +12,8 @@ export const HeaderWrapper = styled.header`
 
 export const HeaderContent = styled.div`
   width: 100%;
-  max-width: 64rem;
+  //   max-width: 64rem;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,6 +39,17 @@ export const LogoContainer = styled.div`
   height: 100%;
 `;
 
+export const UserIcon = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 3rem;
+`;
+
 export const LogoutButton = styled.button`
   background: none;
   border: none;
@@ -46,5 +58,7 @@ export const LogoutButton = styled.button`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 1rem;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--black-color);
 `;
