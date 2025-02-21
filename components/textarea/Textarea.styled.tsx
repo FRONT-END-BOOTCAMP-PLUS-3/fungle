@@ -5,6 +5,17 @@ interface StyledProps {
   height?: string;
 }
 
+export const Label = styled.label`
+  overflow: hidden;
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: circle(0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  white-space: nowrap;
+`;
+
 export const TextareaComponent = styled.textarea<StyledProps>`
   width: ${({ width }) => width || "100%"};
   height: ${({ height }) => height || "10rem"};
