@@ -43,10 +43,6 @@ export const NovelHeader = styled.div`
   align-items: center;
   text-align: center;
 
-  .cover {
-    margin-bottom: 1rem;
-  }
-
   .categories {
     display: flex;
     justify-content: center;
@@ -114,7 +110,7 @@ export const AuthorSection = styled.div`
   padding: 1rem;
   border-top: 1px solid var(--gray-300);
   border-bottom: 1px solid var(--gray-300);
-  padding-top: 2rem;
+  padding: 2rem 0.5rem;
   
   .author-image {
     margin-right: 1rem;
@@ -143,26 +139,25 @@ export const AuthorSection = styled.div`
 
 export const EpisodeItem = styled.div`
   display: flex;
-  align-items: center;
-  background: white;
+  align-items: flex-start; 
   padding: 1rem;
-  border-bottom: 1px solid var(--gray-300);
+  border-bottom: 0.0625rem solid var(--gray-300);
+  background-color: var(--white-color);
 
   .episode-img {
-    border-radius: 5px;
+    border-radius: 0.3125rem;
   }
 
   .episode-info {
     margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
   }
 
-  h3 {
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
-  }
-
-  span {
-    font-size: 0.875rem;
-    color: #757575;
+  .episode-date {
+    font-size: var(--font-size-footer);
+    color: var(--gray-700);
   }
 `;
+
