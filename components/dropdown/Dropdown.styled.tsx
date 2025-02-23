@@ -7,20 +7,20 @@ export interface StyledItemProps {
 
 export const DropdownWrapper = styled.div<{ size: "default" | "small" }>`
   position: relative;
-  width: ${({ size }) => (size === "small" ? "5.25rem" : "100%")};
+  width: ${({ size }) => (size === "small" ? "7rem" : "100%")};
   height: 2.5rem;
 `;
 
 export const StyledButton = styled.button<{ size: "default" | "small" }>`
   position: relative;
-  width: 100%;
-  padding: ${({ size }) => (size === "small" ? "0.5rem" : "0.625rem")};
+  width: ${({ size }) => (size === "small" ? "7rem" : "100%")};
+  padding: ${({ size }) => (size === "small" ? "0.625rem 2rem 0.625rem 0.625rem" : "0.625rem")};
   border: 0.0625rem solid var(--gray-300);
   border-radius: 0.625rem;
   background: var(--white-color);
   cursor: pointer;
   text-align: left;
-  font-size: 0.875rem;
+  white-space: nowrap; 
 
   &:hover {
     border: 0.0625rem solid var(--hover-color);
@@ -29,6 +29,8 @@ export const StyledButton = styled.button<{ size: "default" | "small" }>`
     border: 0.0625rem solid var(--active-color);
   }
 `;
+
+
 
 export const DropdownArrow = styled.img`
   position: absolute;
@@ -45,7 +47,8 @@ export const StyledMenu = styled.ul`
   border-radius: 0.625rem;
   list-style: none;
   overflow-y: auto;
-  z-index: 10;
+  z-index: 1000; 
+  position: absolute; 
   text-align: center;
 
   &::-webkit-scrollbar {
@@ -56,6 +59,7 @@ export const StyledMenu = styled.ul`
     border-radius: 1rem;
   }
 `;
+
 
 export const StyledItem = styled.div<StyledItemProps>`
   padding: 0.625rem;
