@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 export const Label = styled.label<{ $srOnly?: boolean }>`
@@ -26,16 +27,10 @@ export const Label = styled.label<{ $srOnly?: boolean }>`
 
 interface InputProps {
   src?: string;
-  $size?: string;
+  $iconPosition?: "left" | "right";
 }
 
 export const InputComponent = styled.input<InputProps>`
-  width: ${(props) =>
-    props.$size === "big"
-      ? "100%"
-      : props.$size === "medium"
-      ? "15.313rem"
-      : "6.25rem"};
   border-color: var(--gray-300);
   border-radius: 0.625rem;
   font-size: var(--font-size-placeholder);
@@ -48,6 +43,15 @@ export const InputComponent = styled.input<InputProps>`
     background-size: 1.25rem 1.25rem;
     background-position: 0.875rem center;
     background-repeat: no-repeat;
-    padding-left: 3rem;
   `}
+  ${({ $iconPosition }) =>
+    $iconPosition === "left"
+      ? `
+      background-position: 0.875rem center;
+      padding-left: 3rem;
+    `
+      : `
+      background-position: calc(100% - 0.875rem) center;
+      padding-right: 3rem;
+    `}
 `;
