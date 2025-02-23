@@ -1,30 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   SignupContainer,
   SignupForm,
   Label,
   EmailWrapper,
   NicknameWrapper,
-  InputFieldWrapper,
   ButtonWrapper,
   LogoWrapper,
   ErrorMessage,
+  InputWrapper,
 } from "./Signup.styled";
 import Button from "@/components/button/Button";
-import InputField from "@/components/input/Input";
+import Input from "@/components/input/Input";
 
 const Signup = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [emailCode, setEmailCode] = useState("");
   const [nickname, setNickname] = useState("");
   const [nicknameError, setNicknameError] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [passwordError, setPasswordError] = useState(
+    "비밀번호는 숫자, 소문자 포함 8자리 이상입니다."
+  );
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  useEffect(() => {
+    setIsFormValid(
+      email !== "" &&
+        nickname !== "" &&
+        password !== "" &&
+        confirmPassword !== "" &&
+        !emailError &&
+        !nicknameError &&
+        !passwordError &&
+        !confirmPasswordError &&
+        password === confirmPassword
+    );
+  }, [
+    email,
+    nickname,
+    password,
+    confirmPassword,
+    emailError,
+    nicknameError,
+    passwordError,
+    confirmPasswordError,
+  ]);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -34,27 +63,36 @@ const Signup = () => {
   };
 
   const handleNicknameCheck = () => {
-    setNicknameError(
-      nickname === "사용불가닉네임"
-        ? "이미 중복된 닉네임입니다. / 영문, 한글, 숫자만 가능합니다."
-        : "사용가능한 닉네임입니다."
-    );
-  };
-
-  const validatePassword = () => {
-    setPasswordError(
-      password.length < 8
-        ? "비밀번호는 숫자, 소문자 포함 8자리 이상입니다."
-        : ""
-    );
-  };
-
-  const handleSignup = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      setPasswordError("비밀번호가 일치하지 않습니다.");
-      return;
+    if (nickname === "사용불가닉네임") {
+      setNicknameError(
+        "이미 중복된 닉네임입니다. / 영문, 한글, 숫자만 가능합니다."
+      );
+    } else {
+      setNicknameError("사용 가능한 닉네임입니다.");
     }
+  };
+
+  const validatePassword = (password: string) => {
+    setPassword(password);
+    if (password.length < 8) {
+      setPasswordError("비밀번호는 숫자, 소문자 포함 8자리 이상입니다.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const checkPasswordMatch = (confirmPassword: string) => {
+    setConfirmPassword(confirmPassword);
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
+    } else {
+      setConfirmPasswordError("");
+    }
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isFormValid) return;
     console.log("회원가입 요청:", { email, nickname, password });
   };
 
@@ -73,8 +111,8 @@ const Signup = () => {
       <SignupForm onSubmit={handleSignup}>
         <Label>이메일</Label>
         <EmailWrapper>
-          <InputFieldWrapper hasError={!!emailError}>
-            <InputField
+          <div style={{ width: "100%" }}>
+            <Input
               type="email"
               placeholder="이메일을 입력해주세요"
               value={email}
@@ -82,70 +120,74 @@ const Signup = () => {
                 setEmail(e.target.value);
                 validateEmail(e.target.value);
               }}
+              $size="big"
               required
             />
-          </InputFieldWrapper>
+            {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
+          </div>
           <ButtonWrapper>
             <Button type="button">이메일 인증</Button>
           </ButtonWrapper>
         </EmailWrapper>
-        {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
 
-        <InputFieldWrapper>
-          <InputField
+        <InputWrapper>
+          <Input
             type="text"
             placeholder="이메일 인증 코드"
             value={emailCode}
+            $size="big"
           />
-        </InputFieldWrapper>
+        </InputWrapper>
 
         <Label>닉네임</Label>
         <NicknameWrapper>
-          <InputFieldWrapper hasError={!!nicknameError}>
-            <InputField
+          <div style={{ width: "100%" }}>
+            <Input
               type="text"
               placeholder="닉네임을 입력해주세요"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
+              $size="big"
               required
             />
-          </InputFieldWrapper>
+            {nicknameError && <ErrorMessage>{nicknameError}</ErrorMessage>}
+          </div>
           <ButtonWrapper>
             <Button type="button" onClick={handleNicknameCheck}>
               중복검사
             </Button>
           </ButtonWrapper>
         </NicknameWrapper>
-        {nicknameError && <ErrorMessage>{nicknameError}</ErrorMessage>}
 
         <Label>비밀번호</Label>
-        <InputFieldWrapper hasError={!!passwordError}>
-          <InputField
+        <InputWrapper>
+          <Input
             type="password"
             placeholder="비밀번호를 입력해주세요"
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              validatePassword();
-            }}
+            onChange={(e) => validatePassword(e.target.value)}
+            $size="big"
+            required
           />
-        </InputFieldWrapper>
-        {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
+          {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
+        </InputWrapper>
 
         <Label>비밀번호 확인</Label>
-        <InputFieldWrapper hasError={password !== confirmPassword}>
-          <InputField
+        <InputWrapper>
+          <Input
             type="password"
             placeholder="비밀번호를 한번 더 입력해주세요"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => checkPasswordMatch(e.target.value)}
+            $size="big"
+            required
           />
-        </InputFieldWrapper>
-        {password !== confirmPassword && (
-          <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
-        )}
+          {confirmPasswordError && (
+            <ErrorMessage>{confirmPasswordError}</ErrorMessage>
+          )}
+        </InputWrapper>
 
-        <Button type="submit" className="full-width">
+        <Button type="submit" disabled={!isFormValid}>
           회원가입
         </Button>
       </SignupForm>
