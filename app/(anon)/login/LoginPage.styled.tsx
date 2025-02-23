@@ -23,6 +23,13 @@ export const FormWrapper = styled.form`
   width: 100%;
 `;
 
+export const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: relative;
+`;
+
 export const LoginButton = styled(ButtonComponent)`
   width: 100%;
   margin-top: 1rem;
@@ -39,4 +46,12 @@ export const SignupLink = styled(Link)`
   color: var(--black-color);
   text-decoration: none;
   font-weight: 600;
+`;
+
+export const ErrorMessage = styled.p`
+  font-size: 0.875rem;
+  color: var(--error-color);
+  min-height: 1.5rem;
+  visibility: ${({ children }) => (children ? "visible" : "hidden")};
+  margin: 0;
 `;
