@@ -17,9 +17,9 @@ export const PaginationList = styled.ul`
 export const PaginationButton = styled.button<{ $active?: boolean }>`
   width: 2rem;
   height: 2rem;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #333;
+  border: 0.0625rem solid var(--gray-300);
+  background-color: var(--white-color);
+  color: var(--gray-900);
   cursor: pointer;
   border-radius: 0.25rem;
 
@@ -27,7 +27,8 @@ export const PaginationButton = styled.button<{ $active?: boolean }>`
     $active &&
     `
       background-color: var(--primary-color);
-      color: #fff;
+      border: none;
+      color: var(--white-color);
       font-weight: 600;
     `}
 `;

@@ -10,7 +10,7 @@ export const SearchFieldUl = styled.ul`
   flex-direction: row;
   list-style: none;
   gap: 0.625rem;
-  border-bottom: 2px solid #ccc;
+  border-bottom: 0.125rem solid var(--gray-300);
 `;
 
 export const SearchFieldButton = styled.button<{ $isActive: boolean }>`
@@ -27,8 +27,8 @@ export const SearchFieldButton = styled.button<{ $isActive: boolean }>`
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -2px;
-    height: 2px;
+    bottom: -0.125rem;
+    height: 0.125rem;
     background-color: ${({ $isActive }) =>
       $isActive ? "var(--primary-color)" : "transparent"};
     transform: scaleX(${({ $isActive }) => ($isActive ? 1 : 0)});
