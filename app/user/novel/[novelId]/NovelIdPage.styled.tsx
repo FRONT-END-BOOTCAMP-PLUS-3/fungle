@@ -10,7 +10,7 @@ export const GradientWrapper = styled.div`
 `;
 
 
-export const ProfileSection = styled.div`
+export const StatusSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,9 +107,7 @@ export const AuthorSection = styled.div`
   display: flex;
   align-items: center;
   background: var(--white-color);
-  padding: 1rem;
-  border-top: 1px solid var(--gray-300);
-  border-bottom: 1px solid var(--gray-300);
+  border-bottom: 0.0625rem solid var(--gray-300);
   padding: 2rem 0.5rem;
   
   .author-image {
@@ -124,9 +122,8 @@ export const AuthorSection = styled.div`
   }
 
   .author-name {
-    font-size: 1rem;
-    font-weight: bold;
-    color: var(--gray-900);
+    font-size: var(--font-size-base);
+    font-weight: 700;
   }
 
   .author-description {
@@ -141,11 +138,17 @@ export const EpisodeItem = styled.div`
   display: flex;
   align-items: flex-start; 
   padding: 1rem;
-  border-bottom: 0.0625rem solid var(--gray-300);
   background-color: var(--white-color);
 
   .episode-img {
     border-radius: 0.3125rem;
+    cursor: pointer;
+  }
+
+  .episode-title{
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    cursor: pointer;
   }
 
   .episode-info {
@@ -157,7 +160,7 @@ export const EpisodeItem = styled.div`
 
   .episode-date {
     font-size: var(--font-size-footer);
-    color: var(--gray-700);
+    color: var(--gray-500);
   }
 `;
 
