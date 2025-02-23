@@ -1,11 +1,10 @@
 import { ButtonComponent } from "./Button.styled";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   fontSize?: "big" | "medium" | "small";
   buttonSize?: "big" | "medium" | "small";
   backgroudColor?: "primary" | "white" | "leave";
   disabled?: boolean;
-  onClick?: () => void;
   children?: React.ReactNode;
 }
 
@@ -15,7 +14,7 @@ const Button = ({
   backgroudColor = "primary",
   children,
   disabled = false,
-  onClick,
+  ...props
 }: ButtonProps) => {
   return (
     <ButtonComponent
@@ -24,7 +23,7 @@ const Button = ({
       $buttonSize={buttonSize}
       $backgroundColor={backgroudColor}
       disabled={disabled}
-      onClick={onClick}
+      {...props}
     >
       {children}
     </ButtonComponent>
