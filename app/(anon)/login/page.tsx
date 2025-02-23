@@ -1,13 +1,20 @@
 "use client";
 
 import Input from "@/components/input/Input";
-import { LoginButton, Logo } from "./LoginPage.styled";
+import {
+  FormWrapper,
+  LoginButton,
+  LoginContainer,
+  Logo,
+  SignupLink,
+  SignupWrapper,
+} from "./LoginPage.styled";
 
 const Page = () => {
   return (
-    <div>
+    <LoginContainer>
       <Logo src="/logo/FUNGLE.svg" />
-      <form action="/user/main">
+      <FormWrapper action="/user/main">
         {/* 로그인 백엔드 개발 후 /api/login으로 변경 */}
         <Input
           label="이메일"
@@ -26,8 +33,12 @@ const Page = () => {
         <LoginButton $backgroundColor="primary" className="button-big">
           로그인
         </LoginButton>
-      </form>
-    </div>
+      </FormWrapper>
+      <SignupWrapper>
+        계정이 없으신가요?&nbsp;
+        <SignupLink href="/signup">회원가입</SignupLink>
+      </SignupWrapper>
+    </LoginContainer>
   );
 };
 

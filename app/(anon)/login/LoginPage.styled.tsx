@@ -1,11 +1,42 @@
 import { ButtonComponent } from "@/components/button/Button.styled";
+import Link from "next/link";
 import styled from "styled-components";
+
+export const LoginContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 1.25rem;
+  justify-content: center;
+  height: 100vh;
+`;
 
 export const Logo = styled.img`
   width: 11.25rem;
   height: auto;
 `;
 
+export const FormWrapper = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+`;
+
 export const LoginButton = styled(ButtonComponent)`
   width: 100%;
+  margin-top: 1rem;
+`;
+
+export const SignupWrapper = styled.div`
+  margin-top: 1rem;
+  text-align: center;
+  font-size: var(--font-size-base);
+  color: var(--gray-500);
+`;
+
+export const SignupLink = styled(Link)`
+  color: var(--black-color);
+  text-decoration: none;
+  font-weight: 600;
 `;
