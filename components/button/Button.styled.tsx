@@ -27,12 +27,13 @@ export const ButtonComponent = styled.button<ButtonProps>`
   border: ${(props) =>
     props.$backgroundColor === "white" ? "1px solid var(--gray-500)" : "none"};
   cursor: pointer;
-  padding: ${(props) =>
+  padding: 0.625rem 0;
+  width: ${(props) =>
     props.$buttonSize === "big"
-      ? "0.625rem 7.5rem"
+      ? "100%"
       : props.$buttonSize === "medium"
-      ? "0.625rem 4.125rem"
-      : "0.625rem 0.625rem"};
+      ? "15.313rem"
+      : "6.25rem"};
 
   &:disabled {
     background-color: var(--disabled-color);
