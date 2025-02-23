@@ -1,19 +1,19 @@
 import { Container, InputComponent, Label } from "./Input.styled";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  placeholder?: string;
+  label: string;
+  placeholder: string;
   src?: string;
-  $size?: string;
   hideLabel?: boolean;
+  iconPosition?: "left" | "right";
 }
 
 const Input = ({
   label,
-  placeholder = "입력",
+  placeholder,
   src,
-  $size = "big",
   hideLabel = false,
+  iconPosition = "left",
   ...props
 }: InputProps) => {
   return (
@@ -22,8 +22,8 @@ const Input = ({
       <InputComponent
         placeholder={placeholder}
         src={src}
-        $size={$size}
         aria-label={label}
+        $iconPosition={iconPosition}
         {...props}
       />
     </Container>
