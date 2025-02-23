@@ -52,6 +52,6 @@ export const ErrorMessage = styled.p`
   font-size: 0.875rem;
   color: var(--error-color);
   min-height: 1.5rem;
+  margin-top: 0.25rem;
   visibility: ${({ children }) => (children ? "visible" : "hidden")};
-  margin: 0;
 `;
