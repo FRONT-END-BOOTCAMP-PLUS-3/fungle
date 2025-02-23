@@ -13,7 +13,7 @@ const Input = ({
   placeholder,
   src,
   hideLabel = false,
-  iconPosition = "left",
+  iconPosition,
   ...props
 }: InputProps) => {
   return (
