@@ -19,28 +19,20 @@ export const Label = styled.label`
   margin-bottom: 0.2rem;
 `;
 
-export const EmailWrapper = styled.div`
-  display: flex;
-  align-items: center;
+/* ✅ input과 버튼을 그룹으로 묶음 */
+export const InputGroupWrapper = styled.div`
   width: 100%;
-  gap: 0.75rem;
   margin-bottom: 1.6rem;
-
-  ${InputComponent} {
-    flex: 4;
-    min-width: 72%;
-  }
 `;
 
-export const NicknameWrapper = styled.div`
+export const InputGroup = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
   gap: 0.75rem;
-  margin-bottom: 1.6rem;
 
   ${InputComponent} {
-    flex: 3;
+    flex: 1;
   }
 `;
 
@@ -50,7 +42,11 @@ export const InputWrapper = styled.div`
 `;
 
 export const ButtonWrapper = styled.div`
+  flex-shrink: 0;
   height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   button {
     padding: 0 1rem;

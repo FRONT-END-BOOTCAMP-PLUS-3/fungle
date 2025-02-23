@@ -7,8 +7,8 @@ import {
   SignupContainer,
   SignupForm,
   Label,
-  EmailWrapper,
-  NicknameWrapper,
+  InputGroupWrapper,
+  InputGroup,
   ButtonWrapper,
   LogoWrapper,
   ErrorMessage,
@@ -110,8 +110,8 @@ const Signup = () => {
 
       <SignupForm onSubmit={handleSignup}>
         <Label>이메일</Label>
-        <EmailWrapper>
-          <div style={{ width: "100%" }}>
+        <InputGroupWrapper>
+          <InputGroup>
             <Input
               type="email"
               placeholder="이메일을 입력해주세요"
@@ -123,12 +123,12 @@ const Signup = () => {
               $size="big"
               required
             />
-            {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
-          </div>
-          <ButtonWrapper>
-            <Button type="button">이메일 인증</Button>
-          </ButtonWrapper>
-        </EmailWrapper>
+            <ButtonWrapper>
+              <Button type="button">이메일 인증</Button>
+            </ButtonWrapper>
+          </InputGroup>
+          {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
+        </InputGroupWrapper>
 
         <InputWrapper>
           <Input
@@ -140,8 +140,8 @@ const Signup = () => {
         </InputWrapper>
 
         <Label>닉네임</Label>
-        <NicknameWrapper>
-          <div style={{ width: "100%" }}>
+        <InputGroupWrapper>
+          <InputGroup>
             <Input
               type="text"
               placeholder="닉네임을 입력해주세요"
@@ -150,14 +150,14 @@ const Signup = () => {
               $size="big"
               required
             />
-            {nicknameError && <ErrorMessage>{nicknameError}</ErrorMessage>}
-          </div>
-          <ButtonWrapper>
-            <Button type="button" onClick={handleNicknameCheck}>
-              중복검사
-            </Button>
-          </ButtonWrapper>
-        </NicknameWrapper>
+            <ButtonWrapper>
+              <Button type="button" onClick={handleNicknameCheck}>
+                중복검사
+              </Button>
+            </ButtonWrapper>
+          </InputGroup>
+          {nicknameError && <ErrorMessage>{nicknameError}</ErrorMessage>}
+        </InputGroupWrapper>
 
         <Label>비밀번호</Label>
         <InputWrapper>
