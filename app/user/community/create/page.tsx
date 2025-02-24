@@ -17,7 +17,13 @@ const Page = () => {
   const [selected, setSelected] = useState(COMMUNITY_POST[0].value);
   return (
     <Main>
-      <Input placeholder="제목을 입력해주세요" hideLabel={true} />
+      <div>
+        <Input
+          placeholder="제목을 입력해주세요"
+          hideLabel={true}
+          label="제목"
+        />
+      </div>
       <Dropdown
         options={COMMUNITY_POST}
         onSelect={setSelected}
