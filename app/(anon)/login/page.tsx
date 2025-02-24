@@ -5,13 +5,13 @@ import {
   ErrorMessage,
   FormWrapper,
   InputWrapper,
-  LoginButton,
   LoginContainer,
   Logo,
   SignupLink,
   SignupWrapper,
 } from "./LoginPage.styled";
 import { useState } from "react";
+import Button from "@/components/button/Button";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -69,9 +69,7 @@ const Page = () => {
           <ErrorMessage>{loginError}</ErrorMessage>
         </InputWrapper>
 
-        <LoginButton $backgroundColor="primary" className="button-big">
-          로그인
-        </LoginButton>
+        <Button buttonSize="big">로그인</Button>
       </FormWrapper>
       <SignupWrapper>
         계정이 없으신가요?&nbsp;
