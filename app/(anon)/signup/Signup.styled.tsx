@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { InputComponent } from "@/components/input/Input.styled";
 
 export const SignupContainer = styled.div`
   margin: 3.3rem auto 0 auto;
@@ -49,22 +48,6 @@ export const ButtonWrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 2rem;
-
-  button {
-    padding: 0 1rem;
-    height: 100%;
-    cursor: pointer;
-    white-space: nowrap;
-
-    &:hover {
-      background-color: #0f1670;
-    }
-
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  }
 `;
 
 export const ErrorMessage = styled.p`

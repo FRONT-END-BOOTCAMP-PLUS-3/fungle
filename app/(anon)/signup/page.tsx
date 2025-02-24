@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   SignupContainer,
   SignupForm,
-  Label,
   InputGroupWrapper,
   InputGroup,
   ButtonWrapper,
@@ -22,8 +21,10 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [emailCode, setEmailCode] = useState("");
+  const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [nickname, setNickname] = useState("");
   const [nicknameError, setNicknameError] = useState("");
+  const [nicknameChecked, setNicknameChecked] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(
     "비밀번호는 숫자, 소문자 포함 8자리 이상입니다."
@@ -35,22 +36,22 @@ const Signup = () => {
   useEffect(() => {
     setIsFormValid(
       email !== "" &&
-        nickname !== "" &&
+        isNicknameValid &&
+        nicknameChecked &&
         password !== "" &&
         confirmPassword !== "" &&
         !emailError &&
-        !nicknameError &&
         !passwordError &&
         !confirmPasswordError &&
         password === confirmPassword
     );
   }, [
     email,
-    nickname,
+    isNicknameValid,
+    nicknameChecked,
     password,
     confirmPassword,
     emailError,
-    nicknameError,
     passwordError,
     confirmPasswordError,
   ]);
@@ -62,14 +63,31 @@ const Signup = () => {
     );
   };
 
+  const validateNickname = (nickname: string) => {
+    const nicknameRegex = /^[A-Za-z가-힣]{1,6}$/;
+    if (!nicknameRegex.test(nickname)) {
+      setNicknameError("최대 6자까지 가능하며, 영문/한글만 입력해주세요.");
+      setIsNicknameValid(false);
+      setNicknameChecked(false);
+    } else {
+      setNicknameError("");
+      setIsNicknameValid(true);
+      setNicknameChecked(false);
+    }
+  };
+
   const handleNicknameCheck = () => {
+    if (!isNicknameValid) return;
+
     if (nickname === "사용불가닉네임") {
-      setNicknameError(
-        "이미 중복된 닉네임입니다. / 영문, 한글, 숫자만 가능합니다."
-      );
+      setNicknameError("이미 중복된 닉네임입니다.");
+      setIsNicknameValid(false);
     } else {
       setNicknameError("사용 가능한 닉네임입니다.");
+      setIsNicknameValid(true);
     }
+
+    setNicknameChecked(true);
   };
 
   const validatePassword = (password: string) => {
@@ -83,11 +101,9 @@ const Signup = () => {
 
   const checkPasswordMatch = (confirmPassword: string) => {
     setConfirmPassword(confirmPassword);
-    if (password !== confirmPassword) {
-      setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
-    } else {
-      setConfirmPasswordError("");
-    }
+    setConfirmPasswordError(
+      password !== confirmPassword ? "비밀번호가 일치하지 않습니다." : ""
+    );
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -138,6 +154,7 @@ const Signup = () => {
             value={emailCode}
             label="이메일 인증 코드"
             hideLabel={true}
+            onChange={(e) => setEmailCode(e.target.value)}
           />
         </InputWrapper>
 
@@ -147,7 +164,10 @@ const Signup = () => {
               type="text"
               placeholder="닉네임을 입력해주세요"
               value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              onChange={(e) => {
+                setNickname(e.target.value);
+                validateNickname(e.target.value);
+              }}
               label="닉네임"
               required
             />

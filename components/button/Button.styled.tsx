@@ -40,6 +40,10 @@ export const ButtonComponent = styled.button<ButtonProps>`
     background-color: var(--disabled-color);
     cursor: not-allowed;
     border: none;
+
+    &:hover {
+      background-color: var(--disabled-color);
+    }
   }
 
   &:hover {
