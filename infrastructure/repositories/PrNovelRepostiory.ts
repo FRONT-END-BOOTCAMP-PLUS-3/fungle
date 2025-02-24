@@ -7,6 +7,9 @@ export class PrNovelRepository {
       include: {
         user: { select: { nickname: true, introduce: true } },
         novelEpisode: { select: { id: true, title: true, createdAt: true } },
+        novelGenre: { 
+          include: { genre: { select: { genreName: true } } } 
+        },
       },
     });
 
@@ -16,6 +19,6 @@ export class PrNovelRepository {
       where: { novelId: novelId },
     });
 
-    return { ...novel, likeCount }; 
+    return { ...novel, likeCount };
   }
 }

@@ -6,9 +6,9 @@ export interface NovelRepository {
       include: {
         user: true;
         novelEpisode: true;
+        novelGenre: { include: { genre: true } }; 
         _count: { select: { novelLike: true } }; 
       };
     }> | null
   >;
 }
-

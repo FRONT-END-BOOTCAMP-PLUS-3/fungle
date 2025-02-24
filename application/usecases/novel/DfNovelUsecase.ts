@@ -16,12 +16,13 @@ export class DfNovelUseCase {
       serialStatus: novel.serialStatus,
       author: novel.user.nickname,
       userIntroduce: novel.user.introduce,
-      likeCount: novel.likeCount, 
+      likeCount: novel.likeCount,
       episodes: novel.novelEpisode.map(ep => ({
         id: ep.id,
         title: ep.title,
         createdAt: ep.createdAt,
       })),
+      categories: novel.novelGenre.map(g => g.genre.genreName), 
     };
   }
 }

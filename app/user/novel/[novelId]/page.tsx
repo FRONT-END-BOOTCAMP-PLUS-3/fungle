@@ -28,6 +28,11 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
           <Image src={novel.image || "/image/book.svg"} alt={novel.title} width={196} height={280} />
           <div className="info">
             <h1>{novel.title}</h1>
+            <div className="categories">
+              {novel.categories.map(category => (
+                <span key={category}>{category}</span>
+              ))}
+            </div>
             <UploadInfo>
               <div>
                 <Image src="/icon/episode.svg" alt="총 화수" width={30} height={30} />
