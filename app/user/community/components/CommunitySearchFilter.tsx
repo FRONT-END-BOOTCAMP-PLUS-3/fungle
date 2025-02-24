@@ -61,7 +61,6 @@ const CommunitySearchFilter = ({
           label="제목"
           hideLabel={true}
           placeholder={PLACEHOLDER_MAP[selected]}
-          // iconPosition="right"
           src="/icon/search.svg"
         />
       </SearchBox>
@@ -69,6 +68,7 @@ const CommunitySearchFilter = ({
         label="장르"
         hideLabel={true}
         placeholder="장르를 입력하세요"
+        iconPosition="left"
         src="/icon/hashtag.svg"
       />
       <Button buttonSize="big">검색</Button>
