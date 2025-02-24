@@ -19,7 +19,6 @@ export const Label = styled.label`
   margin-bottom: 0.2rem;
 `;
 
-/* ✅ input과 버튼을 그룹으로 묶음 */
 export const InputGroupWrapper = styled.div`
   width: 100%;
   margin-bottom: 1.6rem;
