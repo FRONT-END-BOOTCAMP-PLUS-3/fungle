@@ -30,11 +30,6 @@ export const InputWrapper = styled.div`
   position: relative;
 `;
 
-export const LoginButton = styled(ButtonComponent)`
-  width: 100%;
-  margin-top: 1rem;
-`;
-
 export const SignupWrapper = styled.div`
   margin-top: 1rem;
   text-align: center;
