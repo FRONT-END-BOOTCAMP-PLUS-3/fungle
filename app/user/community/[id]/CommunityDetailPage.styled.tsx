@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Main = styled.main`
-  padding: 0 1.25rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.625rem;

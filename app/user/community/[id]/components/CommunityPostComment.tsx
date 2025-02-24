@@ -7,11 +7,14 @@ import {
   CommunityPostCommentAutor,
   CommunityPostCommentCreated,
   CommunityPostCommentInfoBox,
-  CommunityReply,
+  CommunityCommentBox,
   CommunityCommentWrapper,
   CommunityPostContent,
+  CommunityReplyButton,
+  CommunityPostCommentReply,
 } from "./CommunityPostComment.styled";
 import MoreOptionsMenu from "../../components/MoreOptionMenu";
+
 interface PostsType {
   id: number;
   title: string;
@@ -64,19 +67,35 @@ const CommunityPostComment = ({ post }: CommunityPostContentProps) => {
         댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용댓글내용
       </CommunityPostContent>
       <CommunityCommentWrapper>
-        <CommunityLikeButton>
+        <CommunityCommentBox>
+          <CommunityLikeButton>
+            <Image
+              src="/icon/heart.svg"
+              alt="좋아요 버튼"
+              width={20}
+              height={20}
+            />
+            {post.likes}
+          </CommunityLikeButton>
+          <CommunityPostCommentReply>
+            <Image
+              src="/icon/talk.svg"
+              alt="답글 버튼"
+              width={20}
+              height={20}
+            />
+            답글
+          </CommunityPostCommentReply>
+        </CommunityCommentBox>
+        <CommunityReplyButton>
           <Image
-            src="/icon/heart.svg"
-            alt="좋아요 버튼"
-            width={20}
-            height={20}
+            src="/icon/dropdown_arrow.svg"
+            alt="답글 화살표"
+            width={15}
+            height={15}
           />
-          {post.likes}
-        </CommunityLikeButton>
-        <CommunityReply>
-          <Image src="/icon/talk.svg" alt="댓글 수" width={20} height={20} />
-          {post.likes}
-        </CommunityReply>
+          답글 {post.commentCount}개
+        </CommunityReplyButton>
       </CommunityCommentWrapper>
     </CommunityPostCommentWrapper>
   );

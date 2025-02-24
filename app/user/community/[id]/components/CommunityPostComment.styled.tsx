@@ -6,19 +6,20 @@ export const CommunityLikeButton = styled.button`
   align-items: center;
   background-color: inherit;
   border: none;
+  cursor: pointer;
 `;
 export const CommunityPostCommentWrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
-  border: 1px solid var(--gray-500);
-  padding: 1rem;
+  border: 0.0625rem solid var(--gray-300);
+  padding: 0.875rem;
   border-radius: 0.625rem;
 `;
 
 export const CommunityPostCommentProfile = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 1.875rem;
+  height: 1.875rem;
   background-color: var(--gray-500);
   border-radius: 50%;
 `;
@@ -27,6 +28,8 @@ export const CommunityPostCommentInfo = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 0.625rem;
+  border-bottom: 0.0625rem solid var(--gray-300);
+  padding-bottom: 0.625rem;
 `;
 
 export const CommunityPostCommentInfoBox = styled.div`
@@ -58,11 +61,26 @@ export const CommunityCommentWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.625rem;
+  justify-content: space-between;
 `;
-export const CommunityReply = styled.div`
+export const CommunityCommentBox = styled.div`
   display: flex;
-  gap: 0.3125rem;
+  gap: 1rem;
   align-items: center;
+`;
+
+export const CommunityReplyButton = styled.button`
+  display: flex;
+  gap: 0.625rem;
   background-color: inherit;
   border: none;
+  cursor: pointer;
+`;
+
+export const CommunityPostCommentReply = styled.button`
+  display: flex;
+  gap: 0.3125rem;
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
 `;
