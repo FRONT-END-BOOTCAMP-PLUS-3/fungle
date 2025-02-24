@@ -52,7 +52,7 @@ export const ButtonWrapper = styled.div`
 
 export const ErrorMessage = styled.p`
   font-size: 0.875rem;
-  color: red;
+  color: var(--error-color);
   margin-top: 0.25rem;
   max-width: 100%;
   word-wrap: break-word;
