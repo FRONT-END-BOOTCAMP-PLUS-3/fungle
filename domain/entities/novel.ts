@@ -6,7 +6,8 @@ export class Novel {
     public serialDay: string,
     public novelIntroduce: string,
     public serialStatus: string,
-    public author: string
+    public author: string,
+    public userIntroduce: string | null 
   ) {}
 
   static fromPrisma(data: any): Novel {
@@ -17,7 +18,8 @@ export class Novel {
       data.serialDay,
       data.novelIntroduce,
       data.serialStatus,
-      data.user.nickname
+      data.user.nickname, 
+      data.user.introduce ?? null 
     );
   }
 }

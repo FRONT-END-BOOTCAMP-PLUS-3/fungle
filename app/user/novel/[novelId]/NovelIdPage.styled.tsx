@@ -126,10 +126,10 @@ export const AuthorSection = styled.div`
     font-weight: 700;
   }
 
-  .author-description {
+  .author-introduce {
     font-size: 0.875rem;
     color: var(--gray-500);
-    margin-right: 3rem;
+    margin-right: 2rem;
   }
 `;
 

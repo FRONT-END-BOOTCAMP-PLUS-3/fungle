@@ -4,9 +4,6 @@ import { DfNovelUseCase } from "@/application/usecases/novel/DfNovelUsecase";
 import { PrNovelRepository } from "@/infrastructure/repositories/PrNovelRepostiory";
 import { GradientWrapper, NovelHeader, StatusSection, Badge, UploadInfo, AuthorSection, EpisodeItem } from "./NovelIdPage.styled";
 
-interface PageProps {
-  params: { novelId?: string };
-}
 
 const MOCK_EPISODES = [
   { id: 1, title: "야구는 나쁜놈이 잘한다 001화", date: "2024.12.12", thumbnail: "/image/book.svg" },
@@ -66,6 +63,7 @@ export default async function Page({ params: promisedParams }: { params: Promise
         <Image src="/image/profile.svg" alt={novel.author} width={80} height={80} className="author-image" />
         <div className="author-info">
           <span className="author-name">{novel.author}</span>
+          <p className="author-introduce">{novel.userIntroduce ?? "소개 없음"}</p> 
         </div>
       </AuthorSection>
 

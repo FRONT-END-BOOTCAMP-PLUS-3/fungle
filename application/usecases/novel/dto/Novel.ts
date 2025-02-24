@@ -6,6 +6,8 @@ export interface NovelDto {
   novelIntroduce: string;
   serialStatus: string;
   author: string;
+  userIntroduce: string | null; 
 }
+
 
 

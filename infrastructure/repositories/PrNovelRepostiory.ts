@@ -9,10 +9,13 @@ export class PrNovelRepository implements NovelRepository {
     const novel = await prisma.novel.findUnique({
       where: { id: novelId },
       include: {
-        user: { select: { nickname: true } } 
+        user: { select: { nickname: true, introduce: true } } 
       },
     });
 
     return novel ? Novel.fromPrisma(novel) : null;
   }
 }
+
+
+

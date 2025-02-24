@@ -15,7 +15,8 @@ export class DfNovelUseCase {
       serialDay: novel.serialDay,
       novelIntroduce: novel.novelIntroduce,
       serialStatus: novel.serialStatus,
-      author: novel.author
+      author: novel.author,
+      userIntroduce: novel.userIntroduce, 
     };
   }
 }
