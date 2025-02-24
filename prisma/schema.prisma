@@ -39,14 +39,24 @@ model communityPost {
   communityComment           communityComment[]          @relation("CommunityComment")
   user                       user                        @relation("UserCommunityPost", fields: [userId], references: [id], onDelete: Cascade)
   communityPostLike          communityPostLike[]         @relation("CommunityPostLike")
-  communityRecruitmentFields communityRecruitmentField[] @relation("PostRecruitment")
+  postRecruitments  communityPostRecruitment[] @relation("PostRecruitments")
 }
 
 model communityRecruitmentField {
   id     Int             @id @default(autoincrement())
-  postId Int
   field  String
-  post   communityPost[] @relation("PostRecruitment")
+  postRecruitments  communityPostRecruitment[] @relation("PostRecruitments")
+}
+
+
+model communityPostRecruitment {
+  postId Int
+  recruitmentFieldId Int 
+
+  post                  communityPost                @relation("PostRecruitments", fields: [postId], references: [id], onDelete: Cascade)
+  recruitmentField      communityRecruitmentField    @relation("PostRecruitments", fields: [recruitmentFieldId], references: [id], onDelete: Cascade)
+
+  @@id([postId, recruitmentFieldId])
 }
 
 model communityPostLike {
