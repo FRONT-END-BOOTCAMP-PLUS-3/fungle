@@ -19,7 +19,7 @@ export const Logo = styled.img`
 export const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1rem;
   width: 100%;
 `;
 
