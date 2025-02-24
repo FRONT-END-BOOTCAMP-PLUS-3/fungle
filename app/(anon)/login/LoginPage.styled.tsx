@@ -19,7 +19,7 @@ export const Logo = styled.img`
 export const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1rem;
   width: 100%;
 `;
 
@@ -46,7 +46,6 @@ export const SignupLink = styled(Link)`
 export const ErrorMessage = styled.p`
   font-size: 0.875rem;
   color: var(--error-color);
-  min-height: 1.5rem;
-  margin-top: 0.25rem;
+  min-height: 1.8rem;
   visibility: ${({ children }) => (children ? "visible" : "hidden")};
 `;

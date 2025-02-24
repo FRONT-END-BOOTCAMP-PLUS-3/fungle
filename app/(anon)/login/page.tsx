@@ -12,8 +12,12 @@ import {
 } from "./LoginPage.styled";
 import { useState } from "react";
 import Button from "@/components/button/Button";
+import { LoginRequestDto } from "@/application/usecases/auth/dto/LoginRequestDto";
+import { useRouter } from "next/navigation";
+import { LoginError } from "@/application/usecases/auth/error/LoginError";
 
 const Page = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
@@ -26,22 +30,45 @@ const Page = () => {
     );
   };
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !password) {
       setLoginError("이메일과 비밀번호를 모두 입력해주세요.");
       return;
     }
-    // 로그인 요청 로직 추가 예정
-    // 로그인 실패 시 setLoginError("유효하지 않은 이메일 또는 비밀번호입니다.");
-    console.log("로그인 요청: ", { email, password });
+
+    try {
+      const request: LoginRequestDto = { userEmail: email, password };
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setLoginError(errorData.error);
+        return;
+      }
+
+      // 로그인 성공 시 토큰 저장
+      console.log("로그인 성공: ", response);
+
+      // 로그인 후 사용자 페이지로 이동
+      router.push("/user/novel");
+    } catch (error) {
+      // setLoginError(
+      //   error instanceof LoginError ? error.message : "로그인 실패"
+      // );
+      console.error("로그인 실패", error);
+      return;
+    }
   };
 
   return (
     <LoginContainer>
       <Logo src="/logo/FUNGLE.svg" />
-      <FormWrapper action="/user/main" onSubmit={handleLogin}>
-        {/* 로그인 백엔드 개발 후 /api/login으로 변경 */}
+      <FormWrapper onSubmit={handleLogin}>
         <InputWrapper>
           <Input
             label="이메일"
