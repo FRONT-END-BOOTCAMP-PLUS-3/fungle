@@ -1,10 +1,9 @@
-import { NovelDto } from "@/application/usecases/novel/dto/Novel";
 import { PrNovelRepository } from "@/infrastructure/repositories/PrNovelRepostiory";
 
 export class DfNovelUseCase {
   constructor(private novelRepository: PrNovelRepository) {}
 
-  async execute(novelId: number): Promise<NovelDto | null> {
+  async execute(novelId: number) {
     const novel = await this.novelRepository.getNovelById(novelId);
     if (!novel) return null;
 
@@ -15,8 +14,14 @@ export class DfNovelUseCase {
       serialDay: novel.serialDay,
       novelIntroduce: novel.novelIntroduce,
       serialStatus: novel.serialStatus,
-      author: novel.author,
-      userIntroduce: novel.userIntroduce, 
+      author: novel.user.nickname,
+      userIntroduce: novel.user.introduce,
+      likeCount: novel.likeCount, 
+      episodes: novel.novelEpisode.map(ep => ({
+        id: ep.id,
+        title: ep.title,
+        createdAt: ep.createdAt,
+      })),
     };
   }
 }

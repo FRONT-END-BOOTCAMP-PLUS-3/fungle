@@ -14,8 +14,7 @@ export const StatusSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  margin-top: 1rem;
+  padding-bottom: 1rem;
 
   .profile-img {
     border-radius: 50%;
@@ -57,10 +56,9 @@ export const NovelHeader = styled.div`
     font-size: 0.875rem;
   }
 
-  h3 {
+  h1 {
     margin-top: 2rem;
     color: var(--white-color);
-    font-weight: 400;
   }
 
   .body1 {
@@ -136,26 +134,27 @@ export const AuthorSection = styled.div`
 
 export const EpisodeItem = styled.div`
   display: flex;
-  align-items: flex-start; 
   padding: 1rem;
   background-color: var(--white-color);
+  align-items: center;
 
   .episode-img {
     border-radius: 0.3125rem;
     cursor: pointer;
-  }
-
-  .episode-title{
-    font-size: var(--font-size-base);
-    font-weight: 700;
-    cursor: pointer;
+    flex-shrink: 0; 
   }
 
   .episode-info {
     margin-left: 1rem;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; 
+    justify-content: center;
+    max-width: calc(100% - 6rem);
+  }
+
+  .episode-title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
   }
 
   .episode-date {
@@ -163,4 +162,5 @@ export const EpisodeItem = styled.div`
     color: var(--gray-500);
   }
 `;
+
 

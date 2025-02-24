@@ -1,21 +1,21 @@
-import { PrismaClient } from "@prisma/client";
-import { Novel } from "@/domain/entities/novel";
-import { NovelRepository } from "@/domain/repositories/NovelRepository";
+import { prisma } from "@/infrastructure/config/prisma"; 
 
-const prisma = new PrismaClient();
-
-export class PrNovelRepository implements NovelRepository {
-  async getNovelById(novelId: number): Promise<Novel | null> {
+export class PrNovelRepository {
+  async getNovelById(novelId: number) {
     const novel = await prisma.novel.findUnique({
       where: { id: novelId },
       include: {
-        user: { select: { nickname: true, introduce: true } } 
+        user: { select: { nickname: true, introduce: true } },
+        novelEpisode: { select: { id: true, title: true, createdAt: true } },
       },
     });
 
-    return novel ? Novel.fromPrisma(novel) : null;
+    if (!novel) return null;
+
+    const likeCount = await prisma.novelLike.count({
+      where: { novelId: novelId },
+    });
+
+    return { ...novel, likeCount }; 
   }
 }
-
-
-
