@@ -109,7 +109,6 @@ const Signup = () => {
       </LogoWrapper>
 
       <SignupForm onSubmit={handleSignup}>
-        <Label>이메일</Label>
         <InputGroupWrapper>
           <InputGroup>
             <Input
@@ -120,11 +119,13 @@ const Signup = () => {
                 setEmail(e.target.value);
                 validateEmail(e.target.value);
               }}
-              $size="big"
+              label="이메일"
               required
             />
             <ButtonWrapper>
-              <Button type="button">이메일 인증</Button>
+              <Button type="button" buttonSize="small">
+                이메일 인증
+              </Button>
             </ButtonWrapper>
           </InputGroup>
           {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
@@ -135,11 +136,11 @@ const Signup = () => {
             type="text"
             placeholder="이메일 인증 코드"
             value={emailCode}
-            $size="big"
+            label="이메일 인증 코드"
+            hideLabel={true}
           />
         </InputWrapper>
 
-        <Label>닉네임</Label>
         <InputGroupWrapper>
           <InputGroup>
             <Input
@@ -147,11 +148,15 @@ const Signup = () => {
               placeholder="닉네임을 입력해주세요"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              $size="big"
+              label="닉네임"
               required
             />
             <ButtonWrapper>
-              <Button type="button" onClick={handleNicknameCheck}>
+              <Button
+                type="button"
+                onClick={handleNicknameCheck}
+                buttonSize="small"
+              >
                 중복검사
               </Button>
             </ButtonWrapper>
@@ -159,27 +164,25 @@ const Signup = () => {
           {nicknameError && <ErrorMessage>{nicknameError}</ErrorMessage>}
         </InputGroupWrapper>
 
-        <Label>비밀번호</Label>
         <InputWrapper>
           <Input
             type="password"
             placeholder="비밀번호를 입력해주세요"
             value={password}
             onChange={(e) => validatePassword(e.target.value)}
-            $size="big"
+            label="비밀번호"
             required
           />
           {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
         </InputWrapper>
 
-        <Label>비밀번호 확인</Label>
         <InputWrapper>
           <Input
             type="password"
             placeholder="비밀번호를 한번 더 입력해주세요"
             value={confirmPassword}
             onChange={(e) => checkPasswordMatch(e.target.value)}
-            $size="big"
+            label="비밀번호 확인"
             required
           />
           {confirmPasswordError && (
@@ -187,7 +190,7 @@ const Signup = () => {
           )}
         </InputWrapper>
 
-        <Button type="submit" disabled={!isFormValid}>
+        <Button type="submit" disabled={!isFormValid} buttonSize="big">
           회원가입
         </Button>
       </SignupForm>
