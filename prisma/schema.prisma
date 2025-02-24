@@ -134,6 +134,7 @@ model novelEpisode {
   novelId      Int
   userId       String
   episode      Int
+  title        String         
   content      String
   view         Int            @default(0)
   createdAt    DateTime       @default(now())
