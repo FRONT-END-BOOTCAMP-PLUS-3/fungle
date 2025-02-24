@@ -19,8 +19,10 @@ const MOCK_EPISODES = [
 const MOCK_TOTAL_EPISODES = "24화";
 const MOCK_LIKES = "230";
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params: promisedParams }: { params: Promise<{ novelId?: string }> }) {
+  const params = await promisedParams;
   const novelId = params.novelId ? parseInt(params.novelId, 10) : NaN;
+
   if (isNaN(novelId)) return <p>잘못된 요청입니다.</p>;
 
   const novelRepository = new PrNovelRepository();
@@ -67,7 +69,6 @@ export default async function Page({ params }: PageProps) {
         </div>
       </AuthorSection>
 
-      {/* ✅ Mock Data 유지 */}
       <div>
         {MOCK_EPISODES.map((episode) => (
           <EpisodeItem key={episode.id}>
