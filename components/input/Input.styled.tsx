@@ -4,11 +4,11 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  gap: 0.5rem;
 `;
 
 export const Label = styled.label<{ $srOnly?: boolean }>`
   font-weight: 700;
-  margin-bottom: 0.5rem;
   font-size: var(--font-size-lg);
 
   ${({ $srOnly }) =>

@@ -34,6 +34,7 @@ export const ButtonComponent = styled.button<ButtonProps>`
       : props.$buttonSize === "medium"
       ? "15.313rem"
       : "6.25rem"};
+  font-size: var(--font-size-placeholder);
 
   &:disabled {
     background-color: var(--disabled-color);

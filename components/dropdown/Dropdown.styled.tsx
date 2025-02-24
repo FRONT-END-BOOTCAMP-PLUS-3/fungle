@@ -14,13 +14,15 @@ export const DropdownWrapper = styled.div<{ size: "default" | "small" }>`
 export const StyledButton = styled.button<{ size: "default" | "small" }>`
   position: relative;
   width: ${({ size }) => (size === "small" ? "7rem" : "100%")};
-  padding: ${({ size }) => (size === "small" ? "0.625rem 2rem 0.625rem 0.625rem" : "0.625rem")};
+  padding: ${({ size }) =>
+    size === "small" ? "0.625rem 2rem 0.625rem 0.625rem" : "0.625rem"};
   border: 0.0625rem solid var(--gray-300);
   border-radius: 0.625rem;
   background: var(--white-color);
   cursor: pointer;
   text-align: left;
-  white-space: nowrap; 
+  white-space: nowrap;
+  font-size: var(--font-size-placeholder);
 
   &:hover {
     border: 0.0625rem solid var(--hover-color);
@@ -29,8 +31,6 @@ export const StyledButton = styled.button<{ size: "default" | "small" }>`
     border: 0.0625rem solid var(--active-color);
   }
 `;
-
-
 
 export const DropdownArrow = styled.img`
   position: absolute;
@@ -47,8 +47,8 @@ export const StyledMenu = styled.ul`
   border-radius: 0.625rem;
   list-style: none;
   overflow-y: auto;
-  z-index: 1000; 
-  position: absolute; 
+  z-index: 1000;
+  position: absolute;
   text-align: center;
 
   &::-webkit-scrollbar {
@@ -59,7 +59,6 @@ export const StyledMenu = styled.ul`
     border-radius: 1rem;
   }
 `;
-
 
 export const StyledItem = styled.div<StyledItemProps>`
   padding: 0.625rem;
