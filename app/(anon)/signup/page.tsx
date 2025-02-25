@@ -32,6 +32,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   useEffect(() => {
     setIsFormValid(
@@ -76,18 +77,30 @@ const Signup = () => {
     }
   };
 
-  const handleNicknameCheck = () => {
+  const handleNicknameCheck = async () => {
     if (!isNicknameValid) return;
 
-    if (nickname === "사용불가닉네임") {
-      setNicknameError("이미 중복된 닉네임입니다.");
-      setIsNicknameValid(false);
-    } else {
+    try {
+      const res = await fetch("/api/auth/check-nickname", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nickname }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message);
+
       setNicknameError("사용 가능한 닉네임입니다.");
       setIsNicknameValid(true);
+      setNicknameChecked(true);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setNicknameError(error.message);
+      } else {
+        setNicknameError("알 수 없는 오류가 발생했습니다.");
+      }
+      setIsNicknameValid(false);
     }
-
-    setNicknameChecked(true);
   };
 
   const validatePassword = (password: string) => {
@@ -109,7 +122,32 @@ const Signup = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid) return;
-    console.log("회원가입 요청:", { email, nickname, password });
+
+    setServerError(""); // 초기화
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          nickname,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      alert("회원가입이 완료되었습니다!");
+      router.push("/"); // 성공 시 메인 페이지로 이동
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setServerError(error.message);
+      } else {
+        setServerError("알 수 없는 오류가 발생했습니다.");
+      }
+    }
   };
 
   return (
@@ -209,6 +247,8 @@ const Signup = () => {
             <ErrorMessage>{confirmPasswordError}</ErrorMessage>
           )}
         </InputWrapper>
+
+        {serverError && <ErrorMessage>{serverError}</ErrorMessage>}
 
         <Button type="submit" disabled={!isFormValid} buttonSize="big">
           회원가입
