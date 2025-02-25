@@ -2,13 +2,13 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 
-export const Content = styled.div`
+export const Main = styled.div`
   padding: 0 1.875rem;
   margin-top: 0.625rem;
   overflow: scroll;
 `;
 
-export const Title = styled.h1`
+export const EpisodeTitle = styled.h1`
   margin-top: 1.25rem;
   margin-bottom: 0.3125rem;
 `;
@@ -43,6 +43,11 @@ export const AuthorMeta = styled.div`
   gap: 0.625rem;
   margin-top: -0.375rem;
 `;
+
+export const Content = styled.div`
+  font-size: var(--font-size-base);
+  margin-bottom: 5rem;
+`
 
 export const CommentWrapper = styled.div`
   margin: 1.25rem 0; 
