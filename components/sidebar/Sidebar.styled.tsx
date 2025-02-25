@@ -1,3 +1,4 @@
+"use client";
 import styled, { keyframes } from "styled-components";
 
 const slideIn = keyframes`
@@ -25,8 +26,6 @@ export const SidebarContainer = styled.div<{ $isOpen: boolean }>`
   animation: ${({ $isOpen }) => ($isOpen ? slideIn : "none")} 0.7s forwards;
   z-index: 1000;
 `;
-
-
 
 export const SidebarHeader = styled.div`
   display: flex;
