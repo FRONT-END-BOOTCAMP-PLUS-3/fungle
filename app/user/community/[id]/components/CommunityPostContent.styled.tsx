@@ -18,4 +18,5 @@ export const CommunityLikeButton = styled.button`
   align-items: center;
   background-color: inherit;
   border: none;
+  cursor: pointer;
 `;
