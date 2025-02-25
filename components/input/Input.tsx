@@ -22,7 +22,6 @@ const Input = ({
       <InputComponent
         placeholder={placeholder}
         src={src}
-        aria-label={label}
         $iconPosition={iconPosition}
         {...props}
       />
