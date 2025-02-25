@@ -1,3 +1,4 @@
+"use client";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -23,6 +24,22 @@ export const Dropdown = styled.div`
 `;
 
 export const MenuItem = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+
+  &:hover {
+    background: var(--gray-100);
+  }
+`;
+
+export const EditBox = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
