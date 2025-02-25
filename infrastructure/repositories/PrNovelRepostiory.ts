@@ -1,15 +1,14 @@
-import { prisma } from "@/infrastructure/config/prisma"; 
+import { prisma } from "@/infrastructure/config/prisma";
+import { NovelRepository, NovelWithRelations } from "@/domain/repositories/NovelRepository";
 
-export class PrNovelRepository {
-  async getNovelById(novelId: number) {
+export class PrNovelRepository implements NovelRepository {
+  async getNovelById(novelId: number): Promise<(NovelWithRelations & { likeCount: number }) | null> {
     const novel = await prisma.novel.findUnique({
       where: { id: novelId },
       include: {
         user: { select: { nickname: true, introduce: true } },
         novelEpisode: { select: { id: true, title: true, createdAt: true } },
-        novelGenre: { 
-          include: { genre: { select: { genreName: true } } } 
-        },
+        novelGenre: { include: { genre: { select: { genreName: true } } } },
       },
     });
 
@@ -19,6 +18,6 @@ export class PrNovelRepository {
       where: { novelId: novelId },
     });
 
-    return { ...novel, likeCount };
+    return { ...novel, likeCount }; 
   }
 }

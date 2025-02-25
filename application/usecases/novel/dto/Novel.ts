@@ -6,8 +6,8 @@ export interface NovelDto {
   novelIntroduce: string;
   serialStatus: string;
   author: string;
-  userIntroduce: string | null; 
+  userIntroduce: string | null;
+  likeCount: number;
+  episodes: { id: number; title: string; createdAt: string }[];
+  genres: string[];
 }
-
-
-
