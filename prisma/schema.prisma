@@ -7,28 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model communityComment {
+model CommunityComment {
   id                   Int                    @id @default(autoincrement())
   comment              String
   createdAt            DateTime               @default(now())
   userId               String
   postId               Int
   parentId             String?
-  communityPost        communityPost          @relation("CommunityComment", fields: [postId], references: [id], onDelete: Cascade)
-  user                 user                   @relation("UserCommunityComment", fields: [userId], references: [id], onDelete: Cascade)
-  communityCommentLike communityCommentLike[] @relation("CommunityCommentLike")
+  communityPost        CommunityPost          @relation("CommunityComment", fields: [postId], references: [id], onDelete: Cascade)
+  user                 User                   @relation("UserCommunityComment", fields: [userId], references: [id], onDelete: Cascade)
+  communityCommentLike CommunityCommentLike[] @relation("CommunityCommentLike")
 }
 
-model communityCommentLike {
+model CommunityCommentLike {
   communityCommentId Int
   userId             String
-  communityComment   communityComment @relation("CommunityCommentLike", fields: [communityCommentId], references: [id], onDelete: Cascade)
-  user               user             @relation("UserCommunityCommentLike", fields: [userId], references: [id], onDelete: Cascade)
+  communityComment   CommunityComment @relation("CommunityCommentLike", fields: [communityCommentId], references: [id], onDelete: Cascade)
+  user               User             @relation("UserCommunityCommentLike", fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([communityCommentId, userId])
 }
 
-model communityPost {
+model CommunityPost {
   id                         Int                         @id @default(autoincrement())
   userId                     String
   title                      String
@@ -36,39 +36,39 @@ model communityPost {
   createdAt                  DateTime                    @default(now())
   view                       Int                         @default(0)
   status                     String                      @default("recruiting")
-  communityComment           communityComment[]          @relation("CommunityComment")
-  user                       user                        @relation("UserCommunityPost", fields: [userId], references: [id], onDelete: Cascade)
-  communityPostLike          communityPostLike[]         @relation("CommunityPostLike")
-  postRecruitments  communityPostRecruitment[] @relation("PostRecruitments")
+  communityComment           CommunityComment[]          @relation("CommunityComment")
+  user                       User                        @relation("UserCommunityPost", fields: [userId], references: [id], onDelete: Cascade)
+  communityPostLike          CommunityPostLike[]         @relation("CommunityPostLike")
+  postRecruitments  CommunityPostRecruitment[] @relation("PostRecruitments")
 }
 
-model communityRecruitmentField {
+model CommunityRecruitmentField {
   id     Int             @id @default(autoincrement())
   field  String
-  postRecruitments  communityPostRecruitment[] @relation("PostRecruitments")
+  postRecruitments  CommunityPostRecruitment[] @relation("PostRecruitments")
 }
 
 
-model communityPostRecruitment {
+model CommunityPostRecruitment {
   postId Int
   recruitmentFieldId Int 
 
-  post                  communityPost                @relation("PostRecruitments", fields: [postId], references: [id], onDelete: Cascade)
-  recruitmentField      communityRecruitmentField    @relation("PostRecruitments", fields: [recruitmentFieldId], references: [id], onDelete: Cascade)
+  post                  CommunityPost                @relation("PostRecruitments", fields: [postId], references: [id], onDelete: Cascade)
+  recruitmentField      CommunityRecruitmentField    @relation("PostRecruitments", fields: [recruitmentFieldId], references: [id], onDelete: Cascade)
 
   @@id([postId, recruitmentFieldId])
 }
 
-model communityPostLike {
+model CommunityPostLike {
   userId        String
   postId        Int
-  communityPost communityPost @relation("CommunityPostLike", fields: [postId], references: [id], onDelete: Cascade)
-  user          user          @relation("UserCommunityPostLike", fields: [userId], references: [id], onDelete: Cascade)
+  communityPost CommunityPost @relation("CommunityPostLike", fields: [postId], references: [id], onDelete: Cascade)
+  user          User          @relation("UserCommunityPostLike", fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, postId])
 }
 
-model funding {
+model Funding {
   id          Int           @id @default(autoincrement())
   userId      String
   novelId     Int           @unique
@@ -76,29 +76,29 @@ model funding {
   status      String        @default("pending")
   createdAt   DateTime      @default(now())
   endDate     DateTime
-  novel       novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
-  fundingUser fundingUser[] @relation("FundingUser")
+  novel       Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  fundingUser FundingUser[] @relation("FundingUser")
 }
 
-model fundingUser {
+model FundingUser {
   id        Int      @id @default(autoincrement())
   userId    String?
   fundingId Int
   amount    Int
   createdAt DateTime @default(now())
-  funding   funding  @relation("FundingUser", fields: [fundingId], references: [id], onDelete: NoAction)
-  user      user?    @relation("UserFunding", fields: [userId], references: [id])
+  funding   Funding  @relation("FundingUser", fields: [fundingId], references: [id], onDelete: NoAction)
+  user      User?    @relation("UserFunding", fields: [userId], references: [id])
 
   @@unique([userId, fundingId])
 }
 
-model genre {
+model Genre {
   id         Int          @id @default(autoincrement())
   genreName  String
-  novelGenre novelGenre[] @relation("CommunityPostGenre")
+  novelGenre NovelGenre[] @relation("CommunityPostGenre")
 }
 
-model novel {
+model Novel {
   id             Int            @id @default(autoincrement())
   createdAt      DateTime       @default(now())
   image          String?
@@ -107,37 +107,37 @@ model novel {
   novelIntroduce String
   serialStatus   String
   userId         String
-  funding        funding?
-  user           user           @relation("UserNovel", fields: [userId], references: [id], onDelete: Cascade)
-  novelComment   novelComment[] @relation("NovelComment")
-  novelEpisode   novelEpisode[] @relation("NovelEpisode")
-  novelGenre     novelGenre[]   @relation("NovelGenre")
-  novelLike      novelLike[]    @relation("NovelLike")
+  funding        Funding?
+  user           User           @relation("UserNovel", fields: [userId], references: [id], onDelete: Cascade)
+  novelComment   NovelComment[] @relation("NovelComment")
+  novelEpisode   NovelEpisode[] @relation("NovelEpisode")
+  novelGenre     NovelGenre[]   @relation("NovelGenre")
+  novelLike      NovelLike[]    @relation("NovelLike")
 }
 
-model novelComment {
+model NovelComment {
   id               Int                @id @default(autoincrement())
   novelEpisodeId   Int
   userId           String
   novelId          Int
   content          String
   createdAt        DateTime           @default(now())
-  novelEpisode     novelEpisode       @relation(fields: [novelEpisodeId], references: [id])
-  novel            novel              @relation("NovelComment", fields: [novelId], references: [id], onDelete: Cascade)
-  user             user               @relation("UserNovelComment", fields: [userId], references: [id], onDelete: Cascade)
-  novelCommentLike novelCommentLike[] @relation("NovelCommentLike")
+  novelEpisode     NovelEpisode       @relation(fields: [novelEpisodeId], references: [id])
+  novel            Novel              @relation("NovelComment", fields: [novelId], references: [id], onDelete: Cascade)
+  user             User               @relation("UserNovelComment", fields: [userId], references: [id], onDelete: Cascade)
+  novelCommentLike NovelCommentLike[] @relation("NovelCommentLike")
 }
 
-model novelCommentLike {
+model NovelCommentLike {
   novelCommentId Int
   userId         String
-  novelComment   novelComment @relation("NovelCommentLike", fields: [novelCommentId], references: [id], onDelete: Cascade)
-  user           user         @relation("UserNovelCommentLike", fields: [userId], references: [id], onDelete: Cascade)
+  novelComment   NovelComment @relation("NovelCommentLike", fields: [novelCommentId], references: [id], onDelete: Cascade)
+  user           User         @relation("UserNovelCommentLike", fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([novelCommentId, userId])
 }
 
-model novelEpisode {
+model NovelEpisode {
   id           Int            @id @default(autoincrement())
   novelId      Int
   userId       String
@@ -146,32 +146,32 @@ model novelEpisode {
   view         Int            @default(0)
   createdAt    DateTime       @default(now())
   title        String
-  novelComment novelComment[]
-  novel        novel          @relation("NovelEpisode", fields: [novelId], references: [id], onDelete: Cascade)
-  user         user           @relation("UserNovelEpisode", fields: [userId], references: [id], onDelete: Cascade)
+  novelComment NovelComment[]
+  novel        Novel          @relation("NovelEpisode", fields: [novelId], references: [id], onDelete: Cascade)
+  user         User           @relation("UserNovelEpisode", fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([novelId, episode])
 }
 
-model novelGenre {
+model NovelGenre {
   genreId Int
   novelId Int
-  genre   genre @relation("CommunityPostGenre", fields: [genreId], references: [id])
-  novel   novel @relation("NovelGenre", fields: [novelId], references: [id], onDelete: Cascade)
+  genre   Genre @relation("CommunityPostGenre", fields: [genreId], references: [id])
+  novel   Novel @relation("NovelGenre", fields: [novelId], references: [id], onDelete: Cascade)
 
   @@id([genreId, novelId])
 }
 
-model novelLike {
+model NovelLike {
   userId  String
   novelId Int
-  novel   novel  @relation("NovelLike", fields: [novelId], references: [id], onDelete: Cascade)
-  user    user   @relation("UserNovelLike", fields: [userId], references: [id], onDelete: Cascade)
+  novel   Novel  @relation("NovelLike", fields: [novelId], references: [id], onDelete: Cascade)
+  user    User   @relation("UserNovelLike", fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, novelId])
 }
 
-model user {
+model User {
   id                   String                 @id @unique @default(uuid())
   nickname             String                 @unique
   userEmail            String                 @unique
@@ -179,14 +179,14 @@ model user {
   createdAt            DateTime               @default(now())
   type                 String                 @default("user")
   introduce            String
-  communityComment     communityComment[]     @relation("UserCommunityComment")
-  communityCommentLike communityCommentLike[] @relation("UserCommunityCommentLike")
-  communityPost        communityPost[]        @relation("UserCommunityPost")
-  communityPostLike    communityPostLike[]    @relation("UserCommunityPostLike")
-  fundingUser          fundingUser[]          @relation("UserFunding")
-  novel                novel[]                @relation("UserNovel")
-  novelComment         novelComment[]         @relation("UserNovelComment")
-  novelCommentLike     novelCommentLike[]     @relation("UserNovelCommentLike")
-  novelEpisode         novelEpisode[]         @relation("UserNovelEpisode")
-  novelLike            novelLike[]            @relation("UserNovelLike")
+  communityComment     CommunityComment[]     @relation("UserCommunityComment")
+  communityCommentLike CommunityCommentLike[] @relation("UserCommunityCommentLike")
+  communityPost        CommunityPost[]        @relation("UserCommunityPost")
+  communityPostLike    CommunityPostLike[]    @relation("UserCommunityPostLike")
+  fundingUser          FundingUser[]          @relation("UserFunding")
+  novel                Novel[]                @relation("UserNovel")
+  novelComment         NovelComment[]         @relation("UserNovelComment")
+  novelCommentLike     NovelCommentLike[]     @relation("UserNovelCommentLike")
+  novelEpisode         NovelEpisode[]         @relation("UserNovelEpisode")
+  novelLike            NovelLike[]            @relation("UserNovelLike")
 }
