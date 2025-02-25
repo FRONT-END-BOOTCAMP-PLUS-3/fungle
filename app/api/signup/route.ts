@@ -7,14 +7,8 @@ import { RegisterUserUseCase } from "@/application/usecases/auth/DfRegisterUseca
 
 const authRepository = new PrAuthRepository();
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method Not Allowed" });
-  }
-
+// 회원가입 처리 (POST 요청)
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
   const { email, nickname, password } = req.body;
 
   try {
@@ -45,4 +39,9 @@ export default async function handler(
     console.error("회원가입 오류:", error);
     return res.status(500).json({ message: "서버 오류 발생" });
   }
+}
+
+// GET 요청 (사용자 목록 조회 등 추가 가능)
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
+  return res.status(200).json({ message: "회원가입 API 입니다." });
 }
