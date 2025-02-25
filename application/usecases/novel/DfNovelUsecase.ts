@@ -1,7 +1,7 @@
 import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { NovelEntity } from "@/domain/entities/novel";
 
-export class GetNovelByIdUseCase {
+export class DfNovelByIdUseCase {
   constructor(private novelRepository: NovelRepository) {}
 
   async execute(novelId: number): Promise<NovelEntity | null> {
