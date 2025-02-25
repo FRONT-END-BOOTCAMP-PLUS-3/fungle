@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import {
   CommunityLikeButton,
@@ -12,8 +13,8 @@ import {
   CommunityPostContent,
   CommunityReplyButton,
   CommunityPostCommentReply,
-} from "./CommunityPostComment.styled";
-import MoreOptionsMenu from "../../components/MoreOptionMenu";
+} from "./Comment.styled";
+import MoreOptionsMenu from "@/app/user/community/components/MoreOptionMenu";
 
 interface PostsType {
   id: number;
@@ -32,14 +33,10 @@ interface PostsType {
 interface CommunityPostContentProps {
   post: PostsType;
 }
-const CommunityPostComment = ({ post }: CommunityPostContentProps) => {
+const Comment = ({ post }: CommunityPostContentProps) => {
   if (!post) {
     return <main>게시글을 찾을 수 없습니다.</main>;
   }
-  const handleEdit = () => {
-    console.log("수정 기능 호출");
-    // 수정 페이지 이동 로직 추가
-  };
 
   const handleDelete = async () => {
     if (confirm("정말 삭제하시겠습니까?")) {
@@ -60,7 +57,7 @@ const CommunityPostComment = ({ post }: CommunityPostContentProps) => {
           </div>
         </CommunityPostCommentInfoBox>
 
-        <MoreOptionsMenu onEdit={handleEdit} onDelete={handleDelete} />
+        <MoreOptionsMenu onDelete={handleDelete} />
       </CommunityPostCommentInfo>
 
       <CommunityPostContent>
@@ -101,4 +98,4 @@ const CommunityPostComment = ({ post }: CommunityPostContentProps) => {
   );
 };
 
-export default CommunityPostComment;
+export default Comment;
