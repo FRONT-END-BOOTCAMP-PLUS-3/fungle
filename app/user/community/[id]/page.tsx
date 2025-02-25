@@ -1,23 +1,19 @@
-"use client";
-
 import { posts } from "../components/CommunityPostList";
 
-import { use } from "react";
 import { Main } from "./CommunityDetailPage.styled";
-import Input from "@/components/input/Input";
 
 import CommunityPostHeader from "./components/CommunityPostHeader";
 import CommunityPostContent from "./components/CommunityPostContent";
-import CommunityPostComment from "./components/CommunityPostComment";
+import CommentCreate from "@/components/comment/CommentCreate";
+import Comment from "@/components/comment/Comment";
 
 interface PageParams {
   params: Promise<{ id: string }>;
 }
 
-const Page = ({ params }: PageParams) => {
-  const resolvedParams = use(params);
-  const { id } = resolvedParams;
-  const post = posts.find((p) => p.id.toString() === id);
+const Page = async ({ params }: PageParams) => {
+  const postId = (await params).id;
+  const post = posts.find((p) => p.id.toString() === postId);
 
   if (!post) {
     return <main>게시글을 찾을 수 없습니다.</main>;
@@ -28,16 +24,9 @@ const Page = ({ params }: PageParams) => {
 
       <CommunityPostContent post={post} />
 
-      <section>
-        <p>댓글 {post.commentCount}</p>
-        <Input
-          label="댓글 입력"
-          placeholder="댓글을 입력해주세요."
-          hideLabel={true}
-        />
-      </section>
+      <CommentCreate post={post} />
 
-      <CommunityPostComment post={post} />
+      <Comment post={post} />
     </Main>
   );
 };
