@@ -1,11 +1,13 @@
 "use client";
+
 import styled from "styled-components";
 
 export const Main = styled.main`
-  padding: 1.25rem;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
-  height: 100%;
+  gap: 1.25rem;
   overflow-y: auto;
+  padding: 0 1.25rem 1.25rem 1.25rem;
+  margin-top: 1.25rem;
 `;

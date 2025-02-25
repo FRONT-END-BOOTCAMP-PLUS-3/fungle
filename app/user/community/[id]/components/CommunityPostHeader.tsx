@@ -1,4 +1,4 @@
-// import { useRouter } from "next/router";
+"use client";
 import MoreOptionsMenu from "../../components/MoreOptionMenu";
 import {
   CommunityPostHeaderSection,
@@ -30,11 +30,6 @@ interface CommunityPostHeaderProps {
 const CommunityPostHeader = ({ post }: CommunityPostHeaderProps) => {
   // const router = useRouter();
 
-  const handleEdit = () => {
-    console.log("수정 기능 호출");
-    // 수정 페이지 이동 로직 추가
-  };
-
   const handleDelete = async () => {
     if (confirm("정말 삭제하시겠습니까?")) {
       console.log("삭제 기능 호출");
@@ -46,7 +41,7 @@ const CommunityPostHeader = ({ post }: CommunityPostHeaderProps) => {
       <CommunityPostInfo>
         <CommunityPostTitle>{post.title}</CommunityPostTitle>
 
-        <MoreOptionsMenu onEdit={handleEdit} onDelete={handleDelete} />
+        <MoreOptionsMenu onDelete={handleDelete} postId={post.id} />
       </CommunityPostInfo>
       <div>
         <p>{post.author}</p>

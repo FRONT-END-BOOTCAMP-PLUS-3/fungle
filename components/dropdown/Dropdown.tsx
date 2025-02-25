@@ -1,5 +1,11 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
-import { DropdownWrapper, StyledButton, StyledMenu, StyledItem, DropdownArrow } from "@/components/dropdown/Dropdown.styled";
+import {
+  DropdownWrapper,
+  StyledButton,
+  StyledMenu,
+  StyledItem,
+  DropdownArrow,
+} from "@/components/dropdown/Dropdown.styled";
 
 interface Option {
   value: string;
@@ -9,12 +15,26 @@ interface Option {
 interface DropdownProps {
   options: Option[];
   onSelect: (value: string) => void;
-  selected: string;
+  selected: string | string[];
   size?: "default" | "small";
 }
 
-const Dropdown = ({ options, onSelect, selected, size = "default" }: DropdownProps) => {
-  const selectedLabel = options.find((option) => option.value === selected)?.label || "선택하세요";
+const Dropdown = ({
+  options,
+  onSelect,
+  selected,
+  size = "default",
+}: DropdownProps) => {
+  const selectedLabel = Array.isArray(selected)
+    ? selected
+        .map(
+          (value) =>
+            options.find((option) => option.value === value)?.label || ""
+        )
+        .filter((value) => value)
+        .join(", ") || "선택하세요"
+    : options.find((option) => option.label === selected)?.label ||
+      "선택하세요";
 
   return (
     <DropdownWrapper size={size}>
@@ -23,7 +43,10 @@ const Dropdown = ({ options, onSelect, selected, size = "default" }: DropdownPro
           <div>
             <MenuButton as={StyledButton} size={size}>
               {selectedLabel}
-              <DropdownArrow src="/icon/dropdown_arrow.svg" alt="dropdown arrow" />
+              <DropdownArrow
+                src="/icon/dropdown_arrow.svg"
+                alt="dropdown arrow"
+              />
             </MenuButton>
             {open && (
               <MenuItems as={StyledMenu}>

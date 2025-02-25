@@ -8,14 +8,16 @@ import {
   MenuItem,
   MoreButton,
   Wrapper,
+  EditBox,
 } from "./MoreOptionMenu.styled";
+import Link from "next/link";
 
 interface MoreOptionsMenuProps {
-  onEdit: () => void;
   onDelete: () => void;
+  postId?: number;
 }
 
-const MoreOptionsMenu = ({ onEdit, onDelete }: MoreOptionsMenuProps) => {
+const MoreOptionsMenu = ({ onDelete, postId }: MoreOptionsMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -55,10 +57,17 @@ const MoreOptionsMenu = ({ onEdit, onDelete }: MoreOptionsMenuProps) => {
       </MoreButton>
       {isOpen && (
         <Dropdown>
-          <MenuItem onClick={onEdit}>
-            <Image src="/icon/edit_pen.svg" alt="수정" width={20} height={20} />
-            수정
-          </MenuItem>
+          <Link href={`/user/community/${postId}/edit/`}>
+            <EditBox>
+              <Image
+                src="/icon/edit_pen.svg"
+                alt="수정"
+                width={20}
+                height={20}
+              />
+              수정
+            </EditBox>
+          </Link>
           <MenuItem onClick={onDelete}>
             <Image src="/icon/delete.svg" alt="삭제" width={20} height={20} />
             삭제
