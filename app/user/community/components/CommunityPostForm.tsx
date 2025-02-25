@@ -6,13 +6,9 @@ import Textarea from "@/components/textarea/Textarea";
 import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
 
 import { useState } from "react";
-import {
-  ButtonBox,
-  TextAreaWrapper,
-  Form,
-} from "./CommunityPostEditForm.styled";
+import { ButtonBox, TextAreaWrapper, Form } from "./CommunityPostForm.styled";
 
-const CommunityPostEditForm = () => {
+const CommunityPostForm = ({ defautlValue }: { defautlValue?: string }) => {
   const [selectedFields, setSelectedFields] = useState<string[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -66,6 +62,7 @@ const CommunityPostEditForm = () => {
           ariaLabel="게시글 내용"
           onChange={handleChangeContent}
           height="100%"
+          defaultValue={defautlValue}
         />
         <ButtonBox>
           <Button backgroudColor={"white"}>취소</Button>
@@ -76,4 +73,4 @@ const CommunityPostEditForm = () => {
   );
 };
 
-export default CommunityPostEditForm;
+export default CommunityPostForm;
