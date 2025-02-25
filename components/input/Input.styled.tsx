@@ -5,6 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 0.5rem;
+  position: relative;
 `;
 
 export const Label = styled.label<{ $srOnly?: boolean }>`
