@@ -1,28 +1,29 @@
-import { PrNovelRepository } from "@/infrastructure/repositories/PrNovelRepostiory";
+import { NovelRepository } from "@/domain/repositories/NovelRepository";
+import { NovelEntity } from "@/domain/entities/novel";
 
-export class DfNovelUseCase {
-  constructor(private novelRepository: PrNovelRepository) {}
+export class DfNovelByIdUseCase {
+  constructor(private novelRepository: NovelRepository) {}
 
-  async execute(novelId: number) {
+  async execute(novelId: number): Promise<NovelEntity | null> {
     const novel = await this.novelRepository.getNovelById(novelId);
     if (!novel) return null;
 
-    return {
-      id: novel.id,
-      title: novel.title,
-      image: novel.image,
-      serialDay: novel.serialDay,
-      novelIntroduce: novel.novelIntroduce,
-      serialStatus: novel.serialStatus,
-      author: novel.user.nickname,
-      userIntroduce: novel.user.introduce,
-      likeCount: novel.likeCount,
-      episodes: novel.novelEpisode.map(ep => ({
+    return new NovelEntity(
+      novel.id,
+      novel.title,
+      novel.image,
+      novel.serialDay,
+      novel.novelIntroduce,
+      novel.serialStatus,
+      novel.user.nickname, 
+      novel.user?.introduce ?? null, 
+      novel.likeCount,  
+      novel.novelEpisode.map((ep) => ({
         id: ep.id,
         title: ep.title,
         createdAt: ep.createdAt,
       })),
-      categories: novel.novelGenre.map(g => g.genre.genreName), 
-    };
+      novel.novelGenre.map((ng) => ng.genre.genreName),
+    );
   }
 }

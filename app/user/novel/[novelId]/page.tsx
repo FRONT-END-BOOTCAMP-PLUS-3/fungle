@@ -3,7 +3,6 @@ import Image from "next/image";
 import { novelDi } from "@/infrastructure/config/novelDi"; 
 import { GradientWrapper, NovelHeader, StatusSection, Badge, UploadInfo, AuthorSection, EpisodeItem } from "./NovelIdPage.styled";
 
-
 const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: string }> }) => {
   const params = await promisedParams;
   const novelId = params.novelId ? parseInt(params.novelId, 10) : NaN;
@@ -25,14 +24,21 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
         </StatusSection>
 
         <NovelHeader>
-          <Image src={novel.image || "/image/book.svg"} alt={novel.title} width={196} height={280} />
+          <Image 
+            src={novel.image || "/image/book.svg"} 
+            alt={novel.title} 
+            width={196} 
+            height={280} 
+          />
           <div className="info">
             <h1>{novel.title}</h1>
+            
             <div className="categories">
-              {novel.categories.map(category => (
-                <span key={category}>{category}</span>
+              {novel.genres.map((genre) => (
+                <span key={genre}>{genre}</span>
               ))}
             </div>
+
             <UploadInfo>
               <div>
                 <Image src="/icon/episode.svg" alt="총 화수" width={30} height={30} />
@@ -55,7 +61,13 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
       </GradientWrapper>
 
       <AuthorSection>
-        <Image src="/image/profile.svg" alt={novel.author} width={80} height={80} className="author-image" />
+        <Image 
+          src="/image/profile.svg" 
+          alt={novel.author} 
+          width={80} 
+          height={80} 
+          className="author-image" 
+        />
         <div className="author-info">
           <span className="author-name">{novel.author}</span>
           <p className="author-introduce">{novel.userIntroduce ?? "소개 없음"}</p>
@@ -64,15 +76,24 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
 
       <div>
         {episodes.map((episode, index) => {
-          const date = new Date(episode.createdAt).toISOString().split("T")[0].replaceAll("-", ".");
+          const date = new Date(episode.createdAt)
+            .toISOString()
+            .split("T")[0]
+            .replaceAll("-", ".");
           return (
             <EpisodeItem key={episode.id}>
               <Link href={`/user/novel/${novelId}/${episode.id}`} passHref>
-                <Image src="/image/book.svg" alt={episode.title} width={80} height={80} className="episode-img" />
+                <Image
+                  src="/image/book.svg"
+                  alt={episode.title}
+                  width={80}
+                  height={80}
+                  className="episode-img"
+                />
               </Link>
               <div className="episode-info">
                 <Link href={`/user/novel/${novelId}/${episode.id}`} passHref>
-                  <p className="episode-title">{index+1}화 {episode.title}</p>
+                  <p className="episode-title">{index + 1}화 {episode.title}</p>
                 </Link>
                 <p className="episode-date">{date}</p>
               </div>
@@ -82,6 +103,6 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
       </div>
     </div>
   );
-}
+};
 
-export default Page
+export default Page;

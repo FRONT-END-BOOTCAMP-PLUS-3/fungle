@@ -1,4 +1,4 @@
-export class Novel {
+export class NovelEntity {
   constructor(
     public id: number,
     public title: string,
@@ -7,19 +7,9 @@ export class Novel {
     public novelIntroduce: string,
     public serialStatus: string,
     public author: string,
-    public userIntroduce: string | null 
+    public userIntroduce: string | null,
+    public likeCount: number,
+    public episodes: { id: number; title: string; createdAt: Date }[],
+    public genres: string[],
   ) {}
-
-  static fromPrisma(data: any): Novel {
-    return new Novel(
-      data.id,
-      data.title,
-      data.image,
-      data.serialDay,
-      data.novelIntroduce,
-      data.serialStatus,
-      data.user.nickname, 
-      data.user.introduce ?? null 
-    );
-  }
 }

@@ -1,7 +1,7 @@
 import { PrNovelRepository } from "@/infrastructure/repositories/PrNovelRepostiory";
-import { DfNovelUseCase } from "@/application/usecases/novel/DfNovelUsecase";
+import { DfNovelByIdUseCase } from "@/application/usecases/novel/DfNovelUsecase";
 
 export const novelDi = {
   novelRepository: new PrNovelRepository(),
-  getNovelByIdUseCase: new DfNovelUseCase(new PrNovelRepository()),
+  getNovelByIdUseCase: new DfNovelByIdUseCase(new PrNovelRepository()),
 };
