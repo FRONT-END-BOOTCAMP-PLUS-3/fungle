@@ -5,4 +5,5 @@ export interface UserRepository {
   findByNickname(nickname: string): Promise<User | null>;
   findAll(): Promise<Omit<User, "password">[] | null>;
   createUser(user: User): Promise<void>;
+  getUserById(userId: string): Promise<Omit<User, "password" | "userEmail" | "createdAt" | "type"> | null>;
 }

@@ -44,7 +44,7 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId: str
         <EpisodeTitle>{episode.episode}화 {episode.title}</EpisodeTitle> 
         <div>{novel.title}</div> 
         <AuthorInfo>
-          <ProfileImage  src={novel.image || "/image/book.svg"} alt="Author" width={50} height={50} />
+          <ProfileImage  src={novel.profile || "/image/profile.svg"} alt="Author" width={50} height={50} />
           <AuthorDetails>
             <div className='author'>{novel.author}</div>
             <AuthorMeta>

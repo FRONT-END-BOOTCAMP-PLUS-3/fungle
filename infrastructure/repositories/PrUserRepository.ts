@@ -42,4 +42,16 @@ export class PrUserRepository implements UserRepository {
 
     return users.length ? users : null;
   }
+
+  async getUserById(userId: string): Promise<Omit<User, "password" | "userEmail" | "createdAt" | "type"> | null> { 
+    return await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        nickname: true,
+        introduce: true,
+        profileImage: true
+      },
+    });
+  }
 }
