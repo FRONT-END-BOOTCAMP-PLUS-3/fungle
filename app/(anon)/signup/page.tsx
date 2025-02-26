@@ -86,20 +86,24 @@ const Signup = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nickname }),
       });
+
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.message);
 
-      setNicknameError("사용 가능한 닉네임입니다.");
-      setIsNicknameValid(true);
+      // 닉네임 사용 가능 여부 설정
       setNicknameChecked(true);
+      setIsNicknameValid(true);
+      setNicknameError("✅ 사용 가능한 닉네임입니다.");
     } catch (error: unknown) {
+      setNicknameChecked(false);
+      setIsNicknameValid(false);
+
       if (error instanceof Error) {
         setNicknameError(error.message);
       } else {
-        setNicknameError("알 수 없는 오류가 발생했습니다.");
+        setNicknameError("❌ 알 수 없는 오류가 발생했습니다.");
       }
-      setIsNicknameValid(false);
     }
   };
 

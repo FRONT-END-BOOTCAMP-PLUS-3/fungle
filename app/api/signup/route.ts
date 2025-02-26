@@ -1,11 +1,12 @@
+import { DfNicknameValidationUsecase } from "@/application/usecases/auth/DfNicknameValidation";
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrAuthRepository } from "@/infrastructure/repositories/PrAuthRepository";
 import { CheckEmailDuplicationUseCase } from "@/application/usecases/auth/DfCheckEmailDuplicationUsecase";
-import { CheckNicknameDuplicationUseCase } from "@/application/usecases/auth/DfCheckNicknameDuplicationUsecase";
+import { ValidationUUseCase } from "@/application/usecases/auth/DfNicknameValidation";
 import { HashPasswordUseCase } from "@/application/usecases/auth/DfHashPasswordUsecase";
 import { RegisterUserUseCase } from "@/application/usecases/auth/DfRegisterUsecase";
+import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 
-const authRepository = new PrAuthRepository();
+const userRepository = new PrUserRepository();
 
 // 회원가입 처리 (POST 요청)
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
@@ -13,15 +14,15 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
 
   try {
     // 이메일 중복 검사
-    const checkEmail = new CheckEmailDuplicationUseCase(authRepository);
+    const checkEmail = new CheckEmailDuplicationUseCase(userRepository);
     const isEmailAvailable = await checkEmail.execute({ email });
     if (!isEmailAvailable) {
       return res.status(400).json({ message: "이미 존재하는 이메일입니다." });
     }
 
     // 닉네임 중복 검사
-    const checkNickname = new CheckNicknameDuplicationUseCase(authRepository);
-    const isNicknameAvailable = await checkNickname.execute({ nickname });
+    const checkNickname = new DfNicknameValidationUsecase(userRepository);
+    const isNicknameAvailable = await checkNickname.execute(nickname);
     if (!isNicknameAvailable) {
       return res.status(400).json({ message: "이미 존재하는 닉네임입니다." });
     }
@@ -31,7 +32,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     const hashedPassword = await hashPassword.execute({ password });
 
     // 사용자 등록
-    const registerUser = new RegisterUserUseCase(authRepository);
+    const registerUser = new RegisterUserUseCase(userRepository);
     await registerUser.execute({ email, nickname, hashedPassword });
 
     return res.status(201).json({ message: "회원가입 성공" });
