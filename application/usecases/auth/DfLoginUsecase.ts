@@ -2,11 +2,11 @@ import { LoginRequestDto } from "./dto/LoginRequestDto";
 import { LoginResponseDto } from "./dto/LoginResponseDto";
 import { IPasswordVerifiactionUsecase } from "./interfaces/IPasswordVerifiactionUsecase";
 import { LoginError } from "./error/LoginError";
-import { AuthRepository } from "@/domain/repositories/AuthRepository";
+import { UserRepository } from "@/domain/repositories/UserRepository";
 
 export class LoginUsecase {
   constructor(
-    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UserRepository,
     private readonly passwordVerificationUsecase: IPasswordVerifiactionUsecase
   ) {}
   async execute(request: LoginRequestDto): Promise<LoginResponseDto> {
@@ -17,7 +17,7 @@ export class LoginUsecase {
       );
     }
 
-    const userData = await this.authRepository.findByEmail(request.userEmail);
+    const userData = await this.userRepository.findByEmail(request.userEmail);
 
     if (!userData) {
       throw new LoginError("EMAIL_NOT_FOUND", "가입되지 않은 이메일입니다.");

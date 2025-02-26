@@ -7,14 +7,14 @@ import {
   LoginErrorType,
 } from "@/application/usecases/auth/error/LoginError";
 import { IPasswordVerifiactionUsecase } from "@/application/usecases/auth/interfaces/IPasswordVerifiactionUsecase";
-import { AuthRepository } from "@/domain/repositories/AuthRepository";
-import { PrAuthRepository } from "@/infrastructure/repositories/PrAuthRepository";
+import { UserRepository } from "@/domain/repositories/UserRepository";
+import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
     const request: LoginRequestDto = await req.json();
-    const authRepository: AuthRepository = new PrAuthRepository();
+    const userRepository: UserRepository = new PrUserRepository();
 
     // 비밀번호 비교 usecase
     const passwordVerificationUsecase: IPasswordVerifiactionUsecase =
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
     // LoginUsecase DI
     const loginUsecase = new LoginUsecase(
-      authRepository,
+      userRepository,
       passwordVerificationUsecase
     );
 
