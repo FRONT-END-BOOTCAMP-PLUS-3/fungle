@@ -1,49 +1,12 @@
-import { SignUpRequestDTO } from "@/application/usecases/auth/dto/SignupRequestDto";
 import { prisma } from "../config/prisma";
-import { User } from "@prisma/client";
 import { AuthRepository } from "@/domain/repositories/AuthRepository";
-import { generateAccessToken, generateRefreshToken } from "@/utils/auth/jwt";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyAccessToken,
+} from "@/utils/auth/jwt";
 
 export class PrAuthRepository implements AuthRepository {
-  // Create User (SignUpRequestDTO 적용)
-  async createUser(user: SignUpRequestDTO): Promise<void> {
-    await prisma.user.create({
-      data: {
-        nickname: user.nickname,
-        userEmail: user.userEmail,
-        password: user.password,
-        introduce: "",
-      },
-    });
-  }
-
-  async findByEmail(email: string): Promise<User | null> {
-    return prisma.user.findUnique({
-      where: { userEmail: email },
-    });
-  }
-
-  async findByNickname(nickname: string): Promise<User | null> {
-    return prisma.user.findUnique({ where: { nickname } });
-  }
-
-  // Get all users (password 제외)
-  async findAll(): Promise<Omit<User, "password">[] | null> {
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        userEmail: true,
-        nickname: true,
-        createdAt: true,
-        type: true,
-        introduce: true,
-        profileImage: true,
-      },
-    });
-
-    return users.length ? users : null;
-  }
-
   async generateTokens(
     userId: string
   ): Promise<{ accessToken: string; refreshToken: string }> {
@@ -63,5 +26,33 @@ export class PrAuthRepository implements AuthRepository {
       },
     });
     return { accessToken, refreshToken };
+  }
+
+  async verifyAccessToken(token: string): Promise<{ userId: string } | null> {
+    try {
+      const decoded = verifyAccessToken(token);
+      if (!decoded || !decoded.id) return null;
+      return { userId: decoded.id };
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async findRefreshTokenByUserId(userId: string): Promise<string | null> {
+    const tokenRecord = await prisma.refreshToken.findUnique({
+      where: { userId },
+    });
+
+    return tokenRecord ? tokenRecord.token : null;
+  }
+
+  async updateRefreshToken(
+    userId: string,
+    newRefreshToken: string
+  ): Promise<void> {
+    await prisma.refreshToken.update({
+      where: { userId },
+      data: { token: newRefreshToken },
+    });
   }
 }
