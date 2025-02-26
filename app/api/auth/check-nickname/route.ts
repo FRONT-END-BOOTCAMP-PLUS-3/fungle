@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const userRepository = new PrUserRepository();
+    const userRepository: UserRepository = new PrUserRepository();
     const nicknameValidationUseCase = new DfNicknameValidationUsecase(
       userRepository
     );
