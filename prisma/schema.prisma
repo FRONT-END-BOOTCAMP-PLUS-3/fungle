@@ -29,36 +29,33 @@ model CommunityCommentLike {
 }
 
 model CommunityPost {
-  id                       Int                        @id @default(autoincrement())
-  userId                   String
-  title                    String
-  content                  String
-  createdAt                DateTime                   @default(now())
-  view                     Int                        @default(0)
-  status                   String                     @default("recruiting")
-  communityComment         CommunityComment[]         @relation("CommunityComment")
-  user                     User                       @relation("UserCommunityPost", fields: [userId], references: [id], onDelete: Cascade)
-  communityPostLike        CommunityPostLike[]        @relation("CommunityPostLike")
-  PostRecruitment         CommunityPostRecruitment[] @relation("PostRecruitment")
+  id                Int                        @id @default(autoincrement())
+  userId            String
+  title             String
+  content           String
+  createdAt         DateTime                   @default(now())
+  view              Int                        @default(0)
+  status            String                     @default("recruiting")
+  communityComment  CommunityComment[]         @relation("CommunityComment")
+  user              User                       @relation("UserCommunityPost", fields: [userId], references: [id], onDelete: Cascade)
+  communityPostLike CommunityPostLike[]        @relation("CommunityPostLike")
+  PostRecruitment   CommunityPostRecruitment[] @relation("PostRecruitment")
 }
-
 
 model RecruitmentCategory {
   id                       Int                        @id @default(autoincrement())
-  name                    String
+  name                     String
   CommunityPostRecruitment CommunityPostRecruitment[] @relation("PostRecruitment")
 }
 
 model CommunityPostRecruitment {
-  postId                    Int
-  recruitmentCategoryId        Int
-  CommunityPost             CommunityPost             @relation("PostRecruitment",fields: [postId], references: [id], onDelete: Cascade)
-  RecruitmentCategory RecruitmentCategory @relation("PostRecruitment",fields: [recruitmentCategoryId], references: [id], onDelete: Cascade)
+  postId                Int
+  recruitmentCategoryId Int
+  CommunityPost         CommunityPost       @relation("PostRecruitment", fields: [postId], references: [id], onDelete: Cascade)
+  RecruitmentCategory   RecruitmentCategory @relation("PostRecruitment", fields: [recruitmentCategoryId], references: [id], onDelete: Cascade)
 
   @@id([postId, recruitmentCategoryId])
 }
-
-
 
 model CommunityPostLike {
   userId        String
@@ -193,7 +190,6 @@ model User {
   novelLike            NovelLike[]            @relation("UserNovelLike")
   RefreshToken         RefreshToken?
 }
-
 
 model RefreshToken {
   id        String   @id @default(uuid())
