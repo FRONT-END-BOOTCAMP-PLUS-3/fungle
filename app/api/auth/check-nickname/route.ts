@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
-import { DfNicknameValidationUsecase } from "@/application/usecases/auth/DfNicknameValidation";
+import { DfNicknameValidationUsecase } from "@/application/usecases/auth/DfNicknameValidationUsecase";
+import { UserRepository } from "@/domain/repositories/UserRepository";
 
 export async function POST(req: NextRequest) {
   try {

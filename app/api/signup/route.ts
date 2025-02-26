@@ -1,10 +1,11 @@
-import { DfNicknameValidationUsecase } from "@/application/usecases/auth/DfNicknameValidation";
+import { DfNicknameValidationUsecase } from "@/application/usecases/auth/DfNicknameValidationUsecase";
 import { NextApiRequest, NextApiResponse } from "next";
 import { CheckEmailDuplicationUseCase } from "@/application/usecases/auth/DfCheckEmailDuplicationUsecase";
-import { ValidationUUseCase } from "@/application/usecases/auth/DfNicknameValidation";
+import { ValidationUUseCase } from "@/application/usecases/auth/DfNicknameValidationUsecase";
 import { HashPasswordUseCase } from "@/application/usecases/auth/DfHashPasswordUsecase";
 import { RegisterUserUseCase } from "@/application/usecases/auth/DfRegisterUsecase";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
+import { UserRepository } from "@/domain/repositories/UserRepository";
 
 const userRepository: UserRepository = new PrUserRepository();
 
