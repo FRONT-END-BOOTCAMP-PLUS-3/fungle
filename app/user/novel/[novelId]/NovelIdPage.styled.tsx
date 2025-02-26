@@ -111,6 +111,8 @@ export const AuthorSection = styled.div`
   .author-image {
     margin-right: 1rem;
     margin-left: 2rem;
+    border-radius: 50%;
+    border: 0.0625rem solid var(--gray-500);
   }
 
   .author-info {

@@ -4,6 +4,7 @@ export interface NovelDto {
   image: string | null;
   serialDay: string;
   novelIntroduce: string;
+  profile:string | null;
   serialStatus: string;
   author: string;
   userIntroduce: string | null;

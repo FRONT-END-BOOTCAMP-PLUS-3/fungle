@@ -62,7 +62,7 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
 
       <AuthorSection>
         <Image 
-          src="/image/profile.svg" 
+          src={novel.profile || "/image/profile.svg"} 
           alt={novel.author} 
           width={80} 
           height={80} 
