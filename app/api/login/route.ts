@@ -1,5 +1,6 @@
 import { LoginUsecase } from "@/application/usecases/auth/DfLoginUsecase";
 import { DfPasswordVerificationUsecase } from "@/application/usecases/auth/DfPasswordVerificationUsecase";
+import { DfSetAuthCookieUsecase } from "@/application/usecases/auth/DfSetAuthCookieUsecase";
 import { LoginRequestDto } from "@/application/usecases/auth/dto/LoginRequestDto";
 import { LoginResponseDto } from "@/application/usecases/auth/dto/LoginResponseDto";
 import {
@@ -7,13 +8,16 @@ import {
   LoginErrorType,
 } from "@/application/usecases/auth/error/LoginError";
 import { IPasswordVerifiactionUsecase } from "@/application/usecases/auth/interfaces/IPasswordVerifiactionUsecase";
+import { AuthRepository } from "@/domain/repositories/AuthRepository";
 import { UserRepository } from "@/domain/repositories/UserRepository";
+import { PrAuthRepository } from "@/infrastructure/repositories/PrAuthRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
     const request: LoginRequestDto = await req.json();
+    const authRepository: AuthRepository = new PrAuthRepository();
     const userRepository: UserRepository = new PrUserRepository();
 
     // 비밀번호 비교 usecase
@@ -23,6 +27,7 @@ export async function POST(req: NextRequest) {
     // LoginUsecase DI
     const loginUsecase = new LoginUsecase(
       userRepository,
+      authRepository,
       passwordVerificationUsecase
     );
 
@@ -31,7 +36,16 @@ export async function POST(req: NextRequest) {
       request
     );
 
-    return NextResponse.json(loginResponseDto, { status: 200 });
+    const response = NextResponse.json(loginResponseDto, { status: 200 });
+
+    // cookie에 refresh token 저장
+    const setCookie = new DfSetAuthCookieUsecase();
+
+    setCookie.execute(response, loginResponseDto.refreshToken);
+
+    return response;
+
+    // return NextResponse.json(loginResponseDto, { status: 200 });
   } catch (error) {
     console.error("로그인 오류: ", error);
 

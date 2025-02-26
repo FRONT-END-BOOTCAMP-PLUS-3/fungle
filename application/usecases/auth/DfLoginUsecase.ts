@@ -1,12 +1,14 @@
 import { LoginRequestDto } from "./dto/LoginRequestDto";
-import { LoginResponseDto } from "./dto/LoginResponseDto";
 import { IPasswordVerifiactionUsecase } from "./interfaces/IPasswordVerifiactionUsecase";
 import { LoginError } from "./error/LoginError";
+import { LoginResponseDto } from "./dto/LoginResponseDto";
 import { UserRepository } from "@/domain/repositories/UserRepository";
+import { AuthRepository } from "@/domain/repositories/AuthRepository";
 
 export class LoginUsecase {
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly authRepository: AuthRepository,
     private readonly passwordVerificationUsecase: IPasswordVerifiactionUsecase
   ) {}
   async execute(request: LoginRequestDto): Promise<LoginResponseDto> {
@@ -23,7 +25,7 @@ export class LoginUsecase {
       throw new LoginError("EMAIL_NOT_FOUND", "가입되지 않은 이메일입니다.");
     }
 
-    const { userEmail, password } = userData;
+    const { id, userEmail, password } = userData;
 
     // 비밀번호 비교
     const isValidPassword: boolean =
@@ -36,6 +38,10 @@ export class LoginUsecase {
       throw new LoginError("INVALID_PASSWORD", "비밀번호가 올바르지 않습니다.");
     }
 
-    return { userEmail };
+    // jwt 토큰 생성
+    const { accessToken, refreshToken } =
+      await this.authRepository.generateTokens(id);
+
+    return { userEmail, accessToken, refreshToken };
   }
 }
