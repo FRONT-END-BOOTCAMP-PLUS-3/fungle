@@ -2,6 +2,7 @@ import { Main, EpisodeTitle, AuthorInfo, ProfileImage, AuthorDetails, AuthorMeta
 import CommentCreate from '@/components/comment/CommentCreate';
 import Comment from '@/components/comment/Comment';
 import { novelDi } from '@/infrastructure/config/novelDi';
+import NovelCompleted from '@/components/novelcompleted/NovelCompleted';
 
 const Page = async ({ params: promisedParams }: { params: Promise<{ novelId: string, episodeId: string }> }) => {
   const params = await promisedParams; 
@@ -51,6 +52,8 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId: str
         <Content>
           {episode.content} 
         </Content>
+
+        <NovelCompleted />
         
         <CommentCreate post={post} />
         <CommentWrapper>
