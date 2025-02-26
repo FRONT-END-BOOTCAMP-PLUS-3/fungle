@@ -6,7 +6,7 @@ import { HashPasswordUseCase } from "@/application/usecases/auth/DfHashPasswordU
 import { RegisterUserUseCase } from "@/application/usecases/auth/DfRegisterUsecase";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 
-const userRepository = new PrUserRepository();
+const userRepository: UserRepository = new PrUserRepository();
 
 // 회원가입 처리 (POST 요청)
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
