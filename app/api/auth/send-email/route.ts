@@ -3,14 +3,6 @@ import { SendEmailUseCase } from "@/application/usecases/auth/DfSendEmailUsecase
 import { DfGenerateVerificationCodeUseCase } from "@/application/usecases/auth/DfGenerateVerifyCodeUsecase";
 import { NextRequest, NextResponse } from "next/server";
 
-// ✅ 인스턴스 생성
-const verificationRepository = new PrVerificationRepository();
-const generateVerificationCodeUseCase = new DfGenerateVerificationCodeUseCase();
-const sendEmailUseCase = new SendEmailUseCase(
-  generateVerificationCodeUseCase,
-  verificationRepository
-);
-
 // ✅ Next.js API Route를 `POST` 함수로 변경
 export async function POST(req: NextRequest) {
   const request = await req.json();
@@ -23,6 +15,16 @@ export async function POST(req: NextRequest) {
 
   try {
     const { email } = request;
+
+    // ✅ 인스턴스 생성 (함수 내부에서 생성하도록 변경)
+    const verificationRepository = new PrVerificationRepository();
+    const generateVerificationCodeUseCase =
+      new DfGenerateVerificationCodeUseCase();
+    const sendEmailUseCase = new SendEmailUseCase(
+      generateVerificationCodeUseCase,
+      verificationRepository
+    );
+
     // 이메일 전송 실행
     await sendEmailUseCase.execute(email);
 
