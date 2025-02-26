@@ -19,7 +19,12 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId: str
   const episode = await novelDi.getEpisodeByIdUseCase.execute(episodeId);
   if (!episode) return <p>에피소드를 찾을 수 없습니다.</p>;
 
-  //댓글 BE 후 삭제 예정
+  const allEpisodes = await novelDi.getEpisodesByNovelIdUseCase.execute(novelId);
+  const lastEpisodeId = allEpisodes.length > 0 ? allEpisodes[allEpisodes.length - 1].id : null;
+  const isLastEpisode = episodeId === lastEpisodeId;
+  const isCompleted = novel.serialStatus === "완결";
+
+  // 댓글 BE 후 삭제 예정
   const post =  {
     id: 1,
     title: "1. 강지한은.... 나쁜 남자니까....",
@@ -39,7 +44,7 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId: str
         <EpisodeTitle>{episode.episode}화 {episode.title}</EpisodeTitle> 
         <div>{novel.title}</div> 
         <AuthorInfo>
-          <ProfileImage src="/image/profile.svg" alt="Author" width={50} height={50} />
+          <ProfileImage  src={novel.image || "/image/book.svg"} alt="Author" width={50} height={50} />
           <AuthorDetails>
             <div className='author'>{novel.author}</div>
             <AuthorMeta>
@@ -53,8 +58,8 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId: str
           {episode.content} 
         </Content>
 
-        <NovelCompleted />
-        
+        {isCompleted && isLastEpisode && <NovelCompleted title={novel.title} />}
+
         <CommentCreate post={post} />
         <CommentWrapper>
           <Comment post={post} />

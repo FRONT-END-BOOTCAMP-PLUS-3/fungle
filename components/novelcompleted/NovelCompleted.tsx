@@ -5,7 +5,7 @@ import Button from "../button/Button";
 import { useRouter } from "next/navigation";
 
 // 을/를 자동 판별 함수
-const addJosa = (word:string) => {
+const addJosa = (word: string) => {
   if (!word) return ""; 
   const lastChar = word[word.length - 1];
   const code = lastChar.charCodeAt(0);
@@ -16,11 +16,13 @@ const addJosa = (word:string) => {
   return hasBatchim ? `${word}을` : `${word}를`;
 };
 
-const NovelCompleted = () => {
-  const router = useRouter();
-  const novelTitle = "집에너무가고싶당"; 
-  const formattedTitle = addJosa(novelTitle); 
+interface NovelCompletedProps {
+  title: string;
+}
 
+const NovelCompleted = ({ title }: NovelCompletedProps) => {
+  const router = useRouter();
+  const formattedTitle = addJosa(title);  
 
   const handleFunding = () => {
     router.push("/user/funding");
