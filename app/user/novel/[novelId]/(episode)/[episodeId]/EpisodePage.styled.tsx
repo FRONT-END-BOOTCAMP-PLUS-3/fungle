@@ -30,6 +30,8 @@ export const AuthorInfo = styled.div`
 
 export const ProfileImage = styled(Image)`
   margin-right: 0.0625rem;
+  border-radius: 50%;
+  border: .0625rem solid var(--gray-500);
 `;
 
 export const AuthorDetails = styled.div`
