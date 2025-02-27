@@ -1,6 +1,5 @@
 import { LoginUsecase } from "@/application/usecases/auth/DfLoginUsecase";
 import { DfPasswordVerificationUsecase } from "@/application/usecases/auth/DfPasswordVerificationUsecase";
-import { DfSetAuthCookieUsecase } from "@/application/usecases/auth/DfSetAuthCookieUsecase";
 import { LoginRequestDto } from "@/application/usecases/auth/dto/LoginRequestDto";
 import { LoginResponseDto } from "@/application/usecases/auth/dto/LoginResponseDto";
 import {
@@ -38,14 +37,7 @@ export async function POST(req: NextRequest) {
 
     const response = NextResponse.json(loginResponseDto, { status: 200 });
 
-    // cookie에 refresh token 저장
-    const setCookie = new DfSetAuthCookieUsecase();
-
-    setCookie.execute(response, loginResponseDto.refreshToken);
-
     return response;
-
-    // return NextResponse.json(loginResponseDto, { status: 200 });
   } catch (error) {
     console.error("로그인 오류: ", error);
 
