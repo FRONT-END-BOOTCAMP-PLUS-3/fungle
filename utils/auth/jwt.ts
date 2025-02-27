@@ -13,8 +13,12 @@ export const generateRefreshToken = (userId: string) => {
   });
 };
 
-export const verifyAccessToken = (token: string) => {
-  return jwt.verify(token, ACCESS_SECRET);
+export const verifyAccessToken = (token: string): { id: string } | null => {
+  try {
+    return jwt.verify(token, ACCESS_SECRET) as { id: string };
+  } catch (error) {
+    return null;
+  }
 };
 
 export const verifyRefreshToken = (token: string) => {
