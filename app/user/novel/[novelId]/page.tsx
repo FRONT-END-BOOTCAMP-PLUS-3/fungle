@@ -1,22 +1,65 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { novelDi } from "@/infrastructure/config/novelDi"; 
-import { GradientWrapper, NovelHeader, StatusSection, Badge, UploadInfo, AuthorSection, EpisodeItem } from "./NovelIdPage.styled";
+import { useParams } from "next/navigation";
+import { NovelDto } from "@/application/usecases/novel/dto/Novel"; 
+import { Main, GradientWrapper, NovelHeader, StatusSection, Badge, UploadInfo, AuthorSection, EpisodeItem } from "@/app/user/novel/[novelId]/NovelIdPage.styled";
 
-const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: string }> }) => {
-  const params = await promisedParams;
-  const novelId = params.novelId ? parseInt(params.novelId, 10) : NaN;
+const Page = () => {
+  const params = useParams();
+  const novelId = params?.novelId ? parseInt(params.novelId as string, 10) : NaN;
 
-  if (isNaN(novelId)) return <p>잘못된 요청입니다.</p>;
+  const [novel, setNovel] = useState<NovelDto | null>(null);  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const novel = await novelDi.getNovelByIdUseCase.execute(novelId);
+  useEffect(() => {
+    if (isNaN(novelId)) {
+      setError("잘못된 소설 ID입니다.");
+      setLoading(false);
+      return;
+    }
+
+    const fetchNovel = async () => {
+      try {
+        const response = await fetch(`/api/novel/${novelId}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch novel: ${response.statusText}`);
+        }
+
+        const data: NovelDto = await response.json();
+        const formattedEpisodes = data.episodes.map((episode) => ({
+          ...episode,
+          createdAt: new Date(episode.createdAt)
+            .toLocaleDateString("ko-KR", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })
+            .replace(/\. /g, ".")
+            .replace(/\.$/, ""),
+        }));
+
+        setNovel({ ...data, episodes: formattedEpisodes });
+      } catch (error) {
+        console.error("Error fetching novel:", error);
+        setError("소설 정보를 불러오는 중 오류가 발생했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNovel();
+  }, [novelId]);
+
+  if (loading) return <p>로딩 중...</p>;
+  if (error) return <p>{error}</p>;
   if (!novel) return <p>소설을 찾을 수 없습니다.</p>;
 
-  const episodes = novel.episodes || [];
-  const episodeCount = episodes.length;
-
   return (
-    <div>
+    <Main>
       <GradientWrapper>
         <StatusSection>
           <Badge>{novel.serialStatus}</Badge>
@@ -24,15 +67,15 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
         </StatusSection>
 
         <NovelHeader>
-          <Image 
+          <Image className="novel-image" 
             src={novel.image || "/image/book.svg"} 
             alt={novel.title} 
             width={196} 
-            height={280} 
+            height={280}
           />
           <div className="info">
             <h1>{novel.title}</h1>
-            
+
             <div className="categories">
               {novel.genres.map((genre) => (
                 <span key={genre}>{genre}</span>
@@ -42,7 +85,7 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
             <UploadInfo>
               <div>
                 <Image src="/icon/episode.svg" alt="총 화수" width={30} height={30} />
-                {episodeCount}화
+                {novel.episodes.length}화
               </div>
 
               <div>
@@ -75,14 +118,10 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
       </AuthorSection>
 
       <div>
-        {episodes.map((episode, index) => {
-          const date = new Date(episode.createdAt)
-            .toISOString()
-            .split("T")[0]
-            .replaceAll("-", ".");
+        {novel.episodes.map((episode, index) => {
           return (
             <EpisodeItem key={episode.id}>
-              <Link href={`/user/novel/${novelId}/${episode.id}`} passHref>
+              <Link href={`/user/novel/${novel.id}/${episode.id}`} passHref>
                 <Image
                   src="/image/book.svg"
                   alt={episode.title}
@@ -92,16 +131,16 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
                 />
               </Link>
               <div className="episode-info">
-                <Link href={`/user/novel/${novelId}/${episode.id}`} passHref>
+                <Link href={`/user/novel/${novel.id}/${episode.id}`} passHref>
                   <p className="episode-title">{index + 1}화 {episode.title}</p>
                 </Link>
-                <p className="episode-date">{date}</p>
+                <p className="episode-date">{episode.createdAt}</p>
               </div>
             </EpisodeItem>
           );
         })}
       </div>
-    </div>
+    </Main>
   );
 };
 
