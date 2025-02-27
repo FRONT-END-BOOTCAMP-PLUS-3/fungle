@@ -2,6 +2,7 @@
 
 import Input from "@/components/input/Input";
 import {
+  ErrorMessage,
   FormWrapper,
   InputWrapper,
   LoginContainer,
@@ -47,6 +48,7 @@ const Page = () => {
             type="password"
           />
         </InputWrapper>
+        <ErrorMessage>{state.message}</ErrorMessage>
 
         <Button buttonSize="big">로그인</Button>
       </FormWrapper>
