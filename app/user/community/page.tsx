@@ -1,25 +1,50 @@
 "use client";
-import { useState } from "react";
 import { Main } from "./CommunityList.styled";
 
 import CommunitySearchFilter from "./components/CommunitySearchFilter";
 import CommunityListFilter from "./components/CommunityListFilter";
 import CommunityPostList from "./components/CommunityPostList";
-import CommunityPagination from "./components/CommunityPagination";
+import { useState } from "react";
+
+export interface SearchParams {
+  selectedCommunity: string;
+  selectedSearchField: string;
+  searchTitle: string;
+  searchAuthor: string;
+  searchContent: string;
+  searchRecruitment: string[];
+  page: number;
+  sort: string;
+}
 
 const Page = () => {
-  const [selectedCommunity, setSelectedCommunity] = useState("all");
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    selectedCommunity: "all",
+    selectedSearchField: "title",
+    searchTitle: "",
+    searchAuthor: "",
+    searchContent: "",
+    searchRecruitment: [],
+    page: 1,
+    sort: "latest",
+  });
 
   return (
     <Main>
       <CommunitySearchFilter
-        selectedCommunity={selectedCommunity}
-        setSelectedCommunity={setSelectedCommunity}
+        onSearch={(newCriteria) => setSearchParams(newCriteria)}
       />
-      <CommunityListFilter />
-      <CommunityPostList selectedCommunity={selectedCommunity} />
+      <CommunityListFilter
+        onSortChange={(newSort) =>
+          setSearchParams((prev) => ({ ...prev, sort: newSort, page: 1 }))
+        }
+        selectedSort={searchParams.sort}
+      />
 
-      <CommunityPagination />
+      <CommunityPostList
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+      />
     </Main>
   );
 };
