@@ -70,7 +70,7 @@ const CommunitySearchFilter = ({ onSearch }: CommunitySearchFilterProps) => {
   const handleRecruitmentSelect = (value: string) => {
     const option = RECRUITMENT_FIELDS.find((opt) => opt.value === value);
     if (!option) return;
-    // 토글 방식: 이미 있다면 제거, 없으면 추가
+
     if (searchRecruitment.includes(option.label)) {
       setSearchRecruitment(
         searchRecruitment.filter((label) => label !== option.label)
