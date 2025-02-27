@@ -1,6 +1,6 @@
 "use client";
 import styled from "styled-components";
-export const Section = styled.section`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
@@ -28,7 +28,7 @@ export const SearchFieldButton = styled.button<{ $isActive: boolean }>`
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -0.125rem;
+    bottom: -0.2rem;
     height: 0.125rem;
     background-color: ${({ $isActive }) =>
       $isActive ? "var(--primary-color)" : "transparent"};
@@ -41,5 +41,10 @@ export const SearchFieldButton = styled.button<{ $isActive: boolean }>`
 export const SearchBox = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 0.625rem;
+`;
+
+export const RecruitmentWrapper = styled.div`
+  display: flex;
   gap: 0.625rem;
 `;
