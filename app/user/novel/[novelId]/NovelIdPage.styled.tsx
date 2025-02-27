@@ -2,6 +2,9 @@
 
 import styled from "styled-components";
 
+export const Main = styled.div`
+  overflow-y: scroll;
+`
 
 export const GradientWrapper = styled.div`
   position: relative;
@@ -65,6 +68,13 @@ export const NovelHeader = styled.div`
     margin: 1rem 3rem 0 3rem;
     color: var(--white-color);
   }
+
+  .novel-image{
+    width: 12.25rem;
+    height: 17.5rem;
+    object-fit: cover;
+    border: 0.0625rem solid var(--gray-500);
+  }
 `;
 
 
@@ -104,13 +114,14 @@ export const UploadInfo = styled.div`
 export const AuthorSection = styled.div`
   display: flex;
   align-items: center;
-  background: var(--white-color);
   border-bottom: 0.0625rem solid var(--gray-300);
-  padding: 2rem 0.5rem;
+  padding: 1rem 0.5rem;
   
   .author-image {
     margin-right: 1rem;
     margin-left: 2rem;
+    border-radius: 50%;
+    border: 0.0625rem solid var(--gray-500);
   }
 
   .author-info {
