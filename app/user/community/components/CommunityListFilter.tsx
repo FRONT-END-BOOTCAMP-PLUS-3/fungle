@@ -1,20 +1,28 @@
 "use client";
 import Dropdown from "@/components/dropdown/Dropdown";
 import { COMMUNITY_POST_LIST } from "@/constants/COMMUNITY_POST_LIST";
-import { useState } from "react";
+
 import Image from "next/image";
 import { EditButton, ListFilterWrapper } from "./CommunityListFilter.styled";
 
-const CommunityListFilter = () => {
-  const [selectedList, setSelectedList] = useState(
-    COMMUNITY_POST_LIST[0].value
-  );
+interface CommunityListFilterProps {
+  onSortChange: (newSort: string) => void;
+
+  selectedSort: string;
+}
+const CommunityListFilter = ({
+  onSortChange,
+  selectedSort,
+}: CommunityListFilterProps) => {
+  const handleSelect = (value: string) => {
+    onSortChange(value);
+  };
   return (
     <ListFilterWrapper>
       <Dropdown
         options={COMMUNITY_POST_LIST}
-        onSelect={setSelectedList}
-        selected={selectedList}
+        onSelect={handleSelect}
+        selected={selectedSort}
         size="small"
       />
       <EditButton>
