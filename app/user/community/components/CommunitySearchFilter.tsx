@@ -9,12 +9,15 @@ import {
 } from "./CommunitySearchFilter.styled";
 import Input from "@/components/input/Input";
 import Button from "@/components/button/Button";
-import { COMMUNITY_POST } from "@/constants/COMMUNITY_POST_LIST";
+import {
+  COMMUNITY_LIST_ALIGN,
+  COMMUNITY_POST,
+} from "@/constants/COMMUNITY_POST_LIST";
 import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
 import { useState } from "react";
 
 export interface CommunitySearchFilterProps {
-  onSearch: (criteria: {
+  onSearch: (searchParams: {
     selectedCommunity: string;
     selectedSearchField: string;
     searchTitle: string;
@@ -25,12 +28,6 @@ export interface CommunitySearchFilterProps {
     sort: string;
   }) => void;
 }
-
-const COMMUNITY_LIST = [
-  { id: 1, value: "all", label: "전체" },
-  { id: 2, value: "recruiting", label: "모집중" },
-  { id: 3, value: "completed", label: "모집완료" },
-];
 
 const PLACEHOLDER_MAP: Record<string, string> = {
   title: "제목을 입력해주세요.",
@@ -85,7 +82,7 @@ const CommunitySearchFilter = ({ onSearch }: CommunitySearchFilterProps) => {
   return (
     <Form onSubmit={handleFormSubmit}>
       <SearchFieldUl>
-        {COMMUNITY_LIST.map((list) => {
+        {COMMUNITY_LIST_ALIGN.map((list) => {
           const isActive = selectedCommunity === list.value;
 
           return (
