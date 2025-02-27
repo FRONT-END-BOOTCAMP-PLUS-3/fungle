@@ -1,10 +1,6 @@
 import { prisma } from "../config/prisma";
 import { AuthRepository } from "@/domain/repositories/AuthRepository";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-  verifyAccessToken,
-} from "@/utils/auth/jwt";
+import { generateAccessToken, generateRefreshToken } from "@/utils/auth/jwt";
 
 export class PrAuthRepository implements AuthRepository {
   async generateTokens(
@@ -26,16 +22,6 @@ export class PrAuthRepository implements AuthRepository {
       },
     });
     return { accessToken, refreshToken };
-  }
-
-  async verifyAccessToken(token: string): Promise<{ userId: string } | null> {
-    try {
-      const decoded = verifyAccessToken(token);
-      if (!decoded || !decoded.id) return null;
-      return { userId: decoded.id };
-    } catch (error) {
-      return null;
-    }
   }
 
   async findRefreshTokenByUserId(userId: string): Promise<string | null> {
