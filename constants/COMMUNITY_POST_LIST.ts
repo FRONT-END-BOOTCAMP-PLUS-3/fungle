@@ -9,3 +9,9 @@ export const COMMUNITY_POST_LIST = [
   { value: "likes", label: "좋아요순" },
   { value: "comments", label: "댓글많은순" },
 ];
+
+export const COMMUNITY_LIST_ALIGN = [
+  { id: 1, value: "all", label: "전체" },
+  { id: 2, value: "recruiting", label: "모집중" },
+  { id: 3, value: "completed", label: "모집완료" },
+];
