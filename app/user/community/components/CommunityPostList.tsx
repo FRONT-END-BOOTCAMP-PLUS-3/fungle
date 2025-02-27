@@ -1,228 +1,166 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
 import {
   PostBox,
   PostContent,
   PostFooter,
-  PostGenre,
+  PostRecruitment,
   PostInfo,
   PostListContainer,
   PostListWrapper,
+  PostStatusWithNickname,
   PostStats,
-  PostStatsItem,
+  PostUserNickname,
   PostStatus,
   PostTime,
+  PostList,
+  EmptyStateContainer,
 } from "./CommunityPostList.styled";
-import { getPostStats } from "../utils/getPostStats";
+import { realTimeView } from "../utils/realTimeView";
+import { useEffect, useState } from "react";
+import CommunityPostStats from "./CommunityPostStats";
+import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community/dto/PostWithCountAndRecruitmentDto";
+import CommunityPagination from "./CommunityPagination";
+import { SearchParams } from "../page";
+import Loading from "../loading";
 
-export const posts = [
-  {
-    id: 1,
-    title: "게시글 1",
-    status: "recruiting",
-    genre: "액션",
-    author: "홍길동",
-    content:
-      "안녕하세요,저희는 감성과 스토리가 살아있는 소설 프로젝트를 진행 중인 팀입니다. 이번 프로젝트에서는 소설 책의 전반적인 디자인을 책임져줄 창의적이고 열정적인 책 디자이너를 찾고자 합니다.■ 주요 업무소설 책 표지 디자인 및 내지 레이아웃 구성타이포그래피, 이미지, 컬러 팔레트 선정 등 전반적인 디자인 컨셉 수립작가, 편집자와 협업하여 독창적인 시각적 스토리텔링 구현■ 지원 자격Adobe Photoshop, Illustrator 등 디자인 툴에 능숙하신 분출판 디자인 또는 문학 관련 디자인 경험 우대 (포트폴리오 제출 필수)창의적 감각과 세심한 디테일을 갖춘 분클린 아키텍처처럼 구조적 접근을 중요시하는 태도 보유자라면 더욱 좋습니다.■ 우대 사항이번 프로젝트에서는 소설 책의 전반적인 디자인을 책임져줄 창의적이고 열정적인 책 디자이너를 찾고자 합니다.■ 주요 업무소설 책 표지 디자인 및 내지 레이아웃 구성타이포그래피, 이미지, 컬러 팔레트 선정 등 전반적인 디자인 컨셉 수립작가, 편집자와 협업하여 독창적인 시각적 스토리텔링 구현■ 지원 자격Adobe Photoshop, Illustrator 등 디자인 툴에 능숙하신 분출판 디자인 또는 문학 관련 디자인 경험 우대 (포트폴리오 제출 필수)창의적 감각과 세심한 디테일을 갖춘 분클린 아키텍처처럼 구조적 접근을 중요시하는 태도 보유자라면 더욱 좋습니다.■ 우대 사항이번 프로젝트에서는 소설 책의 전반적인 디자인을 책임져줄 창의적이고 열정적인 책 디자이너를 찾고자 합니다.■ 주요 업무소설 책 표지 디자인 및 내지 레이아웃 구성타이포그래피, 이미지, 컬러 팔레트 선정 등 전반적인 디자인 컨셉 수립작가, 편집자와 협업하여 독창적인 시각적 스토리텔링 구현■ 지원 자격Adobe Photoshop, Illustrator 등 디자인 툴에 능숙하신 분출판 디자인 또는 문학 관련 디자인 경험 우대 (포트폴리오 제출 필수)창의적 감각과 세심한 디테일을 갖춘 분클린 아키텍처처럼 구조적 접근을 중요시하는 태도 보유자라면 더욱 좋습니다.■ 우대 사항이번 프로젝트에서는 소설 책의 전반적인 디자인을 책임져줄 창의적이고 열정적인 책 디자이너를 찾고자 합니다.■ 주요 업무소설 책 표지 디자인 및 내지 레이아웃 구성타이포그래피, 이미지, 컬러 팔레트 선정 등 전반적인 디자인 컨셉 수립작가, 편집자와 협업하여 독창적인 시각적 스토리텔링 구현■ 지원 자격Adobe Photoshop, Illustrator 등 디자인 툴에 능숙하신 분출판 디자인 또는 문학 관련 디자인 경험 우대 (포트폴리오 제출 필수)창의적 감각과 세심한 디테일을 갖춘 분클린 아키텍처처럼 구조적 접근을 중요시하는 태도 보유자라면 더욱 좋습니다.■ 우대 사항이번 프로젝트에서는 소설 책의 전반적인 디자인을 책임져줄 창의적이고 열정적인 책 디자이너를 찾고자 합니다.■ 주요 업무소설 책 표지 디자인 및 내지 레이아웃 구성타이포그래피, 이미지, 컬러 팔레트 선정 등 전반적인 디자인 컨셉 수립작가, 편집자와 협업하여 독창적인 시각적 스토리텔링 구현■ 지원 자격Adobe Photoshop, Illustrator 등 디자인 툴에 능숙하신 분출판 디자인 또는 문학 관련 디자인 경험 우대 (포트폴리오 제출 필수)창의적 감각과 세심한 디테일을 갖춘 분클린 아키텍처처럼 구조적 접근을 중요시하는 태도 보유자라면 더욱 좋습니다.■ 우대 사항이번 프로젝트에서는 소설 책의 전반적인 디자인을 책임져줄 창의적이고 열정적인 책 디자이너를 찾고자 합니다.■ 주요 업무소설 책 표지 디자인 및 내지 레이아웃 구성타이포그래피, 이미지, 컬러 팔레트 선정 등 전반적인 디자인 컨셉 수립작가, 편집자와 협업하여 독창적인 시각적 스토리텔링 구현■ 지원 자격Adobe Photoshop, Illustrator 등 디자인 툴에 능숙하신 분출판 디자인 또는 문학 관련 디자인 경험 우대 (포트폴리오 제출 필수)창의적 감각과 세심한 디테일을 갖춘 분클린 아키텍처처럼 구조적 접근을 중요시하는 태도 보유자라면 더욱 좋습니다.■ 우대 사항",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 2,
-    title: "게시글 2",
-    status: "completed",
-    genre: "판타지",
-    author: "김철수",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 20,
-    views: 200,
-    commentCount: 20,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 3,
-    title: "게시글 3",
-    status: "recruiting",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 30,
-    views: 300,
-    commentCount: 30,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 4,
-    title: "게시글 4",
-    status: "completed",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 5,
-    title: "게시글 5",
-    status: "recruiting",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 6,
-    title: "게시글 6",
-    status: "completed",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 7,
-    title: "게시글 7",
-    status: "recruiting",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 8,
-    title: "게시글 8",
-    status: "recruiting",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 9,
-    title: "게시글 9",
-    status: "completed",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 10,
-    title: "게시글 10",
-    status: "recruiting",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 11,
-    title: "게시글 10",
-    status: "recruiting",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-  {
-    id: 12,
-    title: "게시글 10",
-    status: "recruiting",
-    genre: "로맨스",
-    author: "이영희",
-    content:
-      "어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기어쩌구저쩌구 뒹굴뒹굴 구르기",
-    time: "3분전",
-    likes: 10,
-    views: 100,
-    commentCount: 10,
-    createdAt: "25.02.16 23:20",
-  },
-];
-
+interface CommunityPostListProps {
+  searchParams: SearchParams;
+  setSearchParams: React.Dispatch<React.SetStateAction<SearchParams>>;
+}
 const CommunityPostList = ({
-  selectedCommunity,
-}: {
-  selectedCommunity: string;
-}) => {
-  const filteredPosts = posts.filter((post) =>
-    selectedCommunity === "all" ? true : post.status === selectedCommunity
-  );
+  searchParams,
+  setSearchParams,
+}: CommunityPostListProps) => {
+  const [posts, setPosts] = useState<PostWithCountAndRecruitmentDto[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const hadleChangePage = (newPage: number) => {
+    setSearchParams((prev) => ({ ...prev, page: newPage }));
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const query = new URLSearchParams();
+
+        query.set("filter", searchParams.selectedCommunity || "all");
+
+        query.set("page", searchParams.page.toString());
+        if (searchParams.sort && searchParams.sort !== "latest") {
+          query.set("sort", searchParams.sort);
+        }
+
+        const {
+          selectedSearchField,
+          searchTitle,
+          searchAuthor,
+          searchContent,
+        } = searchParams;
+
+        if (selectedSearchField) {
+          query.set("searchField", selectedSearchField);
+        }
+
+        if (selectedSearchField === "title" && searchTitle.trim() !== "") {
+          query.set("search", searchTitle.trim());
+        } else if (
+          selectedSearchField === "author" &&
+          searchAuthor.trim() !== ""
+        ) {
+          query.set("search", searchAuthor.trim());
+        } else if (
+          selectedSearchField === "content" &&
+          searchContent.trim() !== ""
+        ) {
+          query.set("search", searchContent.trim());
+        }
+
+        if (searchParams.searchRecruitment.length > 0) {
+          query.set("recruitment", searchParams.searchRecruitment.join(", "));
+        }
+
+        const response = await fetch(`/api/community?${query.toString()}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.status}`);
+        }
+        const data = await response.json();
+        setPosts(data.posts);
+
+        setTotalPages(data.totalPages);
+        setIsLoading(false);
+      } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknow Error";
+        setError(errorMessage);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [searchParams]);
+
+  if (error) {
+    return (
+      <EmptyStateContainer>
+        <PostList>{error}</PostList>
+      </EmptyStateContainer>
+    );
+  }
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (posts.length === 0) {
+    return (
+      <EmptyStateContainer>
+        <PostList>게시글이 없습니다.</PostList>
+      </EmptyStateContainer>
+    );
+  }
+
   return (
     <PostListContainer>
-      {filteredPosts.map((post) => (
+      {posts.map((post) => (
         <PostListWrapper key={post.id}>
-          <Link href={`/user/community/${post.id}`} passHref>
+          <Link href={`/user/community/${post.id}`}>
             <PostBox>
-              <PostStatus status={post.status}>
-                {post.status === "recruiting" ? "모집중" : "모집완료"}
-              </PostStatus>
+              <PostStatusWithNickname>
+                <PostStatus status={post.status}>
+                  {post.status === "recruiting" ? "모집중" : "모집완료"}
+                </PostStatus>
+              </PostStatusWithNickname>
               <p>{post.title}</p>
               <PostContent>{post.content}</PostContent>
+              {post.recruitmentNames.length > 0 && (
+                <PostRecruitment>
+                  {post.recruitmentNames.join(", ")}
+                </PostRecruitment>
+              )}
               <PostFooter>
                 <PostInfo>
-                  <PostGenre>{post.genre}</PostGenre>
-                  <PostTime>{post.time}</PostTime>
+                  <PostUserNickname>{post.userNickname}</PostUserNickname>
+                  <PostTime>{realTimeView(new Date(post.createdAt))}</PostTime>
                 </PostInfo>
                 <PostStats>
-                  {getPostStats(post).map(({ id, icon, alt, count }) => (
-                    <PostStatsItem key={id}>
-                      <Image src={icon} alt={alt} width={15} height={15} />
-                      {count}
-                    </PostStatsItem>
-                  ))}
+                  <CommunityPostStats post={post} />
                 </PostStats>
               </PostFooter>
             </PostBox>
           </Link>
         </PostListWrapper>
       ))}
+
+      <CommunityPagination
+        currentPage={searchParams.page}
+        totalPages={totalPages}
+        onPageChange={hadleChangePage}
+      />
     </PostListContainer>
   );
 };
