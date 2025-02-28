@@ -21,6 +21,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [emailCode, setEmailCode] = useState("");
+  const [isEmailVerified, setIsEmailVerified] = useState(false); // ✅ 이메일 인증 여부 추가
   const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [nickname, setNickname] = useState("");
   const [nicknameError, setNicknameError] = useState("");
@@ -37,6 +38,7 @@ const Signup = () => {
   useEffect(() => {
     setIsFormValid(
       email !== "" &&
+        isEmailVerified &&
         isNicknameValid &&
         nicknameChecked &&
         password !== "" &&
@@ -48,6 +50,7 @@ const Signup = () => {
     );
   }, [
     email,
+    isEmailVerified,
     isNicknameValid,
     nicknameChecked,
     password,
@@ -62,6 +65,34 @@ const Signup = () => {
     setEmailError(
       emailRegex.test(email) ? "" : "이메일 형식에 맞게 입력해주세요."
     );
+  };
+
+  const handleVerifyEmailCode = async () => {
+    if (!email || !emailCode) {
+      setEmailError("이메일과 인증 코드를 입력해주세요.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/verify-email-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, verificationCode: emailCode }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      setIsEmailVerified(true); // ✅ 인증 완료 상태 변경
+      alert("이메일 인증이 완료되었습니다!");
+    } catch (error: unknown) {
+      setIsEmailVerified(false);
+      if (error instanceof Error) {
+        setEmailError(error.message);
+      } else {
+        setEmailError("알 수 없는 오류가 발생했습니다.");
+      }
+    }
   };
 
   const validateNickname = (nickname: string) => {
@@ -181,24 +212,40 @@ const Signup = () => {
               required
             />
             <ButtonWrapper>
-              <Button type="button" buttonSize="small">
-                이메일 인증
+              <Button
+                type="button"
+                buttonSize="small"
+                disabled={isEmailVerified}
+              >
+                {isEmailVerified ? "인증 완료" : "이메일 인증"}
               </Button>
             </ButtonWrapper>
           </InputGroup>
           {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
         </InputGroupWrapper>
 
-        <InputWrapper>
-          <Input
-            type="text"
-            placeholder="이메일 인증 코드"
-            value={emailCode}
-            label="이메일 인증 코드"
-            hideLabel={true}
-            onChange={(e) => setEmailCode(e.target.value)}
-          />
-        </InputWrapper>
+        <InputGroupWrapper>
+          <InputGroup>
+            <Input
+              type="text"
+              placeholder="이메일 인증 코드"
+              value={emailCode}
+              label="이메일 인증 코드"
+              hideLabel={true}
+              onChange={(e) => setEmailCode(e.target.value)}
+            />
+            <ButtonWrapper>
+              <Button
+                type="button"
+                onClick={handleVerifyEmailCode}
+                buttonSize="small"
+                disabled={isEmailVerified}
+              >
+                {isEmailVerified ? "인증 완료" : "인증 코드 확인"}
+              </Button>
+            </ButtonWrapper>
+          </InputGroup>
+        </InputGroupWrapper>
 
         <InputGroupWrapper>
           <InputGroup>
