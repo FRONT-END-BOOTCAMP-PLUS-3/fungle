@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUser = async () => {
     // 로그인 없이 접근 가능한 route 리스트 추가
-    const publicRoutes = ["/", "/login", "/signup"];
+    const publicRoutes = ["/", "/login", "/signup", "/novel", "/community"];
     if (publicRoutes.includes(pathname)) {
       return; // public route에서는 로그인 상태를 확인하지 않음
     }
