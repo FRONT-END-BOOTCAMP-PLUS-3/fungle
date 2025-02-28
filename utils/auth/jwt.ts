@@ -21,6 +21,12 @@ export const verifyAccessToken = (token: string): { id: string } | null => {
   }
 };
 
-export const verifyRefreshToken = (token: string) => {
-  return jwt.verify(token, REFRESH_SECRET);
+export const verifyRefreshToken = (
+  token: string
+): { userId: string } | null => {
+  try {
+    return jwt.verify(token, REFRESH_SECRET) as { userId: string };
+  } catch (error) {
+    return null;
+  }
 };
