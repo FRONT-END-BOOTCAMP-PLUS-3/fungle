@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Container, ImageContainer, Text } from "./NovelCreatedCompleted.styled";
 import Button from "@/components/button/Button";
 
-const NovelCreateCompleted: React.FC = () => {
+const NovelCreateCompleted = () => {
   const router = useRouter(); 
 
   const handleButtonClick = () => {
