@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import {
   InputGroupWrapper,
@@ -23,7 +25,38 @@ const EmailVerification = ({
 }: EmailVerificationProps) => {
   const [emailError, setEmailError] = useState("");
   const [emailCode, setEmailCode] = useState("");
+  const [isCodeSent, setIsCodeSent] = useState(false); // ✅ 이메일 코드 전송 여부 상태 추가
 
+  // 📌 이메일 인증 코드 요청
+  const handleRequestVerification = async () => {
+    if (!email) {
+      setEmailError("이메일을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message);
+
+      setIsCodeSent(true); // ✅ 이메일 코드 전송 상태 업데이트
+      setEmailError("");
+      alert("인증 코드가 이메일로 전송되었습니다!");
+    } catch (error: unknown) {
+      setIsCodeSent(false);
+      setEmailError(
+        error instanceof Error ? error.message : "❌ 이메일 전송 오류 발생"
+      );
+    }
+  };
+
+  // 📌 이메일 인증 코드 확인
   const handleVerifyEmailCode = async () => {
     if (!email || !emailCode) {
       setEmailError("이메일과 인증 코드를 입력해주세요.");
@@ -44,13 +77,16 @@ const EmailVerification = ({
       alert("이메일 인증이 완료되었습니다!");
     } catch (error: unknown) {
       setIsEmailVerified(false);
-      setEmailError(error instanceof Error ? error.message : "알 수 없는 오류");
+      setEmailError(
+        error instanceof Error ? error.message : "❌ 인증 오류 발생"
+      );
     }
   };
 
   return (
     <>
       <InputGroupWrapper>
+        {/* 이메일 입력 및 이메일 인증 버튼 */}
         <InputGroup>
           <Input
             type="email"
@@ -61,36 +97,48 @@ const EmailVerification = ({
             required
           />
           <ButtonWrapper>
-            <Button type="button" buttonSize="small" disabled={isEmailVerified}>
-              {isEmailVerified ? "인증 완료" : "이메일 인증"}
+            <Button
+              type="button"
+              buttonSize="small"
+              onClick={handleRequestVerification}
+              disabled={isEmailVerified}
+            >
+              {isEmailVerified
+                ? "인증 완료"
+                : isCodeSent
+                ? "재전송"
+                : "이메일 인증"}
             </Button>
           </ButtonWrapper>
         </InputGroup>
         {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
       </InputGroupWrapper>
 
-      <InputGroupWrapper>
-        <InputGroup>
-          <Input
-            type="text"
-            placeholder="이메일 인증 코드"
-            value={emailCode}
-            label="이메일 인증 코드"
-            hideLabel={true}
-            onChange={(e) => setEmailCode(e.target.value)}
-          />
-          <ButtonWrapper>
-            <Button
-              type="button"
-              onClick={handleVerifyEmailCode}
-              buttonSize="small"
-              disabled={isEmailVerified}
-            >
-              {isEmailVerified ? "인증 완료" : "인증 코드 확인"}
-            </Button>
-          </ButtonWrapper>
-        </InputGroup>
-      </InputGroupWrapper>
+      {/* 인증 코드 입력 필드 및 인증 코드 확인 버튼 (이메일 전송 후 표시) */}
+      {isCodeSent && (
+        <InputGroupWrapper>
+          <InputGroup>
+            <Input
+              type="text"
+              placeholder="이메일 인증 코드"
+              value={emailCode}
+              label="이메일 인증 코드"
+              hideLabel={true}
+              onChange={(e) => setEmailCode(e.target.value)}
+            />
+            <ButtonWrapper>
+              <Button
+                type="button"
+                onClick={handleVerifyEmailCode}
+                buttonSize="small"
+                disabled={isEmailVerified}
+              >
+                {isEmailVerified ? "인증 완료" : "인증 코드 확인"}
+              </Button>
+            </ButtonWrapper>
+          </InputGroup>
+        </InputGroupWrapper>
+      )}
     </>
   );
 };
