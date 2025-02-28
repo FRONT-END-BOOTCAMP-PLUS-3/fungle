@@ -1,5 +1,3 @@
-import { posts } from "../components/CommunityPostList";
-
 import { Main } from "./CommunityDetailPage.styled";
 
 import CommunityPostHeader from "./components/CommunityPostHeader";
@@ -13,20 +11,37 @@ interface PageParams {
 
 const Page = async ({ params }: PageParams) => {
   const postId = (await params).id;
-  const post = posts.find((p) => p.id.toString() === postId);
 
-  if (!post) {
-    return <main>게시글을 찾을 수 없습니다.</main>;
+  let post;
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/community/${postId}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch post: ${response.status}`);
+    }
+
+    post = await response.json();
+  } catch (error: unknown) {
+    let errorMessage = "게시글을 찾는 중 알 수 없는 오류가 발생했습니다.";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return <main>{errorMessage}</main>;
   }
   return (
     <Main>
-      <CommunityPostHeader post={post} />
+      <CommunityPostHeader postDetail={post} />
 
-      <CommunityPostContent post={post} />
+      <CommunityPostContent postDetail={post} />
 
       <CommentCreate post={post} />
 
-      <Comment post={post} />
+      <Comment postId={postId} />
     </Main>
   );
 };

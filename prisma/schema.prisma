@@ -13,7 +13,9 @@ model CommunityComment {
   createdAt             DateTime               @default(now())
   userId                String
   postId                Int
-  parentId              String?
+  parentId              Int?
+  parent                CommunityComment?      @relation("CommentReplies", fields: [parentId], references: [id])
+  replies               CommunityComment[]     @relation("CommentReplies")
   communityPost         CommunityPost          @relation("CommunityComments", fields: [postId], references: [id], onDelete: Cascade)
   user                  User                   @relation("UserCommunityComments", fields: [userId], references: [id], onDelete: Cascade)
   communityCommentLikes CommunityCommentLike[] @relation("CommunityCommentLikes")

@@ -1,16 +1,10 @@
-import { CommunityPostRepository } from "@/domain/repositories/CommunityPostRepository";
+import {
+  CommunityPostRepository,
+  PostWithPostLikes,
+  PostWithRelations,
+} from "@/domain/repositories/CommunityPostRepository";
 import { Prisma } from "@prisma/client";
 import { prisma } from "../config/prisma";
-
-type PostWithRelations = Prisma.CommunityPostGetPayload<{
-  include: {
-    user: {
-      select: { nickname: true };
-    };
-    _count: { select: { communityPostLikes: true; communityComments: true } };
-    PostRecruitments: { include: { RecruitmentCategory: true } };
-  };
-}>;
 
 export class PrCommunityPostRepository implements CommunityPostRepository {
   async findAll(params: {
@@ -72,31 +66,35 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
       };
     }
 
-    const posts = await prisma.communityPost.findMany({
-      where: whereClause,
-      skip: params.offset,
-      take: params.limit,
-      orderBy: orderBy,
-      include: {
-        user: {
-          select: { nickname: true },
-        },
+    try {
+      const posts = await prisma.communityPost.findMany({
+        where: whereClause,
+        skip: params.offset,
+        take: params.limit,
+        orderBy: orderBy,
+        include: {
+          user: {
+            select: { nickname: true },
+          },
 
-        _count: {
-          select: {
-            communityPostLikes: true,
-            communityComments: true,
+          _count: {
+            select: {
+              communityPostLikes: true,
+              communityComments: true,
+            },
+          },
+          PostRecruitments: {
+            include: {
+              RecruitmentCategory: true,
+            },
           },
         },
-        PostRecruitments: {
-          include: {
-            RecruitmentCategory: true,
-          },
-        },
-      },
-    });
+      });
 
-    return posts;
+      return posts;
+    } catch {
+      throw new Error("게시글 리스트를 가져오는 데 실패했습니다.");
+    }
   }
 
   async count(params: {
@@ -137,7 +135,30 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
         },
       };
     }
+    try {
+      return await prisma.communityPost.count({ where: whereClause });
+    } catch {
+      throw new Error("게시글 개수를 가져오는 데 실패했습니다.");
+    }
+  }
 
-    return await prisma.communityPost.count({ where: whereClause });
+  async findPost(id: number): Promise<PostWithPostLikes | null> {
+    const postId = Number(id);
+    try {
+      const post = await prisma.communityPost.findUnique({
+        where: { id: postId },
+        include: {
+          _count: {
+            select: {
+              communityPostLikes: true,
+              communityComments: true,
+            },
+          },
+        },
+      });
+      return post;
+    } catch {
+      throw new Error("게시글 상세 정보를 가져오는 데 실패했습니다.");
+    }
   }
 }

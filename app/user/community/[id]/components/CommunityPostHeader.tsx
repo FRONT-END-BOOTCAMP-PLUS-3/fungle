@@ -1,4 +1,5 @@
 "use client";
+import { CommunityPost } from "@prisma/client";
 import MoreOptionsMenu from "../../components/MoreOptionMenu";
 import {
   CommunityPostHeaderSection,
@@ -8,46 +9,41 @@ import {
   CommunityPostview,
   CommunityPostTitle,
 } from "./CommunityPostHeader.styled";
+import { formatDate } from "@/utils/date/formatDate";
 
-interface PostsType {
-  id: number;
-  title: string;
-  status: string;
-  genre: string;
-  author: string;
-  content: string;
-  time: string;
-  likes: number;
-  views: number;
-  commentCount: number;
-  createdAt: string;
-}
+type CommunityPostWithNickname = CommunityPost & {
+  userNickname: string;
+};
 
 interface CommunityPostHeaderProps {
-  post: PostsType;
+  postDetail: CommunityPostWithNickname;
 }
-
-const CommunityPostHeader = ({ post }: CommunityPostHeaderProps) => {
-  // const router = useRouter();
-
+const CommunityPostHeader = ({ postDetail }: CommunityPostHeaderProps) => {
   const handleDelete = async () => {
     if (confirm("정말 삭제하시겠습니까?")) {
       console.log("삭제 기능 호출");
       // API 요청 또는 useCase 실행
     }
   };
+
+  if (!postDetail) return null;
+  const createdAt = new Date(postDetail.createdAt);
+
+  const createdAtFormatted = formatDate(createdAt);
   return (
     <CommunityPostHeaderSection>
       <CommunityPostInfo>
-        <CommunityPostTitle>{post.title}</CommunityPostTitle>
+        <CommunityPostTitle>{postDetail.title}</CommunityPostTitle>
 
-        <MoreOptionsMenu onDelete={handleDelete} postId={post.id} />
+        <MoreOptionsMenu onDelete={handleDelete} postId={postDetail.id} />
       </CommunityPostInfo>
       <div>
-        <p>{post.author}</p>
+        <p>{postDetail.userNickname}</p>
         <CommunityPostStats>
-          <CommunityPostCreated>작성일 {post.createdAt}</CommunityPostCreated>
-          <CommunityPostview>조회수 {post.views}</CommunityPostview>
+          <CommunityPostCreated>
+            작성일 {createdAtFormatted}
+          </CommunityPostCreated>
+          <CommunityPostview>조회수 {postDetail.view}</CommunityPostview>
         </CommunityPostStats>
       </div>
     </CommunityPostHeaderSection>
