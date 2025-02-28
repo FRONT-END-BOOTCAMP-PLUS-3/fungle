@@ -30,6 +30,7 @@ const Page = () => {
         />
         <ContentContainer>
           {selectedMenu === "home" && <ProfileIntroduce />}
+          {selectedMenu === "post" && <PostList />}
         </ContentContainer>
       </ViewInfoSection>
     </Main>

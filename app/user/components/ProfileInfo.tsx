@@ -1,4 +1,4 @@
-import { InfoBox, InfoSection } from "./ProfileInfo.sylted";
+import { InfoBox, InfoSection } from "./ProfileInfo.styled";
 
 const ProfileInfo = () => {
   return (
