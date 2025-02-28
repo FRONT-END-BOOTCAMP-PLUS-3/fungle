@@ -26,29 +26,11 @@ export const InputGroupWrapper = styled.div`
   margin-bottom: 1.6rem;
 `;
 
-// export const InputGroup = styled.div`
-//   display: flex;
-//   align-items: center;
-//   width: 100%;
-//   max-width: 100%;
-//   gap: 0.75rem;
-//   flex-wrap: wrap;
-// `;
-
 export const InputWrapper = styled.div`
   width: 100%;
   max-width: 100%;
   margin-bottom: 1.6rem;
 `;
-
-// export const ButtonWrapper = styled.div`
-//   flex-shrink: 0;
-//   height: 2.5rem;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   margin-top: 2rem;
-// `;
 
 export const InputGroup = styled.div`
   display: flex;
