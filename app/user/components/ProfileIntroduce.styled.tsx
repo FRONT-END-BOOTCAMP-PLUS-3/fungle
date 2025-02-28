@@ -5,6 +5,7 @@ export const IntroduceHeader = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 0;
 `;
 
 export const IntroduceWrapper = styled.div`

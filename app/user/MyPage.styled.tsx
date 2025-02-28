@@ -23,5 +23,4 @@ export const ViewInfoSection = styled.section`
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1rem 0;
 `;

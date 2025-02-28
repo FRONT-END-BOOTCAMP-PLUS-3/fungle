@@ -11,6 +11,7 @@ import ProfileView from "./components/ProfileView";
 import ProfileInfo from "./components/ProfileInfo";
 import ProfileMenu from "./components/ProfileMenu";
 import { useState } from "react";
+import ProfilePostList from "./components/ProfilePostList";
 
 const Page = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
@@ -30,7 +31,7 @@ const Page = () => {
         />
         <ContentContainer>
           {selectedMenu === "home" && <ProfileIntroduce />}
-          {selectedMenu === "post" && <PostList />}
+          {selectedMenu === "post" && <ProfilePostList />}
         </ContentContainer>
       </ViewInfoSection>
     </Main>
