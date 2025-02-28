@@ -1,15 +1,35 @@
-import { CommunityPost } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
+export type PostWithRelations = Prisma.CommunityPostGetPayload<{
+  include: {
+    user: {
+      select: { nickname: true };
+    };
+    _count: { select: { communityPostLikes: true; communityComments: true } };
+    PostRecruitments: { include: { RecruitmentCategory: true } };
+  };
+}>;
+
+export type PostWithPostLikes = Prisma.CommunityPostGetPayload<{
+  include: {
+    _count: {
+      select: {
+        communityPostLikes: true;
+        communityComments: true;
+      };
+    };
+  };
+}>;
 export interface CommunityPostRepository {
   findAll(params: {
     limit: number;
     offset: number;
-    filter: string;
+    filter?: string;
     sort: string;
     searchField: string;
-    search: string;
-    recruitment: string;
-  }): Promise<CommunityPost[]>;
+    search?: string;
+    recruitment?: string;
+  }): Promise<PostWithRelations[]>;
 
   count(params: {
     filter?: string;
@@ -18,5 +38,5 @@ export interface CommunityPostRepository {
     recruitment?: string;
   }): Promise<number>;
 
-  findPost(id: number): Promise<CommunityPost | null>;
+  findPost(id: number): Promise<PostWithPostLikes | null>;
 }

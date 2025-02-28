@@ -1,8 +1,8 @@
-import { PrCommunityCommentRepository } from "@/infrastructure/repositories/PrCommunityCommentRepository";
+import { CommunityCommentRepository } from "@/domain/repositories/CommunityCommentRepository";
 import { PostDetailCommentsWithUserDto } from "./dto/PostDetailCommentsWithUserDto";
 
 export class DfPostDetailCommentUsecase {
-  constructor(private communityPostRepository: PrCommunityCommentRepository) {}
+  constructor(private communityPostRepository: CommunityCommentRepository) {}
 
   async execute(id: number): Promise<PostDetailCommentsWithUserDto[]> {
     try {

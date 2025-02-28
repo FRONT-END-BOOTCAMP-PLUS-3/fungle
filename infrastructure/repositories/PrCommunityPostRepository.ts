@@ -1,27 +1,10 @@
-import { CommunityPostRepository } from "@/domain/repositories/CommunityPostRepository";
+import {
+  CommunityPostRepository,
+  PostWithPostLikes,
+  PostWithRelations,
+} from "@/domain/repositories/CommunityPostRepository";
 import { Prisma } from "@prisma/client";
 import { prisma } from "../config/prisma";
-
-type PostWithRelations = Prisma.CommunityPostGetPayload<{
-  include: {
-    user: {
-      select: { nickname: true };
-    };
-    _count: { select: { communityPostLikes: true; communityComments: true } };
-    PostRecruitments: { include: { RecruitmentCategory: true } };
-  };
-}>;
-
-type PostWithPostLikes = Prisma.CommunityPostGetPayload<{
-  include: {
-    _count: {
-      select: {
-        communityPostLikes: true;
-        communityComments: true;
-      };
-    };
-  };
-}>;
 
 export class PrCommunityPostRepository implements CommunityPostRepository {
   async findAll(params: {

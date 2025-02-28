@@ -1,10 +1,13 @@
-import { CommunityCommentRepository } from "@/domain/repositories/CommunityCommentRepository";
+import {
+  CommentWithRelations,
+  CommunityCommentRepository,
+} from "@/domain/repositories/CommunityCommentRepository";
 import { prisma } from "../config/prisma";
 
 export class PrCommunityCommentRepository
   implements CommunityCommentRepository
 {
-  async findAll(id: number) {
+  async findAll(id: number): Promise<CommentWithRelations[]> {
     const postId = Number(id);
     try {
       const comments = await prisma.communityComment.findMany({

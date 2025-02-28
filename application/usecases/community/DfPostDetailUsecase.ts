@@ -1,11 +1,11 @@
-import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
-import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
+import { CommunityPostRepository } from "@/domain/repositories/CommunityPostRepository";
 import { PostWithLikesAndUserNicknameDto } from "./dto/CommunityPostWithNicknameAndLikesDto";
+import { UserRepository } from "@/domain/repositories/UserRepository";
 
 export class DfPostDetailUsecase {
   constructor(
-    private postRepository: PrCommunityPostRepository,
-    private userRepository: PrUserRepository
+    private postRepository: CommunityPostRepository,
+    private userRepository: UserRepository
   ) {}
 
   async execute(id: number): Promise<PostWithLikesAndUserNicknameDto> {
