@@ -4,7 +4,6 @@ import {
   PostContent,
   PostFooter,
   PostInfo,
-  PostListWrapper,
   PostRecruitment,
   PostStatus,
   PostStatusWithNickname,
@@ -12,11 +11,12 @@ import {
   PostUserNickname,
 } from "../community/components/CommunityPostList.styled";
 import { realTimeView } from "../community/utils/realTimeView";
+import { PostAndLikedListWrapper } from "./PostAndLikedListWrapper.styled";
 
 const ProfilePostList = () => {
   return (
-    <PostListWrapper>
-      {/* <PostListWrapper key={post.id}> */}
+    <PostAndLikedListWrapper>
+      {/* <PostAndLikedListWrapper key={post.id}> */}
       {/* <Link href={`/user/community/${post.id}`}> */}
       <Link href={`/user/community/1`}>
         <PostBox>
@@ -49,7 +49,7 @@ const ProfilePostList = () => {
           </PostFooter>
         </PostBox>
       </Link>
-    </PostListWrapper>
+    </PostAndLikedListWrapper>
   );
 };
 

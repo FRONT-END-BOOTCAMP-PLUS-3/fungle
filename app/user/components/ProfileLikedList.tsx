@@ -4,18 +4,18 @@ import {
   PostContent,
   PostFooter,
   PostInfo,
-  PostListWrapper,
   PostRecruitment,
   PostStatus,
   PostStatusWithNickname,
   PostTime,
   PostUserNickname,
 } from "../community/components/CommunityPostList.styled";
+import { PostAndLikedListWrapper } from "./PostAndLikedListWrapper.styled";
 
 const ProfileLikedList = () => {
   return (
-    <PostListWrapper>
-      {/* <PostListWrapper key={post.id}> */}
+    <PostAndLikedListWrapper>
+      {/* <PostAndLikedListWrapper key={post.id}> */}
       {/* <Link href={`/user/community/${post.id}`}> */}
       <Link href={`/user/community/1`}>
         <PostBox>
@@ -48,7 +48,7 @@ const ProfileLikedList = () => {
           </PostFooter>
         </PostBox>
       </Link>
-    </PostListWrapper>
+    </PostAndLikedListWrapper>
   );
 };
 
