@@ -9,7 +9,7 @@ import NicknameValidation from "./components/NicknameValidation";
 import PasswordFields from "./components/PasswordFields";
 import SubmitButton from "./components/SignupButton";
 
-const Signup = () => {
+const Page = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -112,4 +112,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Page;
