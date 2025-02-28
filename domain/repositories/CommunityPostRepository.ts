@@ -17,4 +17,6 @@ export interface CommunityPostRepository {
     search?: string;
     recruitment?: string;
   }): Promise<number>;
+
+  findPost(id: number): Promise<CommunityPost | null>;
 }
