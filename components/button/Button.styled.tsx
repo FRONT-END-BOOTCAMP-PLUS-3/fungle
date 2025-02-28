@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface ButtonProps {
   $fontSize?: "big" | "medium" | "small";
-  $buttonSize?: "big" | "medium" | "small";
+  $buttonSize?: "big" | "medium" | "small" | "xsmall";
   $backgroundColor?: "primary" | "white" | "leave";
   disabled?: boolean;
 }
@@ -28,13 +28,17 @@ export const ButtonComponent = styled.button<ButtonProps>`
   border: ${(props) =>
     props.$backgroundColor === "white" ? "1px solid var(--gray-500)" : "none"};
   cursor: pointer;
-  padding: 0.625rem 0;
+  /* padding: 0.625rem 0; */
+  padding: ${(props) =>
+    props.$buttonSize === "xsmall" ? "0.3rem 0" : "0.625rem 0"};
   width: ${(props) =>
     props.$buttonSize === "big"
       ? "100%"
       : props.$buttonSize === "medium"
       ? "15.313rem"
-      : "6.25rem"};
+      : props.$buttonSize === "small"
+      ? "6.25rem"
+      : "3rem"};
   font-size: var(--font-size-placeholder);
 
   &:disabled {
