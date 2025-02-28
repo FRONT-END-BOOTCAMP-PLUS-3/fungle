@@ -13,10 +13,10 @@ import ProfileMenu from "./components/ProfileMenu";
 import { useState } from "react";
 import ProfilePostList from "./components/ProfilePostList";
 import ProfileLikedList from "./components/ProfileLikedList";
+import ProfileNovelList from "./components/ProfileNovelList";
 
 const Page = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
-
   return (
     <Main>
       {/* 프로필 사진 & 닉네임 */}
@@ -34,6 +34,7 @@ const Page = () => {
           {selectedMenu === "home" && <ProfileIntroduce />}
           {selectedMenu === "post" && <ProfilePostList />}
           {selectedMenu === "liked" && <ProfileLikedList />}
+          {selectedMenu === "novel" && <ProfileNovelList />}
         </ContentContainer>
       </ViewInfoSection>
     </Main>
