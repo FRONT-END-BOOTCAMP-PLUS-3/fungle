@@ -35,3 +35,39 @@ export const ButtonWrapper = styled.div`
   justify-content: space-between;
   gap: 0.5rem;
 `;
+
+export const EpisodeList = styled.ul`
+  list-style: none;
+  padding: 0.625rem;
+  margin: 0;
+  background-color: var(--gray-100);
+
+  li {
+    width: 100%;
+    padding: 0.25rem 0;
+  }
+`;
+
+export const EpisodeWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--gray-300);
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const EpisodeStatus = styled.div`
+  width: 4rem;
+  border-radius: 0.625rem;
+  background-color: var(--gray-500);
+  color: var(--white-color);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  padding: 0 0.4rem;
+  height: fit-content;
+  text-align: center;
+`;
