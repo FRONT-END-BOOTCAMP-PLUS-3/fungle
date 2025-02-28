@@ -13,6 +13,7 @@ export class PrCommunityCommentRepository
       const comments = await prisma.communityComment.findMany({
         where: { postId: postId },
         include: {
+          replies: true,
           user: {
             select: {
               nickname: true,
@@ -22,7 +23,6 @@ export class PrCommunityCommentRepository
           _count: {
             select: {
               communityCommentLikes: true,
-              // replies: true,
             },
           },
         },

@@ -23,6 +23,7 @@ type CommentsWithNickname = CommunityComment & {
   userNickname: string;
   profileImage: string;
   likes: number;
+  replies: number | 0;
 };
 
 const Comment = ({ postId }: { postId: string }) => {
@@ -42,7 +43,6 @@ const Comment = ({ postId }: { postId: string }) => {
 
         setComments(comments);
       } catch (error: unknown) {
-        console.error(error);
         if (error instanceof Error) {
           setError(error.message);
         } else {
@@ -134,7 +134,7 @@ const Comment = ({ postId }: { postId: string }) => {
                   width={15}
                   height={15}
                 />
-                답글 0개
+                답글 {comment.replies}개
               </CommunityReplyButton>
             </CommunityCommentWrapper>
           </CommunityPostCommentWrapper>

@@ -13,12 +13,12 @@ export class DfPostDetailCommentUsecase {
         userId: comment.userId,
         comment: comment.comment,
         createdAt: comment.createdAt,
-        parentId: comment.parentId ?? 0,
+        parentId: comment.parentId ?? null,
         postId: comment.postId,
         userNickname: comment.user.nickname,
         profileImage: comment.user.profileImage,
         likes: comment._count.communityCommentLikes,
-        // replies: comment._count?.replies ?? 0,
+        replies: comment.replies ? comment.replies.length : 0,
       }));
 
       return flatComments;
