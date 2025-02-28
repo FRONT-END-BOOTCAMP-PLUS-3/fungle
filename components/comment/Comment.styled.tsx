@@ -23,6 +23,8 @@ export const CommunityPostCommentProfile = styled.div`
   height: 1.875rem;
   background-color: var(--gray-500);
   border-radius: 50%;
+  position: relative;
+  overflow: hidden;
 `;
 
 export const CommunityPostCommentInfo = styled.div`
