@@ -17,6 +17,7 @@ const Page = () => {
   const { isOpen, openModal, onClose } = useModalStore();
   const [isChecked, setIsChecked] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false); // 추가
 
   useEffect(() => {
     openModal();
@@ -41,6 +42,7 @@ const Page = () => {
       return;
     }
     alert("게시되었습니다.");
+    setIsSubmitted(true); 
   };
 
   const handleModalCancel = () => {
@@ -56,6 +58,10 @@ const Page = () => {
       alert("확인했습니다를 체크해주세요.");
     }
   };
+
+  if (isSubmitted) {
+    return <NovelCreateCompleted />; 
+  }
 
   return (
     <Container>
@@ -114,4 +120,4 @@ const Page = () => {
   );
 };
 
-export default Page; 
+export default Page;

@@ -6,14 +6,14 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 1.25rem;
 `
 
 export const ImageContainer = styled.div`
-  margin-top: 50px;
+  margin-top: 3.125rem;
 `
 
 export const Text = styled.div`
-  margin-top: 30px;
+  margin: 1.875rem 0;
   text-align: center;
 `
