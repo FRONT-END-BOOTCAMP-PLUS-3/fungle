@@ -12,6 +12,7 @@ import ProfileInfo from "./components/ProfileInfo";
 import ProfileMenu from "./components/ProfileMenu";
 import { useState } from "react";
 import ProfilePostList from "./components/ProfilePostList";
+import ProfileLikedList from "./components/ProfileLikedList";
 
 const Page = () => {
   const [selectedMenu, setSelectedMenu] = useState("home");
@@ -32,6 +33,7 @@ const Page = () => {
         <ContentContainer>
           {selectedMenu === "home" && <ProfileIntroduce />}
           {selectedMenu === "post" && <ProfilePostList />}
+          {selectedMenu === "liked" && <ProfileLikedList />}
         </ContentContainer>
       </ViewInfoSection>
     </Main>
