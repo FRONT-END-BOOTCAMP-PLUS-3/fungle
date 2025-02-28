@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 
 export type CommentWithRelations = Prisma.CommunityCommentGetPayload<{
   include: {
+    replies: true;
     user: {
       select: {
         nickname: true;
