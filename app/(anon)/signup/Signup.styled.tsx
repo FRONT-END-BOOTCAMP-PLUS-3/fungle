@@ -47,10 +47,6 @@ export const ButtonWrapper = styled.div`
   display: flex;
 `;
 
-export const EmailVerificationButtonWrapper = styled(ButtonWrapper)`
-  margin-top: 0; // 인증 코드 입력란 바로 아래에 배치
-`;
-
 export const ErrorMessage = styled.p`
   font-size: 0.875rem;
   color: var(--error-color);
