@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Modal from "@/components/modal/Modal";
 import { useModalStore } from "@/store/useModalStore";
 import { Container, ModalContainer, InputContainer, ButtonContainer } from "@/app/user/novel/serialize/SerializePage.styled";
+import NovelCreateCompleted from "../../create/component/NovelCreateCompleted";
 
 const Page = () => {
   const router = useRouter();

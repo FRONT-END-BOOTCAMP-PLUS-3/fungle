@@ -8,6 +8,7 @@ datasource db {
 }
 
 model CommunityComment {
+<<<<<<< HEAD
   id                     Int                    @id @default(autoincrement())
   comment                String
   createdAt              DateTime               @default(now())
@@ -19,6 +20,19 @@ model CommunityComment {
   communityPost          CommunityPost          @relation("CommunityComments", fields: [postId], references: [id], onDelete: Cascade)
   user                   User                   @relation("UserCommunityComments", fields: [userId], references: [id], onDelete: Cascade)
   communityCommentLikes  CommunityCommentLike[] @relation("CommunityCommentLikes")
+=======
+  id                    Int                    @id @default(autoincrement())
+  comment               String
+  createdAt             DateTime               @default(now())
+  userId                String
+  postId                Int
+  parentId              Int?
+  parent                CommunityComment?      @relation("CommentReplies", fields: [parentId], references: [id])
+  replies               CommunityComment[]     @relation("CommentReplies")
+  communityPost         CommunityPost          @relation("CommunityComments", fields: [postId], references: [id], onDelete: Cascade)
+  user                  User                   @relation("UserCommunityComments", fields: [userId], references: [id], onDelete: Cascade)
+  communityCommentLikes CommunityCommentLike[] @relation("CommunityCommentLikes")
+>>>>>>> 71eb98ac2d898e8368239bbce1b97fc6840e7280
 }
 
 model CommunityCommentLike {

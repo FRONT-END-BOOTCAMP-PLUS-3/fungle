@@ -1,5 +1,5 @@
-import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
 import { PostWithCountAndRecruitmentDto } from "./dto/PostWithCountAndRecruitmentDto";
+import { CommunityPostRepository } from "@/domain/repositories/CommunityPostRepository";
 
 export interface GetCommunityPostsParams {
   page: number;
@@ -17,7 +17,7 @@ export interface PostListResult {
 }
 
 export class DfPostListUsecase {
-  constructor(private postRepository: PrCommunityPostRepository) {}
+  constructor(private CommunityPostRepository: CommunityPostRepository) {}
 
   async execute({
     page = 1,
@@ -30,9 +30,7 @@ export class DfPostListUsecase {
   }: GetCommunityPostsParams): Promise<PostListResult> {
     const offset = (page - 1) * limit;
 
-    const communityPostRepository = new PrCommunityPostRepository();
-
-    const posts = await communityPostRepository.findAll({
+    const posts = await this.CommunityPostRepository.findAll({
       limit,
       offset,
       filter,
@@ -42,7 +40,7 @@ export class DfPostListUsecase {
       recruitment,
     });
 
-    const totalCount = await communityPostRepository.count({
+    const totalCount = await this.CommunityPostRepository.count({
       filter,
       searchField,
       search,

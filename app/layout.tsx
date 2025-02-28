@@ -1,5 +1,6 @@
 import Header from "@/components/header/Header";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata = {
   title: "Fungle",
@@ -45,10 +46,12 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <div className="container">
-          <Header />
-          {children}
-        </div>
+        <AuthProvider>
+          <div className="container">
+            <Header />
+            {children}
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

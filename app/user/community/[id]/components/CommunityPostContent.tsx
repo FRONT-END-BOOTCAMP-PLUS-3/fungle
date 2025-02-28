@@ -1,3 +1,4 @@
+import { CommunityPost } from "@prisma/client";
 import {
   CommunityPostContentSection,
   CommunityPostLikeButtonBox,
@@ -5,30 +6,22 @@ import {
 } from "./CommunityPostContent.styled";
 import Image from "next/image";
 
-interface PostsType {
-  id: number;
-  title: string;
-  status: string;
-  genre: string;
-  author: string;
-  content: string;
-  time: string;
+type CommunityPostWithNicknameAndLikes = CommunityPost & {
+  userNickname: string;
   likes: number;
-  views: number;
-  commentCount: number;
-  createdAt: string;
+};
+
+interface CommunityPostHeaderProps {
+  postDetail: CommunityPostWithNicknameAndLikes;
 }
 
-interface CommunityPostContentProps {
-  post: PostsType;
-}
-const CommunityPostContent = ({ post }: CommunityPostContentProps) => {
-  if (!post) {
+const CommunityPostContent = ({ postDetail }: CommunityPostHeaderProps) => {
+  if (!postDetail) {
     return <main>게시글을 찾을 수 없습니다.</main>;
   }
   return (
     <CommunityPostContentSection>
-      {post.content}
+      {postDetail.content}
       <CommunityPostLikeButtonBox>
         <CommunityLikeButton>
           <Image
@@ -37,7 +30,7 @@ const CommunityPostContent = ({ post }: CommunityPostContentProps) => {
             width={20}
             height={20}
           />
-          {post.likes}
+          {postDetail.likes}
         </CommunityLikeButton>
       </CommunityPostLikeButtonBox>
     </CommunityPostContentSection>
