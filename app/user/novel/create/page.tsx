@@ -47,7 +47,7 @@ const Page = () => {
     }
 
     const newNovelId = "123456"; // 실제 API에서 생성된 novelId를 받아와야 함
-    router.push(`/novel/serialize/${newNovelId}`);
+    router.push(`user/novel/serialize/${newNovelId}`);
   };
 
   const handleCoverClick = () => {
