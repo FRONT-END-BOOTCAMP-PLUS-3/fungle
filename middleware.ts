@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(req: NextRequest) {
+const middleware = (req: NextRequest) => {
   const publicRoutes = ["/login", "/signup", "/novel", "/community"];
   const token = req.cookies.get("refreshToken")?.value;
 
@@ -15,7 +15,9 @@ export function middleware(req: NextRequest) {
   }
 
   return NextResponse.next();
-}
+};
+
+export default middleware;
 
 // 실행될 경로 설정
 export const config = {
