@@ -1,10 +1,12 @@
 "use client";
 
 import useAuthStore from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const AuthInitializer = () => {
-  const { refreshAuth } = useAuthStore();
+  const router = useRouter();
+  const { refreshAuth, isLoggedIn } = useAuthStore();
 
   useEffect(() => {
     refreshAuth();
