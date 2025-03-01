@@ -3,7 +3,7 @@ import CommunityPostForm from "../components/CommunityPostForm";
 const Page = () => {
   return (
     <CommunityPostForm
-      defautlValue={`
+      defaultValue={`
     [팀원 모집 내용 예시]
     
       - 장르 및 주제 : 
