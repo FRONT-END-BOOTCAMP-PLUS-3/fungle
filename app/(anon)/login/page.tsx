@@ -27,12 +27,7 @@ const Page = () => {
     if (state.isLoggedIn) {
       if (state.user) {
         const user = state.user;
-        const data = {
-          nickname: user.nickname,
-          introduce: user.introduce,
-          profileImage: user.profileImage,
-        };
-        setUser(data);
+        setUser(user);
       }
       router.push("/user/novel");
     }
