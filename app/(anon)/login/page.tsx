@@ -26,7 +26,13 @@ const Page = () => {
   useEffect(() => {
     if (state.isLoggedIn) {
       if (state.user) {
-        setUser(state.user);
+        const user = state.user;
+        const data = {
+          nickname: user.nickname,
+          introduce: user.introduce,
+          profileImage: user.profileImage,
+        };
+        setUser(data);
       }
       router.push("/user/novel");
     }
