@@ -65,7 +65,7 @@ const ProfileNovelList = () => {
           </ArrowWrapper>
           <ButtonWrapper>
             <Button buttonSize="small">연재 상태</Button>
-            <Button buttonSize="small" backgroudColor="leave">
+            <Button buttonSize="xsmall" backgroudColor="leave">
               삭제
             </Button>
           </ButtonWrapper>

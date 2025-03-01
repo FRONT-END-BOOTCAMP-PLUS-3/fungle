@@ -15,5 +15,6 @@ export const IntroduceWrapper = styled.div`
   padding: 1rem 0;
   p {
     text-align: center;
+    white-space: pre-line;
   }
 `;
