@@ -1,5 +1,5 @@
 export const SERIAL_STATUS = [
-  { value: "ongoing", label: "연재 중" },
-  { value: "completed", label: "완결" },
-  { value: "paused", label: "휴재" },
+  { value: "연재중", label: "연재 중" },
+  { value: "완결", label: "완결" },
+  { value: "휴재", label: "휴재" },
 ];
