@@ -18,3 +18,19 @@ export const IntroduceWrapper = styled.div`
     white-space: pre-line;
   }
 `;
+
+export const ModalContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  width: 100%;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;

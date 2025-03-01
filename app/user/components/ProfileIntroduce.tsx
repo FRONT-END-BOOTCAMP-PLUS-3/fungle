@@ -1,10 +1,13 @@
 import Button from "@/components/button/Button";
-import { IntroduceHeader, IntroduceWrapper } from "./ProfileIntroduce.styled";
+import {
+  ButtonWrapper,
+  IntroduceHeader,
+  IntroduceWrapper,
+  ModalContentContainer,
+} from "./ProfileIntroduce.styled";
 import useAuthStore from "@/store/useAuthStore";
-import { useState } from "react";
 import Modal from "@/components/modal/Modal";
 import Textarea from "@/components/textarea/Textarea";
-import { useModal } from "@/components/modal/hooks/useModal";
 import { useModalStore } from "@/store/useModalStore";
 
 const ProfileIntroduce = () => {
@@ -30,12 +33,18 @@ const ProfileIntroduce = () => {
       </IntroduceWrapper>
       {isOpen && (
         <Modal>
-          <Textarea
-            ariaLabel="소개글 작성"
-            defaultValue={introduce || undefined}
-          />
-          <Button>취소하기</Button>
-          <Button>저장하기</Button>
+          <ModalContentContainer>
+            <Textarea
+              width="100%"
+              height="10rem"
+              ariaLabel="소개글 작성"
+              defaultValue={introduce || undefined}
+            />
+            <ButtonWrapper>
+              <Button backgroudColor="white">취소하기</Button>
+              <Button>저장하기</Button>
+            </ButtonWrapper>
+          </ModalContentContainer>
         </Modal>
       )}
     </>
