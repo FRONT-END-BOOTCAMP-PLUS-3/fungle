@@ -3,10 +3,20 @@
 import { LoginRequestDto } from "@/application/usecases/auth/dto/LoginRequestDto";
 import { cookies } from "next/headers";
 
-export const loginProc = async (
-  state: { message: string | null; isLoggedIn: boolean },
-  formData: FormData
-) => {
+interface User {
+  id: string;
+  nickname: string;
+  introduce: string;
+  profileImage: string;
+}
+
+interface LoginState {
+  message: string | null;
+  isLoggedIn: boolean;
+  user?: User | null;
+}
+
+export const loginProc = async (state: LoginState, formData: FormData) => {
   const userEmail = formData.get("email") as string;
   const password = formData.get("password") as string;
 
@@ -42,7 +52,16 @@ export const loginProc = async (
       return { message: "토큰이 누락되었습니다.", isLoggedIn: false };
     }
 
-    return { message: null, isLoggedIn: true };
+    return {
+      message: null,
+      isLoggedIn: true,
+      user: {
+        id: data.id,
+        nickname: data.nickname,
+        introduce: data.introduce,
+        profileImage: data.profileImage,
+      },
+    };
   } catch (error) {
     return { message: "서버 오류가 발생했습니다.", isLoggedIn: false };
   }

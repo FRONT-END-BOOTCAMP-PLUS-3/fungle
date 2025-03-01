@@ -14,15 +14,20 @@ import { useActionState, useEffect } from "react";
 import Button from "@/components/button/Button";
 import { useRouter } from "next/navigation";
 import { loginProc } from "./actions/loginProc";
+import useAuthStore from "@/store/useAuthStore";
 
 const initialState = { message: null, isLoggedIn: false };
 
 const Page = () => {
   const router = useRouter();
   const [state, formAction] = useActionState(loginProc, initialState);
+  const { setUser } = useAuthStore();
 
   useEffect(() => {
     if (state.isLoggedIn) {
+      if (state.user) {
+        setUser(state.user);
+      }
       router.push("/user/novel");
     }
   }, [state.isLoggedIn, router]);
