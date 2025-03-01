@@ -36,7 +36,7 @@ export const POST = async (request: NextRequest) => {
       fields
     );
 
-    return NextResponse.json({ postId });
+    return NextResponse.json(postId);
   } catch (error: unknown) {
     if (error instanceof Error) {
       return NextResponse.json(
