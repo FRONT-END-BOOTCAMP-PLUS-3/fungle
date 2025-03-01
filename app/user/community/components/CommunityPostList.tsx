@@ -24,6 +24,7 @@ import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community
 import CommunityPagination from "./CommunityPagination";
 import { SearchParams } from "../page";
 import Loading from "../loading";
+import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
 
 interface CommunityPostListProps {
   searchParams: SearchParams;
@@ -139,7 +140,14 @@ const CommunityPostList = ({
               <PostContent>{post.content}</PostContent>
               {post.recruitmentNames.length > 0 && (
                 <PostRecruitment>
-                  {post.recruitmentNames.join(", ")}
+                  {post.recruitmentNames
+                    .map((name) => {
+                      const field = RECRUITMENT_FIELDS.find(
+                        (f) => f.value === name
+                      );
+                      return field ? field.label : name;
+                    })
+                    .join(", ")}
                 </PostRecruitment>
               )}
               <PostFooter>
