@@ -39,4 +39,11 @@ export interface CommunityPostRepository {
   }): Promise<number>;
 
   findPost(id: number): Promise<PostWithPostLikes | null>;
+
+  createPost(
+    userId: string,
+    title: string,
+    content: string,
+    selectedFeilds: string[]
+  ): Promise<number>;
 }
