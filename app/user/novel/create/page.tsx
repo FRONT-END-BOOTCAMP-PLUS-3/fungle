@@ -49,7 +49,7 @@ const Page = () => {
       return;
     }
   
-    if (!title || !description || selectedGenres.length === 0 || !selectedSchedule || !coverImage) {
+    if (!title || !description || selectedGenres.length === 0 || !selectedSchedule ) {
       alert("모든 필드를 입력해주세요.");
       return;
     }

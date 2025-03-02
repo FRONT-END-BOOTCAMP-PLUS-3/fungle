@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi";
 
-export async function POST(req: NextRequest) {
+export const POST = async (req: NextRequest) => {
   try {
     const formData = await req.formData();
     const title = formData.get("title") as string;
@@ -11,11 +11,6 @@ export async function POST(req: NextRequest) {
     const userId = formData.get("userId") as string;
     const coverImage = formData.get("coverImage") as File | null;
 
-    if (!title || !description || genres.length === 0 || !serialDay || !userId) {
-      return NextResponse.json({ error: "모든 필드를 입력해야 합니다." }, { status: 400 });
-    }
-
-  
     const novel = await novelDi.createNovelUseCase.execute({
       title,
       description,
@@ -30,4 +25,4 @@ export async function POST(req: NextRequest) {
     console.error("소설 생성 오류:", error);
     return NextResponse.json({ error: "서버 내부 오류" }, { status: 500 });
   }
-}
+};
