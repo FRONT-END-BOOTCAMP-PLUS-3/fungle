@@ -1,5 +1,5 @@
 import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
-import { NovelEpisodeDto } from "@/application/usecases/novel/dto/NovelEpisodeDto";
+import { NovelEpisodeDto } from "@/application/usecases/novel/dto/NovelEpisode";
 
 export class DfEpisodesByNovelIdUseCase {
   constructor(private novelEpisodeRepository: NovelEpisodeRepository) {}

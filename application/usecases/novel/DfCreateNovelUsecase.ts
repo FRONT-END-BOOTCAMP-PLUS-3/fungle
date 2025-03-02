@@ -2,7 +2,7 @@ import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { GenreRepository } from "@/domain/repositories/GenreRepository";
 import { FileService } from "@/infrastructure/services/FileService";
 import { CreateNovelDto } from "@/application/usecases/novel/dto/CreateNovel";
-import { NovelResponseDto } from "./dto/NovelResponse";
+import { NovelResponseDto } from "@/application/usecases/novel/dto/NovelResponse";
 
 export class DfCreateNovelUseCase {
   constructor(
