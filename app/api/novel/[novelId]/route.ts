@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi";
 
-export async function GET(req: NextRequest, context: { params: Promise<{ novelId: string }> }) { 
-  const params = await context.params; 
-  const novelId = parseInt(params.novelId, 10);
+export async function GET(req: NextRequest, context: { params: { novelId: string } }) { 
+  const novelId = parseInt(context.params.novelId, 10);
 
   if (isNaN(novelId)) {
     return NextResponse.json({ error: "Invalid novel ID" }, { status: 400 });
