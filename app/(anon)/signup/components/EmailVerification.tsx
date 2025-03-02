@@ -25,9 +25,9 @@ const EmailVerification = ({
 }: EmailVerificationProps) => {
   const [emailError, setEmailError] = useState("");
   const [emailCode, setEmailCode] = useState("");
-  const [isCodeSent, setIsCodeSent] = useState(false); // ✅ 이메일 코드 전송 여부 상태 추가
+  const [isCodeSent, setIsCodeSent] = useState(false);
 
-  // 📌 이메일 인증 코드 요청
+  // 🔹 이메일 인증 코드 요청
   const handleRequestVerification = async () => {
     if (!email) {
       setEmailError("이메일을 입력해주세요.");
@@ -42,10 +42,9 @@ const EmailVerification = ({
       });
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message);
 
-      setIsCodeSent(true); // ✅ 이메일 코드 전송 상태 업데이트
+      setIsCodeSent(true);
       setEmailError("");
       alert("인증 코드가 이메일로 전송되었습니다!");
     } catch (error: unknown) {
@@ -56,15 +55,20 @@ const EmailVerification = ({
     }
   };
 
-  // 📌 이메일 인증 코드 확인
+  // 🔹 이메일 인증 코드 확인
   const handleVerifyEmailCode = async () => {
+    console.log("🔍 서버로 보낼 데이터:", {
+      email,
+      verificationCode: emailCode,
+    });
+
     if (!email || !emailCode) {
       setEmailError("이메일과 인증 코드를 입력해주세요.");
       return;
     }
 
     try {
-      const res = await fetch("/api/auth/verify-email-code", {
+      const res = await fetch("/api/auth/verify-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, verificationCode: emailCode }),
@@ -86,7 +90,6 @@ const EmailVerification = ({
   return (
     <>
       <InputGroupWrapper>
-        {/* 이메일 입력 및 이메일 인증 버튼 */}
         <InputGroup>
           <Input
             type="email"
@@ -114,7 +117,6 @@ const EmailVerification = ({
         {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
       </InputGroupWrapper>
 
-      {/* 인증 코드 입력 필드 및 인증 코드 확인 버튼 (이메일 전송 후 표시) */}
       {isCodeSent && (
         <InputGroupWrapper>
           <InputGroup>

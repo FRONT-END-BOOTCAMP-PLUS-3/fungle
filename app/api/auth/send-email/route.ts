@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const { email } = request;
 
     // ✅ 인스턴스 생성 (함수 내부에서 생성하도록 변경)
-    const verificationRepository = new PrVerificationRepository();
+    const verificationRepository = PrVerificationRepository.getInstance();
     const generateVerificationCodeUseCase =
       new DfGenerateVerificationCodeUseCase();
     const sendEmailUseCase = new SendEmailUseCase(

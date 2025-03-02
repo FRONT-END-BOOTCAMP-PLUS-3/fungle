@@ -1,45 +1,31 @@
-import { IVerificationRepository } from "@/domain/repositories/IVerificationRepository";
+export class PrVerificationRepository {
+  private static instance: PrVerificationRepository;
+  private verificationCodes: Map<string, string> = new Map();
 
-export class PrVerificationRepository implements IVerificationRepository {
-  private verificationCodes: Map<string, string> = new Map(); // 서버 메모리에서 관리
+  private constructor() {} // ❌ 외부에서 new 인스턴스를 생성하지 못하도록 private 생성자
 
-  // async sendVerificationCode(email: string): Promise<string> {
-  //   const verificationCode = EmailService.generateVerificationCode();
+  public static getInstance(): PrVerificationRepository {
+    if (!PrVerificationRepository.instance) {
+      PrVerificationRepository.instance = new PrVerificationRepository();
+    }
+    return PrVerificationRepository.instance;
+  }
 
-  //   // ✅ 서버 메모리에 인증 코드 저장 (DB 저장 X)
-  //   this.verificationCodes.set(email, verificationCode);
-
-  //   await EmailService.sendVerificationEmail(email, verificationCode);
-
-  //   return verificationCode;
-  // }
-
-  async saveVerificationCode(
-    email: string,
-    code: string,
-    expiresIn: number = 300
-  ): Promise<void> {
+  async saveVerificationCode(email: string, code: string): Promise<void> {
     this.verificationCodes.set(email, code);
-
-    // 인증 코드 만료 시간 설정 (메모리에서 자동 삭제는 구현 필요)
-    setTimeout(() => {
-      this.verificationCodes.delete(email);
-    }, expiresIn * 1000);
+    console.log(`✅ 인증 코드 저장 완료 (${email}): ${code}`);
   }
 
   async getVerificationCode(email: string): Promise<string | null> {
+    console.log(
+      `🔍 인증 코드 조회 요청 (${email}):`,
+      this.verificationCodes.get(email)
+    );
     return this.verificationCodes.get(email) || null;
   }
 
   async deleteVerificationCode(email: string): Promise<void> {
     this.verificationCodes.delete(email);
-  }
-
-  async verifyCode(
-    email: string,
-    code: string,
-    expectedCode: string
-  ): Promise<boolean> {
-    return code === expectedCode; // ✅ 서버에서는 검증만 수행
+    console.log(`🗑️ 인증 코드 삭제 완료 (${email})`);
   }
 }
