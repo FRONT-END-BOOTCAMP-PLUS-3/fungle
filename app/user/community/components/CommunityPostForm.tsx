@@ -5,17 +5,39 @@ import Input from "@/components/input/Input";
 import Textarea from "@/components/textarea/Textarea";
 import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonBox, TextAreaWrapper, Form } from "./CommunityPostForm.styled";
-import { useRouter } from "next/navigation";
 
-const CommunityPostForm = ({ defaultValue }: { defaultValue?: string }) => {
-  const [selectedFields, setSelectedFields] = useState<string[]>([]);
-  const [title, setTitle] = useState<string>("");
-  const [content, setContent] = useState<string>("");
+type CommunityPostFormProps = {
+  mode: "create" | "edit";
+  initalTitle?: string;
+  initalContent?: string;
+  initalSelectedFields?: string[];
+  onSubmit: (
+    title: string,
+    content: string,
+    selectedFields: string[]
+  ) => Promise<void>;
+};
+
+const CommunityPostForm = ({
+  mode,
+  initalTitle = "",
+  initalContent = "",
+  initalSelectedFields = [],
+  onSubmit,
+}: CommunityPostFormProps) => {
+  const [selectedFields, setSelectedFields] =
+    useState<string[]>(initalSelectedFields);
+  const [title, setTitle] = useState<string>(initalTitle);
+  const [content, setContent] = useState<string>(initalContent);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const router = useRouter();
+  useEffect(() => {
+    setTitle(initalTitle);
+    setContent(initalContent);
+    setSelectedFields(initalSelectedFields);
+  }, [initalTitle, initalContent, initalSelectedFields]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -47,27 +69,7 @@ const CommunityPostForm = ({ defaultValue }: { defaultValue?: string }) => {
       return alert("모든 값을 입력해주세요");
     }
     try {
-      const response = await fetch("/api/community/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          content,
-          fields: selectedFields,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("생성 실패");
-      }
-
-      const { postId } = await response.json();
-
-      alert("게시글이 생성되었습니다.상세 페이지로 이동합니다.");
-
-      router.push(`/user/community/${postId}`);
+      await onSubmit(title, content, selectedFields);
     } catch (error: unknown) {
       if (error instanceof Error) {
         setErrorMessage(error.message);
@@ -87,6 +89,7 @@ const CommunityPostForm = ({ defaultValue }: { defaultValue?: string }) => {
             hideLabel={true}
             placeholder="제목을 입력해주세요"
             onChange={handleTitleChange}
+            value={title}
           />
         </div>
 
@@ -100,11 +103,11 @@ const CommunityPostForm = ({ defaultValue }: { defaultValue?: string }) => {
             ariaLabel="게시글 내용"
             onChange={handleChangeContent}
             height="100%"
-            defaultValue={defaultValue}
+            defaultValue={content}
           />
           <ButtonBox>
             <Button backgroudColor={"white"}>취소</Button>
-            <Button>작성</Button>
+            <Button>{mode === "create" ? "작성" : "수정"}</Button>
           </ButtonBox>
         </TextAreaWrapper>
       </Form>
