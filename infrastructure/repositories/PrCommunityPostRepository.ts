@@ -2,6 +2,7 @@ import {
   CommunityPostRepository,
   PostWithPostLikes,
   PostWithRelations,
+  PostWithRecruitments,
 } from "@/domain/repositories/CommunityPostRepository";
 import { Prisma } from "@prisma/client";
 import { prisma } from "../config/prisma";
@@ -142,7 +143,7 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
     }
   }
 
-  async findPost(id: number): Promise<PostWithPostLikes | null> {
+  async findPostWithPostLike(id: number): Promise<PostWithPostLikes | null> {
     const postId = Number(id);
     try {
       const post = await prisma.communityPost.findUnique({
@@ -186,6 +187,57 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
       return post.id;
     } catch {
       throw new Error("게시글 생성 중 오류가 발생했습니다.");
+    }
+  }
+
+  async findPost(id: string): Promise<PostWithRecruitments | null> {
+    const postId = Number(id);
+    try {
+      const postWithRecruitments = await prisma.communityPost.findUnique({
+        where: { id: postId },
+        include: {
+          PostRecruitments: {
+            include: {
+              RecruitmentCategory: true,
+            },
+          },
+        },
+      });
+
+      return postWithRecruitments;
+    } catch {
+      throw new Error("게시글 정보를 가져오는 데 실패했습니다.");
+    }
+  }
+
+  async updatePost(
+    userId: string,
+    id: string,
+    title: string,
+    content: string,
+    selectedFields: string[]
+  ): Promise<number> {
+    const postId = Number(id);
+    try {
+      const post = await prisma.communityPost.update({
+        where: { id: postId },
+        data: {
+          userId: userId,
+          title,
+          content,
+          PostRecruitments: {
+            deleteMany: {},
+            create: selectedFields.map((fieldName) => ({
+              RecruitmentCategory: {
+                connect: { name: fieldName },
+              },
+            })),
+          },
+        },
+      });
+      return post.id;
+    } catch {
+      throw new Error("게시글 수정 중 오류가 발생했습니다.");
     }
   }
 }
