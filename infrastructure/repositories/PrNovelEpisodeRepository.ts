@@ -12,17 +12,19 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
   async getEpisodesByNovelId(novelId: number): Promise<NovelEpisode[]> {
     return await prisma.novelEpisode.findMany({
       where: { novelId: novelId },
-      select: {
-        id: true,
-        novelId: true,  
-        userId: true,   
-        episode: true,  
-        content: true,
-        view: true,     
-        createdAt: true,
-        title: true,
-      },
       orderBy: { createdAt: "asc" },
+    });
+  }
+
+  async createEpisode(novelId: number, userId: string, episode: number, title: string, content: string): Promise<NovelEpisode> {
+    return await prisma.novelEpisode.create({
+      data: {
+        novelId,
+        userId,
+        episode,
+        title,
+        content,
+      },
     });
   }
 }
