@@ -2,7 +2,6 @@ import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { NovelGenreRepository } from "@/domain/repositories/NovelGenreRepository";
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { NovelLikeRepository } from "@/domain/repositories/NoveLikeRepository";
-import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
 import { NovelDto } from "@/application/usecases/novel/dto/Novel";
 import { DfEpisodesByNovelIdUseCase } from "@/application/usecases/novel/DfEpisodesByNovelIdUseCase";
 
