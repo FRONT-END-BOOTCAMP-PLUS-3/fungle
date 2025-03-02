@@ -20,6 +20,12 @@ export type PostWithPostLikes = Prisma.CommunityPostGetPayload<{
     };
   };
 }>;
+
+export type PostWithRecruitments = Prisma.CommunityPostGetPayload<{
+  include: {
+    PostRecruitments: { include: { RecruitmentCategory: true } };
+  };
+}>;
 export interface CommunityPostRepository {
   findAll(params: {
     limit: number;
@@ -38,12 +44,22 @@ export interface CommunityPostRepository {
     recruitment?: string;
   }): Promise<number>;
 
-  findPost(id: number): Promise<PostWithPostLikes | null>;
+  findPostWithPostLike(id: number): Promise<PostWithPostLikes | null>;
 
   createPost(
     userId: string,
     title: string,
     content: string,
     selectedFeilds: string[]
+  ): Promise<number>;
+
+  findPost(id: string): Promise<PostWithRecruitments | null>;
+
+  updatePost(
+    userId: string,
+    id: string,
+    title: string,
+    content: string,
+    selectedFields: string[]
   ): Promise<number>;
 }
