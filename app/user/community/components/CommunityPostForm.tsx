@@ -68,6 +68,17 @@ const CommunityPostForm = ({
     if (!title || !content || selectedFields.length === 0) {
       return alert("모든 값을 입력해주세요");
     }
+
+    const isTitleSame = title === initalTitle;
+    const isContentSame = content === initalContent;
+    const isFieldsSame =
+      JSON.stringify([...selectedFields].sort()) ===
+      JSON.stringify([...initalSelectedFields].sort());
+
+    if (isTitleSame && isContentSame && isFieldsSame) {
+      return alert("변경된 내용이 없습니다.");
+    }
+
     try {
       await onSubmit(title, content, selectedFields);
     } catch (error: unknown) {
