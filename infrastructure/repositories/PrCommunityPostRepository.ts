@@ -161,4 +161,31 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
       throw new Error("게시글 상세 정보를 가져오는 데 실패했습니다.");
     }
   }
+
+  async createPost(
+    userId: string,
+    title: string,
+    content: string,
+    selectedFields: string[]
+  ): Promise<number> {
+    try {
+      const post = await prisma.communityPost.create({
+        data: {
+          userId: userId,
+          title,
+          content,
+          PostRecruitments: {
+            create: selectedFields.map((fieldName) => ({
+              RecruitmentCategory: {
+                connect: { name: fieldName },
+              },
+            })),
+          },
+        },
+      });
+      return post.id;
+    } catch {
+      throw new Error("게시글 생성 중 오류가 발생했습니다.");
+    }
+  }
 }
