@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import CommunityPostForm from "../components/CommunityPostForm";
+import { useMemo } from "react";
 
 const Page = () => {
   const router = useRouter();
@@ -40,6 +41,10 @@ const Page = () => {
     }
   };
 
+  const memoizedSelectedFields = useMemo(() => {
+    return [];
+  }, []);
+
   return (
     <CommunityPostForm
       mode="create"
@@ -61,6 +66,7 @@ const Page = () => {
     
     광고성 게시글 및 폭력, 혐오, 사회 분열을 조장하는 글은 경고 없이 관리자에 의해 삭제됩니다.
       `}
+      initalSelectedFields={memoizedSelectedFields}
       onSubmit={handleCreate}
     />
   );
