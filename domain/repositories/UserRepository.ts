@@ -13,4 +13,5 @@ export interface UserRepository {
     "password" | "userEmail" | "createdAt" | "type"
   > | null>;
   updateNickname(userId: string, newNickname: string): Promise<void>;
+  updateIntroduce(userId: string, introduce: string): Promise<void>;
 }
