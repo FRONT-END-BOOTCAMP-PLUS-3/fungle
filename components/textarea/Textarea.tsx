@@ -7,6 +7,7 @@ interface TextareaProps {
   defaultValue?: string;
   ariaLabel: string;
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
+  name?: string;
 }
 
 const Textarea = ({
@@ -16,6 +17,7 @@ const Textarea = ({
   defaultValue,
   ariaLabel,
   onChange,
+  name,
 }: TextareaProps) => {
   return (
     <>
@@ -27,6 +29,7 @@ const Textarea = ({
         defaultValue={defaultValue}
         aria-label={ariaLabel}
         onChange={onChange}
+        name={name}
       />
     </>
   );
