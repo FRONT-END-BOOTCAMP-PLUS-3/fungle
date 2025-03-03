@@ -25,7 +25,8 @@ export class LoginUsecase {
       throw new LoginError("EMAIL_NOT_FOUND", "가입되지 않은 이메일입니다.");
     }
 
-    const { id, userEmail, password } = userData;
+    const { id, userEmail, password, nickname, introduce, profileImage } =
+      userData;
 
     // 비밀번호 비교
     const isValidPassword: boolean =
@@ -42,6 +43,14 @@ export class LoginUsecase {
     const { accessToken, refreshToken } =
       await this.authRepository.generateTokens(id);
 
-    return { userEmail, accessToken, refreshToken };
+    return {
+      id,
+      userEmail,
+      nickname,
+      introduce,
+      profileImage,
+      accessToken,
+      refreshToken,
+    };
   }
 }
