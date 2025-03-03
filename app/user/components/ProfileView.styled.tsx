@@ -52,3 +52,13 @@ export const NicknameContainer = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
+
+export const InputBox = styled.div`
+  width: 6rem;
+
+  input {
+    height: 100%;
+    padding: 0.3rem;
+    text-align: center;
+  }
+`;
