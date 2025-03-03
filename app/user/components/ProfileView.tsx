@@ -42,16 +42,18 @@ const ProfileView = () => {
       });
 
       const data = await response.json();
-      setNicknameError("");
 
       if (!response.ok) {
         if (data.type === "DUPLICATE_NICKNAME") {
-          return;
+          setNicknameError(data.error);
+          return null;
         }
         throw new Error(data.error || "닉네임 변경에 실패했습니다.");
       }
 
       alert("닉네임이 성공적으로 변경되었습니다!");
+      setNicknameError(""); // 닉네임 변경 성공 시 오류 초기화
+
       return data.nickname;
     } catch (error) {
       // 실패 시 null 반환
@@ -70,13 +72,14 @@ const ProfileView = () => {
     if (isEditing) {
       // 빈 문자열일 경우 기존 닉네임 유지
       const trimmedNickname = nicknameInput.trim();
-      if (trimmedNickname === "") {
+      if (trimmedNickname === "" || trimmedNickname === user?.nickname) {
+        setNicknameError("");
         setNicknameInput(user?.nickname || "");
         setIsEditing(false);
         return;
       }
 
-      // 닉네임 검증
+      // 닉네임 유효성 검사
       const validationError = validateNickname(trimmedNickname);
       if (validationError) {
         setNicknameError(validationError);
@@ -85,12 +88,14 @@ const ProfileView = () => {
 
       // 조건을 만족할 경우 닉네임 변경 api 호출
       const updatedNickname = await updateNickname(trimmedNickname);
-      if (updatedNickname) {
-        setNicknameInput(updatedNickname);
-        // zustand 닉네임 상태 변경
-        if (user) {
-          setUser({ ...user, nickname: updatedNickname });
-        }
+      if (!updatedNickname) {
+        return;
+      }
+
+      setNicknameInput(updatedNickname);
+      // zustand 닉네임 상태 변경
+      if (user) {
+        setUser({ ...user, nickname: updatedNickname });
       }
     }
     setIsEditing(!isEditing);
