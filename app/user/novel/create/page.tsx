@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth"; 
+import  useAuthStore  from "@/store/useAuthStore"; 
 import Dropdown from "@/components/dropdown/Dropdown";
 import Input from "@/components/input/Input";
 import { Wrapper, Form, CoverUpload, ButtonWrapper, CreateLabel, CoverImage } from "./CreatePage.styled";
@@ -13,7 +13,7 @@ import Image from "next/image";
 
 const Page = () => {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedSchedule, setSelectedSchedule] = useState<string | string[]>("");
 
@@ -59,7 +59,7 @@ const Page = () => {
     formData.append("description", description);
     formData.append("genres", JSON.stringify(selectedGenres));
     formData.append("serialDay", selectedSchedule.toString());
-    formData.append("userId", user.userId);
+    formData.append("userId", user.id);
     if (coverImage) {
       formData.append("coverImage", coverImage);
     }

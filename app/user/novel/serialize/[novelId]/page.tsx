@@ -6,7 +6,7 @@ import Button from "@/components/button/Button";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useModalStore } from "@/store/useModalStore";
-import { useAuth } from "@/hooks/useAuth"; 
+import  useAuthStore  from "@/store/useAuthStore";
 import { Container, InputContainer, ButtonContainer } from "@/app/user/novel/serialize/SerializePage.styled";
 import NovelCreateCompleted from "../../create/component/NovelCreateCompleted";
 import ConfirmationModal from "@/app/user/novel/create/component/ConfirmationModal";
@@ -15,7 +15,7 @@ const Page = () => {
   const router = useRouter();
   const params = useParams();
   const novelId = params?.novelId ? parseInt(params.novelId as string, 10) : NaN;
-  const { user } = useAuth(); 
+  const { user } = useAuthStore(); 
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -61,6 +61,11 @@ const Page = () => {
   };
 
   const handleSubmit = async () => {
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    
     if (!title || !content) {
       alert("제목과 내용을 입력해주세요.");
       return;
@@ -73,7 +78,7 @@ const Page = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: user?.userId,  
+          userId: user?.id,  
           episode: episodeNumber, 
           title,
           content,
@@ -83,11 +88,18 @@ const Page = () => {
       const data = await response.json();
   
       if (!response.ok) {
-        throw new Error(data.message || "게시 중 오류가 발생했습니다.");
+        if (response.status === 403) {
+          alert("에피소드를 추가할 권한이 없습니다."); 
+        } else if (response.status === 404) {
+          alert("해당 소설을 찾을 수 없습니다.");
+        } else {
+          alert(data.error || "게시 중 오류가 발생했습니다.");
+        }
+        return;
       }
+
       setIsSubmitted(true);
     } catch (error) {
-      console.error("Error posting episode:", error);
       alert("에피소드를 게시하는 중 오류가 발생했습니다.");
     }
   };
@@ -131,6 +143,7 @@ const Page = () => {
               취소
             </Button>
             <Button fontSize="medium" buttonSize="medium" backgroudColor="primary" onClick={handleSubmit} >
+              게시
             </Button>
           </ButtonContainer>
         </>

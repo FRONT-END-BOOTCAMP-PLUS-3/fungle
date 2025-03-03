@@ -10,13 +10,12 @@ export async function GET(req: NextRequest, context: { params: { novelId: string
       return NextResponse.json({ error: "잘못된 소설 ID입니다." }, { status: 400 });
     }
 
-    // ✅ 소설 정보 조회
     const novel = await novelDi.getNovelByIdUseCase.execute(parsedNovelId);
     if (!novel) {
       return NextResponse.json({ error: "소설을 찾을 수 없습니다." }, { status: 404 });
     }
+    
 
-    // ✅ `episodes`가 항상 배열로 반환되도록 보장
     const episodes = await novelDi.getEpisodesByNovelIdUseCase.execute(parsedNovelId) || [];
 
     return NextResponse.json({ ...novel, episodes }, { status: 200 });
