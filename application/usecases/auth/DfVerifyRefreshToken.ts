@@ -1,10 +1,16 @@
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { verifyRefreshToken } from "@/utils/auth/jwt";
+import { User } from "@prisma/client";
 
 export class DfVerifyRefreshToken {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(token: string): Promise<{ userId: string } | null> {
+  async execute(
+    token: string
+  ): Promise<Omit<
+    User,
+    "userEmail" | "password" | "createdAt" | "type"
+  > | null> {
     try {
       // 토큰이 유효한지 검증
       const decoded = verifyRefreshToken(token);
@@ -14,7 +20,7 @@ export class DfVerifyRefreshToken {
       const user = await this.userRepository.getUserById(decoded.userId);
       if (!user) return null;
 
-      return { userId: decoded.userId };
+      return user;
     } catch (error) {
       return null;
     }
