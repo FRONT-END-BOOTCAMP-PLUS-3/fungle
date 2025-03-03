@@ -27,7 +27,6 @@ const EmailVerification = ({
   const [emailCode, setEmailCode] = useState("");
   const [isCodeSent, setIsCodeSent] = useState(false);
 
-  // 🔹 이메일 인증 코드 요청
   const handleRequestVerification = async () => {
     if (!email) {
       setEmailError("이메일을 입력해주세요.");
@@ -55,13 +54,7 @@ const EmailVerification = ({
     }
   };
 
-  // 🔹 이메일 인증 코드 확인
   const handleVerifyEmailCode = async () => {
-    console.log("🔍 서버로 보낼 데이터:", {
-      email,
-      verificationCode: emailCode,
-    });
-
     if (!email || !emailCode) {
       setEmailError("이메일과 인증 코드를 입력해주세요.");
       return;
@@ -98,6 +91,7 @@ const EmailVerification = ({
             onChange={(e) => setEmail(e.target.value)}
             label="이메일"
             required
+            disabled={isEmailVerified} // 🔹 인증 완료 시 비활성화
           />
           <ButtonWrapper>
             <Button
@@ -127,6 +121,7 @@ const EmailVerification = ({
               label="이메일 인증 코드"
               hideLabel={true}
               onChange={(e) => setEmailCode(e.target.value)}
+              disabled={isEmailVerified} // 🔹 인증 완료 시 비활성화
             />
             <ButtonWrapper>
               <Button
