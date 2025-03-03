@@ -47,9 +47,15 @@ export const ProfileContainer = styled.div`
 export const NicknameContainer = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.25rem;
+`;
+
+export const NicknameBox = styled.div`
+  display: flex;
+  flex-direction: row;
   gap: 0.5rem;
 `;
 
@@ -61,4 +67,10 @@ export const InputBox = styled.div`
     padding: 0.3rem;
     text-align: center;
   }
+`;
+
+export const ErrorMessage = styled.p`
+  font-size: var(--font-size-sm);
+  color: var(--error-color);
+  visibility: ${({ children }) => (children ? "visible" : "hidden")};
 `;
