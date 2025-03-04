@@ -9,6 +9,17 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
     });
   }
 
+  async increaseViewCount(episodeId: number): Promise<void> {
+    await prisma.novelEpisode.update({
+      where: { id: episodeId },
+      data: {
+        view: {
+          increment: 1, 
+        },
+      },
+    });
+  }
+
   async getEpisodesByNovelId(novelId: number): Promise<NovelEpisode[]> {
     return await prisma.novelEpisode.findMany({
       where: {

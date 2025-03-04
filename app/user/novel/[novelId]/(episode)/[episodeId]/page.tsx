@@ -110,7 +110,7 @@ const Page = () => {
           <div className="author">{novel.author}</div>
           <AuthorMeta>
             <span>{formatDate(episode.createdAt)}</span>
-            <span>조회 {0}</span> 
+            <span>조회 {episode.view}</span> 
           </AuthorMeta>
         </AuthorDetails>
       </AuthorInfo>
