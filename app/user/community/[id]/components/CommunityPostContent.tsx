@@ -21,7 +21,7 @@ const CommunityPostContent = ({ postDetail }: CommunityPostHeaderProps) => {
   }
   return (
     <CommunityPostContentSection>
-      {postDetail.content}
+      <div style={{ whiteSpace: "pre-wrap" }}>{postDetail.content}</div>
       <CommunityPostLikeButtonBox>
         <CommunityLikeButton>
           <Image
