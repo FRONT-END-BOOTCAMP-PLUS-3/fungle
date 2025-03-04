@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrVerificationRepository } from "@/infrastructure/repositories/PrVerificationRepository";
+import { IMVerificationRepository } from "@/infrastructure/repositories/IMVerificationRepository";
 
 export async function POST(req: NextRequest) {
   const request = await req.json();
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const verificationRepository = PrVerificationRepository.getInstance();
+    const verificationRepository = IMVerificationRepository.getInstance();
     const savedCode = await verificationRepository.getVerificationCode(email);
 
     if (!savedCode) {

@@ -1,7 +1,7 @@
-import { PrVerificationRepository } from "@/infrastructure/repositories/PrVerificationRepository";
+import { IMVerificationRepository } from "@/infrastructure/repositories/IMVerificationRepository";
 
 export class DfCheckVerificationCodeUseCase {
-  constructor(private verificationRepository: PrVerificationRepository) {}
+  constructor(private verificationRepository: IMVerificationRepository) {}
 
   async execute(email: string, verificationCode: string): Promise<boolean> {
     const savedCode = await this.verificationRepository.getVerificationCode(

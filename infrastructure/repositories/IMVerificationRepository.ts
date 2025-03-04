@@ -1,14 +1,14 @@
-export class PrVerificationRepository {
-  private static instance: PrVerificationRepository;
+export class IMVerificationRepository {
+  private static instance: IMVerificationRepository;
   private verificationCodes: Map<string, string> = new Map();
 
   private constructor() {}
 
-  public static getInstance(): PrVerificationRepository {
-    if (!PrVerificationRepository.instance) {
-      PrVerificationRepository.instance = new PrVerificationRepository();
+  public static getInstance(): IMVerificationRepository {
+    if (!IMVerificationRepository.instance) {
+      IMVerificationRepository.instance = new IMVerificationRepository();
     }
-    return PrVerificationRepository.instance;
+    return IMVerificationRepository.instance;
   }
 
   async saveVerificationCode(email: string, code: string): Promise<void> {
