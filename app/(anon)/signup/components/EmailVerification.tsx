@@ -27,9 +27,31 @@ const EmailVerification = ({
   const [emailCode, setEmailCode] = useState("");
   const [isCodeSent, setIsCodeSent] = useState(false);
 
+  // 🔹 이메일 유효성 검사 함수 (실시간 체크)
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    if (!isValidEmail(newEmail)) {
+      setEmailError("유효한 이메일 주소를 입력해주세요.");
+    } else {
+      setEmailError(""); // 이메일 형식이 맞으면 오류 메시지 제거
+    }
+  };
+
   const handleRequestVerification = async () => {
     if (!email) {
       setEmailError("이메일을 입력해주세요.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setEmailError("유효한 이메일 주소를 입력해주세요.");
       return;
     }
 
@@ -88,7 +110,7 @@ const EmailVerification = ({
             type="email"
             placeholder="이메일을 입력해주세요"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange} // 🔹 실시간 유효성 검사
             label="이메일"
             required
             disabled={isEmailVerified} // 🔹 인증 완료 시 비활성화
@@ -98,7 +120,7 @@ const EmailVerification = ({
               type="button"
               buttonSize="small"
               onClick={handleRequestVerification}
-              disabled={isEmailVerified}
+              disabled={isEmailVerified || !isValidEmail(email)} // 🔹 유효한 이메일만 인증 가능
             >
               {isEmailVerified
                 ? "인증 완료"
