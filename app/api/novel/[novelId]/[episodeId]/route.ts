@@ -1,16 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi"; 
 
-export const GET = async (req: NextRequest, context: { params: Promise<{ novelId: string; episodeId: string }> }) => {
-  const params = await context.params;
-  const parsedNovelId = parseInt(params.novelId, 10);
-  const parsedEpisodeId = parseInt(params.episodeId, 10);
+export const GET = async (req: NextRequest, context: { params?: { novelId: string; episodeId: string } }) => {
+
+  if (!context.params) {
+    return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
+  }
+  
+  const { novelId, episodeId } = context.params;
+  const parsedNovelId = parseInt(novelId, 10);
+  const parsedEpisodeId = parseInt(episodeId, 10);
 
   if (isNaN(parsedNovelId) || isNaN(parsedEpisodeId)) {
     return NextResponse.json({ error: "Invalid novel or episode ID" }, { status: 400 });
   }
 
   try {
+    await novelDi.increaseViewCountUseCase.execute(parsedEpisodeId);
+
     const episode = await novelDi.getEpisodeByIdUseCase.execute(parsedEpisodeId);
     const novel = await novelDi.getNovelByIdUseCase.execute(parsedNovelId);
     const allEpisodes = await novelDi.getEpisodesByNovelIdUseCase.execute(parsedNovelId);

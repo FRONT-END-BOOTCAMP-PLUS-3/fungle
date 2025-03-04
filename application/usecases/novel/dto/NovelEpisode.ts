@@ -8,6 +8,7 @@ export interface NovelEpisodeDto {
   episode:number;
   novelId:number;
   userId:string;
+  view: number;
 }
 
 export function mapEpisodeToDto(episode: NovelEpisode): NovelEpisodeDto {
@@ -19,5 +20,6 @@ export function mapEpisodeToDto(episode: NovelEpisode): NovelEpisodeDto {
     title: episode.title,
     content: episode.content,
     createdAt: new Date(episode.createdAt).toISOString(), 
+    view: episode.view
   };
 }
