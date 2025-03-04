@@ -7,7 +7,7 @@ import { prisma } from "../config/prisma";
 export class PrCommunityCommentRepository
   implements CommunityCommentRepository
 {
-  async findAll(id: number): Promise<CommentWithRelations[]> {
+  async findAll(id: string): Promise<CommentWithRelations[]> {
     const postId = Number(id);
     try {
       const comments = await prisma.communityComment.findMany({

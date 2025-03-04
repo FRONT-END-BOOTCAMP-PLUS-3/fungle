@@ -44,7 +44,7 @@ export interface CommunityPostRepository {
     recruitment?: string;
   }): Promise<number>;
 
-  findPostWithPostLike(id: number): Promise<PostWithPostLikes | null>;
+  findPostWithPostLike(id: string): Promise<PostWithPostLikes | null>;
 
   createPost(
     userId: string,

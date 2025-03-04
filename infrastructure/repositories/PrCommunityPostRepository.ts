@@ -143,7 +143,7 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
     }
   }
 
-  async findPostWithPostLike(id: number): Promise<PostWithPostLikes | null> {
+  async findPostWithPostLike(id: string): Promise<PostWithPostLikes | null> {
     const postId = Number(id);
     try {
       const post = await prisma.communityPost.findUnique({

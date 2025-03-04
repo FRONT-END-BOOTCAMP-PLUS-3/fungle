@@ -23,7 +23,6 @@ export const GET = async (
 
     const postDetail = await postDetailUsecase.execute(id);
 
-    console.log(postDetail);
     return NextResponse.json(postDetail);
   } catch (error: unknown) {
     let message = "Unknown error";

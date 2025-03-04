@@ -4,7 +4,7 @@ import { PostDetailCommentsWithUserDto } from "./dto/PostDetailCommentsWithUserD
 export class DfPostDetailCommentUsecase {
   constructor(private communityPostRepository: CommunityCommentRepository) {}
 
-  async execute(id: number): Promise<PostDetailCommentsWithUserDto[]> {
+  async execute(id: string): Promise<PostDetailCommentsWithUserDto[]> {
     try {
       const comments = await this.communityPostRepository.findAll(id);
 
