@@ -46,7 +46,7 @@ model CommunityPost {
 
 model RecruitmentCategory {
   id                        Int                        @id @default(autoincrement())
-  name                      String                     @unique
+  name                      String  @unique
   CommunityPostRecruitments CommunityPostRecruitment[] @relation("PostRecruitments")
 }
 
@@ -105,7 +105,7 @@ model Novel {
   title          String
   serialDay      String
   novelIntroduce String
-  serialStatus   String         @default("pending")
+  serialStatus   String  @default("pending")
   userId         String
   funding        Funding?
   user           User           @relation("UserNovels", fields: [userId], references: [id], onDelete: Cascade)

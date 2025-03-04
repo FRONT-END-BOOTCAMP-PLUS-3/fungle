@@ -1,23 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
-import { novelDi } from "@/infrastructure/config/novelDi";
+import { novelDi } from "@/infrastructure/config/novelDi"; 
 
-export async function GET(req: NextRequest, context: { params: Promise<{ novelId: string }> }) { 
+export const GET = async (req: NextRequest, context: { params: Promise<{ novelId: string; episodeId: string }> }) => {
   const params = await context.params; 
-  const novelId = parseInt(params.novelId, 10);
+  const parsedNovelId = parseInt(params.novelId, 10);
+  const parsedEpisodeId = parseInt(params.episodeId, 10);
 
-  if (isNaN(novelId)) {
-    return NextResponse.json({ error: "Invalid novel ID" }, { status: 400 });
+  if (isNaN(parsedNovelId) || isNaN(parsedEpisodeId)) {
+    return NextResponse.json({ error: "Invalid novel or episode ID" }, { status: 400 });
   }
 
   try {
-    const novel = await novelDi.getNovelByIdUseCase.execute(novelId);
+    const episode = await novelDi.getEpisodeByIdUseCase.execute(parsedEpisodeId);
+    const novel = await novelDi.getNovelByIdUseCase.execute(parsedNovelId);
+    const allEpisodes = await novelDi.getEpisodesByNovelIdUseCase.execute(parsedNovelId);
+
+    if (!episode) {
+      return NextResponse.json({ error: "Episode not found" }, { status: 404 });
+    }
     if (!novel) {
       return NextResponse.json({ error: "Novel not found" }, { status: 404 });
     }
+    if (!allEpisodes || allEpisodes.length === 0) {
+      return NextResponse.json({ error: "No episodes found" }, { status: 404 });
+    }
 
-    return NextResponse.json(novel);
+    const lastEpisode = allEpisodes[allEpisodes.length - 1];
+    const isLastEpisode = parsedEpisodeId === lastEpisode.id;
+
+    return NextResponse.json({
+      novel,
+      episode,
+      isLastEpisode,
+      isCompleted: novel.serialStatus === "완결",
+    }, { status: 200 });
+
   } catch (error) {
-    console.error("Error fetching novel:", error);
+    console.error("Error fetching episode:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-}
+};

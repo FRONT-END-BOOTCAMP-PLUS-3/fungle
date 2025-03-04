@@ -4,6 +4,7 @@ import { COMMUNITY_POST_LIST } from "@/constants/COMMUNITY_POST_LIST";
 
 import Image from "next/image";
 import { EditButton, ListFilterWrapper } from "./CommunityListFilter.styled";
+import { useRouter } from "next/navigation";
 
 interface CommunityListFilterProps {
   onSortChange: (newSort: string) => void;
@@ -14,8 +15,14 @@ const CommunityListFilter = ({
   onSortChange,
   selectedSort,
 }: CommunityListFilterProps) => {
+  const router = useRouter();
+
   const handleSelect = (value: string) => {
     onSortChange(value);
+  };
+
+  const handleCreatePost = () => {
+    router.push("/user/community/create");
   };
   return (
     <ListFilterWrapper>
@@ -25,10 +32,10 @@ const CommunityListFilter = ({
         selected={selectedSort}
         size="small"
       />
-      <EditButton>
+      <EditButton onClick={handleCreatePost}>
         <Image
           src="/icon/edit_pen.svg"
-          alt="수정 버튼"
+          alt="작성 버튼"
           width={30}
           height={30}
         />

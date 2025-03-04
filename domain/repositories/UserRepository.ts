@@ -6,5 +6,11 @@ export interface UserRepository {
   findAll(): Promise<Omit<User, "password">[] | null>;
   isNicknameTaken(nickname: string): Promise<boolean>;
   createUser(user: User): Promise<void>;
-  getUserById(userId: string): Promise<Omit<User, "password" | "userEmail" | "createdAt" | "type"> | null>;
+  getUserById(
+    userId: string
+  ): Promise<Omit<
+    User,
+    "password" | "userEmail" | "createdAt" | "type"
+  > | null>;
+  updateNickname(userId: string, newNickname: string): Promise<void>;
 }
