@@ -74,4 +74,11 @@ export class PrUserRepository implements UserRepository {
       data: { nickname: newNickname },
     });
   }
+
+  async updateIntroduce(userId: string, introduce: string): Promise<void> {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { introduce },
+    });
+  }
 }
