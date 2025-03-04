@@ -62,4 +62,6 @@ export interface CommunityPostRepository {
     content: string,
     selectedFields: string[]
   ): Promise<number>;
+
+  deletePost(id: string, userId: string): Promise<boolean>;
 }
