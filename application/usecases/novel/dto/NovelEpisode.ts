@@ -6,18 +6,18 @@ export interface NovelEpisodeDto {
   content: string;
   createdAt: string;
   episode:number;
+  novelId:number;
+  userId:string;
 }
 
-export function mapEpisodeToDto(episode: NovelEpisode): NovelEpisodeDto { 
+export function mapEpisodeToDto(episode: NovelEpisode): NovelEpisodeDto {
   return {
     id: episode.id,
+    novelId: episode.novelId,
+    userId: episode.userId,
+    episode: episode.episode,
     title: episode.title,
     content: episode.content,
-    episode:episode.episode,
-    createdAt: new Date(episode.createdAt).toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }).replace(/\. /g, ".").replace(/\.$/, ""), 
+    createdAt: new Date(episode.createdAt).toISOString(), 
   };
 }

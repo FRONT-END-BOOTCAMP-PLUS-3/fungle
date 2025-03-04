@@ -3,7 +3,7 @@ import { NovelGenreRepository } from "@/domain/repositories/NovelGenreRepository
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { NovelLikeRepository } from "@/domain/repositories/NoveLikeRepository";
 import { NovelDto } from "@/application/usecases/novel/dto/Novel";
-import { DfEpisodesByNovelIdUseCase } from "@/application/usecases/novel/DfEpisodesByNovelIdUseCase";
+import { DfEpisodesByNovelIdUsecase } from "@/application/usecases/novel/DfEpisodesByNovelIdUsecase";
 
 export class DfNovelByIdUseCase {
   constructor(
@@ -11,7 +11,7 @@ export class DfNovelByIdUseCase {
     private novelGenreRepository: NovelGenreRepository,
     private userRepository: UserRepository,
     private novelLikeRepository: NovelLikeRepository,
-    private dfEpisodesByNovelIdUseCase: DfEpisodesByNovelIdUseCase 
+    private dfEpisodesByNovelIdUseCase: DfEpisodesByNovelIdUsecase 
   ) {}
 
   async execute(novelId: number): Promise<NovelDto | null> {

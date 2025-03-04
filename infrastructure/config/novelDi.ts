@@ -5,10 +5,11 @@ import { PrNovelLikeRepository } from "@/infrastructure/repositories/PrNovelLike
 import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelEpisodeRepository";
 import { PrGenreRepository } from "../repositories/PrGenreRepository";
 import { DfNovelByIdUseCase } from "@/application/usecases/novel/DfNovelUsecase";
-import { DfEpisodesByNovelIdUseCase } from "@/application/usecases/novel/DfEpisodesByNovelIdUseCase";
-import { DfEpisodeByIdUseCase } from "@/application/usecases/novel/DfEpisodeByIdUseCase";
+import { DfEpisodesByNovelIdUsecase } from "@/application/usecases/novel/DfEpisodesByNovelIdUsecase";
+import { DfEpisodeByIdUseCase } from "@/application/usecases/novel/DfEpisodeByIdUsecase";
 import { DfCreateNovelUseCase } from "@/application/usecases/novel/DfCreateNovelUsecase";
-import { FileService } from "../services/FileService";
+import { DfCreateEpisodeUseCase } from "@/application/usecases/novel/DfCreateEpisodeUsecase"; 
+import { FileService } from "@/infrastructure/services/FileService";
 
 export const novelDi = {
   novelRepository: new PrNovelRepository(),
@@ -19,7 +20,7 @@ export const novelDi = {
   fileService: new FileService(),
   genreRepository: new PrGenreRepository(),
 
-  getEpisodesByNovelIdUseCase: new DfEpisodesByNovelIdUseCase(new PrNovelEpisodeRepository()),
+  getEpisodesByNovelIdUseCase: new DfEpisodesByNovelIdUsecase(new PrNovelEpisodeRepository()),
   getEpisodeByIdUseCase: new DfEpisodeByIdUseCase(new PrNovelEpisodeRepository()),
 
   getNovelByIdUseCase: new DfNovelByIdUseCase(
@@ -27,7 +28,7 @@ export const novelDi = {
     new PrNovelGenreRepository(),
     new PrUserRepository(),
     new PrNovelLikeRepository(),
-    new DfEpisodesByNovelIdUseCase(new PrNovelEpisodeRepository())
+    new DfEpisodesByNovelIdUsecase(new PrNovelEpisodeRepository())
   ),
 
   createNovelUseCase: new DfCreateNovelUseCase(
@@ -35,4 +36,9 @@ export const novelDi = {
     new PrGenreRepository(), 
     FileService 
   ),
-};
+
+  createEpisodeUseCase: new DfCreateEpisodeUseCase(
+    new PrNovelEpisodeRepository(),
+    new PrNovelRepository() 
+  ),
+}

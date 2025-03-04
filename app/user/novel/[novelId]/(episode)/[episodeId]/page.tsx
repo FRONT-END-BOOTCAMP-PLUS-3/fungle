@@ -7,7 +7,8 @@ import CommentCreate from "@/components/comment/CommentCreate";
 import Comment from "@/components/comment/Comment";
 import NovelCompleted from "@/components/novelcompleted/NovelCompleted";
 import { NovelDto } from "@/application/usecases/novel/dto/Novel";
-import { NovelEpisodeDto } from "@/application/usecases/novel/dto/NovelEpisodeDto";
+import { NovelEpisodeDto } from "@/application/usecases/novel/dto/NovelEpisode";
+
 
 const Page = () => {
   const params = useParams();
@@ -67,6 +68,14 @@ const Page = () => {
     fetchEpisode();
   }, [novelId, episodeId]);
 
+  const formatDate = (isoString: string) => {
+    return new Date(isoString).toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).replace(/\. /g, ".").replace(/\.$/, "");
+  };
+
   
 
   if (loading) return <p>로딩 중...</p>;
@@ -87,6 +96,7 @@ const Page = () => {
     views: 120,
     commentCount: 123,
     createdAt: episode.createdAt,
+    postId : "1"
   };
 
   return (
@@ -99,7 +109,7 @@ const Page = () => {
         <AuthorDetails>
           <div className="author">{novel.author}</div>
           <AuthorMeta>
-            <span>{episode.createdAt}</span>
+            <span>{formatDate(episode.createdAt)}</span>
             <span>조회 {0}</span> 
           </AuthorMeta>
         </AuthorDetails>
@@ -113,7 +123,7 @@ const Page = () => {
 
       <CommentCreate post={post} />
       <CommentWrapper>
-        <Comment post={post} />
+         <Comment postId={post.postId} />
       </CommentWrapper>
     </Main>
   );

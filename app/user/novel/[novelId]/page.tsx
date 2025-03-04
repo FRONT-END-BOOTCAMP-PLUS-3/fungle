@@ -123,7 +123,7 @@ const Page = () => {
             <EpisodeItem key={episode.id}>
               <Link href={`/user/novel/${novel.id}/${episode.id}`} passHref>
                 <Image
-                  src="/image/book.svg"
+                  src={novel.image || "/image/book.svg"}
                   alt={episode.title}
                   width={80}
                   height={80}

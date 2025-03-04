@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi";
 
-export const POST = async (req: NextRequest) => {
+export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const title = formData.get("title") as string;
@@ -25,4 +25,4 @@ export const POST = async (req: NextRequest) => {
     console.error("소설 생성 오류:", error);
     return NextResponse.json({ error: "서버 내부 오류" }, { status: 500 });
   }
-};
+}
