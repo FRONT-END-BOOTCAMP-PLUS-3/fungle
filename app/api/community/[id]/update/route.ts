@@ -1,6 +1,5 @@
 import { DfVerifyRefreshToken } from "@/application/usecases/auth/DfVerifyRefreshToken";
 import { DfPostUpdateUsecase } from "@/application/usecases/community/DfPostUpdateUsecase";
-import { UserRepository } from "@/domain/repositories/UserRepository";
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { cookies } from "next/headers";
@@ -23,7 +22,7 @@ export const PUT = async (
 
     const { title, content, fields } = body;
 
-    const userRepository: UserRepository = new PrUserRepository();
+    const userRepository = new PrUserRepository();
     const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
     const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
 
