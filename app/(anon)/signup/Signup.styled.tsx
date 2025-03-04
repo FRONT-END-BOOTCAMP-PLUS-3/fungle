@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
 export const SignupContainer = styled.div`
-  margin: 3.3rem auto 0 auto;
   max-width: 100%;
-  padding: 0 1rem;
+  padding: 2rem 1.25rem;
 `;
 
 export const LogoWrapper = styled.div`
