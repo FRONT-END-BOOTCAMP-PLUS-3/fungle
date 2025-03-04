@@ -8,7 +8,7 @@ export class DfPostDetailUsecase {
     private userRepository: UserRepository
   ) {}
 
-  async execute(id: number): Promise<PostWithLikesAndUserNicknameDto> {
+  async execute(id: string): Promise<PostWithLikesAndUserNicknameDto> {
     try {
       const post = await this.postRepository.findPostWithPostLike(id);
 

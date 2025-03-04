@@ -25,7 +25,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json({ user: null }, { status: 401 });
     }
 
-    const { userId } = verifiedUser;
+    const { id: userId } = verifiedUser;
 
     const communityPostRepository = new PrCommunityPostRepository();
     const postCreateUsecase = new DfPostCreateUsecase(communityPostRepository);
