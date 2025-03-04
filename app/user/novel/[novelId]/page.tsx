@@ -6,6 +6,9 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { NovelDto } from "@/application/usecases/novel/dto/Novel"; 
 import { Main, GradientWrapper, NovelHeader, StatusSection, Badge, UploadInfo, AuthorSection, EpisodeItem } from "@/app/user/novel/[novelId]/NovelIdPage.styled";
+import { GENRES } from "@/constants/GENRES";
+import { SERIAL_STATUS } from "@/constants/STATUS";
+import { SERIAL_DAY } from "@/constants/SERIAL_DAY";
 
 const Page = () => {
   const params = useParams();
@@ -41,8 +44,25 @@ const Page = () => {
             .replace(/\. /g, ".")
             .replace(/\.$/, ""),
         }));
+        
 
-        setNovel({ ...data, episodes: formattedEpisodes });
+        const serialStatusLabel =
+        SERIAL_STATUS.find((status) => status.value === data.serialStatus)?.label || data.serialStatus;
+
+      const serialDayLabel =
+        SERIAL_DAY.find((day) => day.value === data.serialDay)?.label || data.serialDay;
+
+      const genreLabels = data.genres.map(
+        (genre) => GENRES.find((g) => g.value === genre)?.label || genre
+      );
+
+      setNovel({
+        ...data,
+        serialStatus: serialStatusLabel,
+        serialDay: serialDayLabel,
+        genres: genreLabels,
+        episodes: formattedEpisodes,
+      });
       } catch (error) {
         console.error("Error fetching novel:", error);
         setError("소설 정보를 불러오는 중 오류가 발생했습니다.");
