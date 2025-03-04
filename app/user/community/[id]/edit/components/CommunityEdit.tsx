@@ -67,7 +67,7 @@ const CommunityEdit = ({ postId }: { postId: string }) => {
       router.push(`/user/community/${updatedPostId}`);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        alert(`게시글 수정 실패: ${error.message}`);
+        alert(`게시글 수정 실패 원인: ${error.message}`);
       } else {
         alert("게시글 수정 중 알 수 없는 오류가 발생했습니다.");
       }
