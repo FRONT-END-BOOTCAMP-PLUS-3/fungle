@@ -11,6 +11,7 @@ export const Main = styled.div`
 export const Divider = styled.hr`
   width: 100%;
   height: 1px;
+  min-height: 1px;
   background: var(--gray-300);
   border: 0;
 `;
