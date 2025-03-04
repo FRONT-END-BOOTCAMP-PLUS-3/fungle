@@ -14,4 +14,8 @@ export interface UserRepository {
   > | null>;
   updateNickname(userId: string, newNickname: string): Promise<void>;
   updateIntroduce(userId: string, introduce: string): Promise<void>;
+  updateProfileImage(data: {
+    userId: string;
+    profileImage: string | null;
+  }): Promise<void>;
 }
