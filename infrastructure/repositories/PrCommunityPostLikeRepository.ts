@@ -4,7 +4,10 @@ import { prisma } from "../config/prisma";
 export class PrCommunityPostLikeRepository
   implements CommunityPostLikeRepository
 {
-  async toggleLike(id: string, userId: string): Promise<number> {
+  async toggleLike(
+    id: string,
+    userId: string
+  ): Promise<{ likeCount: number; isLiked: boolean }> {
     const postId = Number(id);
     try {
       const existingLike = await prisma.communityPostLike.findUnique({
@@ -12,13 +15,14 @@ export class PrCommunityPostLikeRepository
           userId_postId: { userId, postId },
         },
       });
-
+      let isLiked: boolean;
       if (existingLike) {
         await prisma.communityPostLike.delete({
           where: {
             userId_postId: { userId, postId },
           },
         });
+        isLiked = false;
       } else {
         await prisma.communityPostLike.create({
           data: {
@@ -26,6 +30,7 @@ export class PrCommunityPostLikeRepository
             postId,
           },
         });
+        isLiked = true;
       }
 
       const likeCount = await prisma.communityPostLike.count({
@@ -34,7 +39,7 @@ export class PrCommunityPostLikeRepository
         },
       });
 
-      return likeCount;
+      return { likeCount, isLiked };
     } catch {
       throw new Error("좋아요를 불러오는 중 오류가 발생했습니다.");
     }

@@ -8,18 +8,17 @@ export class DfTogglePostLikeUsecase {
 
   async execute(id: string, userId: string): Promise<ToggleLikeDto> {
     try {
-      const likeCount = await this.communityPostLikeRepository.toggleLike(
+      const result = await this.communityPostLikeRepository.toggleLike(
         id,
         userId
       );
 
-      return { likeCount };
+      return result;
     } catch (error: unknown) {
       if (error instanceof Error) {
-        throw new Error(`게시글 좋아요 에러(infrastructure) : {error.message}`);
+        throw new Error(`게시글 좋아요 에러(infrastructure): ${error.message}`);
       }
-
-      return { likeCount: 0 };
+      throw new Error("게시글 좋아요 에러");
     }
   }
 }
