@@ -6,11 +6,13 @@ import {
   CommunityLikeButton,
 } from "./CommunityPostContent.styled";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAuthStore from "@/store/useAuthStore";
 
 type CommunityPostWithNicknameAndLikes = CommunityPost & {
   userNickname: string;
   likes: number;
+  likedUserId: string[];
 };
 
 interface CommunityPostHeaderProps {
@@ -18,7 +20,17 @@ interface CommunityPostHeaderProps {
 }
 
 const CommunityPostContent = ({ postDetail }: CommunityPostHeaderProps) => {
+  const { user } = useAuthStore();
+  const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(postDetail.likes);
+
+  useEffect(() => {
+    if (user?.id) {
+      const newIsLiked = postDetail.likedUserId.includes(user.id);
+      setIsLiked(newIsLiked);
+    }
+  }, [user?.id, postDetail.likedUserId]);
+
   const handleLike = async () => {
     try {
       const response = await fetch("/api/community/like", {
@@ -31,9 +43,10 @@ const CommunityPostContent = ({ postDetail }: CommunityPostHeaderProps) => {
         throw new Error("서버 에러");
       }
 
-      const { likeCount } = await response.json();
+      const { likeCount, isLiked: updatedIsLiked } = await response.json();
 
       setLikes(likeCount);
+      setIsLiked(updatedIsLiked);
     } catch (error: unknown) {
       if (error instanceof Error) {
         alert(`좋아요 처리 중 오류 발생: ${error.message}`);
@@ -52,7 +65,7 @@ const CommunityPostContent = ({ postDetail }: CommunityPostHeaderProps) => {
       <CommunityPostLikeButtonBox>
         <CommunityLikeButton onClick={handleLike}>
           <Image
-            src="/icon/heart.svg"
+            src={isLiked ? "/icon/heart_filled.svg" : "/icon/heart.svg"}
             alt="좋아요 버튼"
             width={20}
             height={20}
