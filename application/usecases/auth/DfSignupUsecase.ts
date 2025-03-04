@@ -2,7 +2,7 @@ import { UserRepository } from "@/domain/repositories/UserRepository";
 import { SignUpRequestDTO } from "./dto/SignupRequestDto";
 import { IPasswordHasherUseCase } from "./interfaces/IPasswordHasherUsecase";
 
-export class SignUpUseCase {
+export class DfSignupUsecase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordHasherUseCase: IPasswordHasherUseCase
