@@ -267,6 +267,9 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
         where: {
           userId: userId,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
         include: {
           user: {
             select: { nickname: true },
