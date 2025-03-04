@@ -240,4 +240,19 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
       throw new Error("게시글 수정 중 오류가 발생했습니다.");
     }
   }
+
+  async deletePost(id: string, userId: string): Promise<boolean> {
+    const postId = Number(id);
+    try {
+      const result = await prisma.communityPost.deleteMany({
+        where: {
+          id: postId,
+          userId: userId,
+        },
+      });
+      return result.count > 0;
+    } catch {
+      throw new Error("게시글 삭제 중 오류가 발생했습니다.");
+    }
+  }
 }
