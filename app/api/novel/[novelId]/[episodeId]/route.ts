@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi"; 
 
-export async function GET(req: NextRequest, context: { params: Promise<{ novelId: string; episodeId: string }> }) {
-  const params = await context.params; 
+export const GET = async (req: NextRequest, context: { params: Promise<{ novelId: string; episodeId: string }> }) => {
+  const params = await context.params;
   const parsedNovelId = parseInt(params.novelId, 10);
   const parsedEpisodeId = parseInt(params.episodeId, 10);
 
@@ -39,4 +39,4 @@ export async function GET(req: NextRequest, context: { params: Promise<{ novelId
     console.error("Error fetching episode:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-}
+};
