@@ -260,4 +260,35 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
       throw new Error("게시글 삭제 중 오류가 발생했습니다.");
     }
   }
+
+  async getPostByUserId(userId: string): Promise<PostWithRelations[]> {
+    try {
+      const result = await prisma.communityPost.findMany({
+        where: {
+          userId: userId,
+        },
+        include: {
+          user: {
+            select: { nickname: true },
+          },
+
+          _count: {
+            select: {
+              communityPostLikes: true,
+              communityComments: true,
+            },
+          },
+          PostRecruitments: {
+            include: {
+              RecruitmentCategory: true,
+            },
+          },
+        },
+      });
+
+      return result;
+    } catch {
+      throw new Error("게시글 조회 중 오류가 발생했습니다.");
+    }
+  }
 }
