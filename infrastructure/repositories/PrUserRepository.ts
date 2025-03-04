@@ -81,4 +81,14 @@ export class PrUserRepository implements UserRepository {
       data: { introduce },
     });
   }
+
+  async updateProfileImage(data: {
+    userId: string;
+    profileImage: string;
+  }): Promise<void> {
+    await prisma.user.update({
+      where: { id: data.userId },
+      data: { profileImage: data.profileImage },
+    });
+  }
 }

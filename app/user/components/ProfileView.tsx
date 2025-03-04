@@ -7,6 +7,7 @@ import {
   ProfileContainer,
   ProfileSection,
 } from "./ProfileView.styled";
+import Image from "next/image";
 import useAuthStore from "@/store/useAuthStore";
 import { useEffect, useState } from "react";
 import Input from "@/components/input/Input";
@@ -17,12 +18,16 @@ const ProfileView = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [nicknameInput, setNicknameInput] = useState<string>("");
   const [nicknameError, setNicknameError] = useState<string>("");
+  const [previewImage, setPreviewImage] = useState<string>(profileImage);
 
   useEffect(() => {
     if (user?.nickname) {
       setNicknameInput(user.nickname);
     }
-  }, [user?.nickname]);
+    if (user?.profileImage) {
+      setPreviewImage(user.profileImage);
+    }
+  }, [user?.nickname, user?.profileImage]);
 
   // 닉네임 유효성 검사
   const validateNickname = (nickname: string): string | null => {
@@ -101,12 +106,63 @@ const ProfileView = () => {
     setIsEditing(!isEditing);
   };
 
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const imageUrl = URL.createObjectURL(file);
+    setPreviewImage(imageUrl);
+    await uploadProfileImage(file);
+  };
+
+  const uploadProfileImage = async (file: File) => {
+    if (!user) return;
+
+    const formData = new FormData();
+    formData.append("userId", user.id);
+    formData.append("profileImage", file);
+
+    try {
+      const response = await fetch("/api/user/profile-image", {
+        method: "PUT",
+        body: formData,
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "프로필 이미지 변경에 실패했습니다.");
+      }
+
+      setUser({ ...user, profileImage: data.profileImage });
+
+      alert("프로필 이미지가 성공적으로 변경되었습니다!");
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("알 수 없는 오류가 발생했습니다.");
+      }
+    }
+  };
+
   return (
     <ProfileSection>
       <ProfileContainer>
-        <img src={profileImage} alt="프로필 이미지" />
+        <Image
+          src={previewImage}
+          alt="프로필 이미지"
+          width={100}
+          height={100}
+        />
         <label htmlFor="image-upload" />
-        <input id="image-upload" type="file" />
+        <input
+          id="image-upload"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
       </ProfileContainer>
       <NicknameContainer>
         <NicknameBox>
