@@ -122,6 +122,8 @@ export const AuthorSection = styled.div`
     margin-left: 2rem;
     border-radius: 50%;
     border: 0.0625rem solid var(--gray-500);
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
   }
 
   .author-info {
@@ -146,13 +148,15 @@ export const AuthorSection = styled.div`
 export const EpisodeItem = styled.div`
   display: flex;
   padding: 1rem;
-  background-color: var(--white-color);
   align-items: center;
 
   .episode-img {
     border-radius: 0.3125rem;
     cursor: pointer;
-    flex-shrink: 0; 
+    border: 0.0625rem solid var(--gray-500);
+    object-fit: cover;
+    width: 5rem;
+    height: 6.875rem;
   }
 
   .episode-info {

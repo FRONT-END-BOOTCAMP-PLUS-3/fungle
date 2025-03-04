@@ -146,7 +146,7 @@ const Page = () => {
                   src={novel.image || "/image/book.svg"}
                   alt={episode.title}
                   width={80}
-                  height={80}
+                  height={110}
                   className="episode-img"
                 />
               </Link>
