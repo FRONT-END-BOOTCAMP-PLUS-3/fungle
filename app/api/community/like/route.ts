@@ -33,9 +33,9 @@ export const POST = async (request: NextRequest) => {
     const postLikeUsecase = new DfTogglePostLikeUsecase(
       communityPostLikeRepository
     );
-    const likeCount = await postLikeUsecase.execute(id, userId);
+    const result = await postLikeUsecase.execute(id, userId);
 
-    return NextResponse.json(likeCount);
+    return NextResponse.json(result, { status: 200 });
   } catch (error: unknown) {
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
