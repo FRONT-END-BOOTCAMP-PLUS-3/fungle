@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { PasswordHasherUseCase } from "@/application/usecases/auth/DfPasswordHasherUsecase";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { DfSignupUsecase } from "@/application/usecases/auth/DfSignupUsecase";
 
-export async function POST(request: Request) {
+export const POST = async (request: NextRequest) => {
   try {
     const { email, nickname, password } = await request.json();
     const passwordHasher = new PasswordHasherUseCase();
@@ -29,4 +29,4 @@ export async function POST(request: Request) {
     }
     return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
-}
+};
