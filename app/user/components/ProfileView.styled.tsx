@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styled from "styled-components";
 
 export const ProfileSection = styled.section`
@@ -12,15 +13,15 @@ export const ProfileSection = styled.section`
 
 export const ProfileContainer = styled.div`
   width: 6.25rem;
+  height: 6.25rem;
   display: flex;
   position: relative;
 
   img {
-    width: 6.25rem;
-    height: 6.25rem;
     border-radius: 50%;
     border: 1px solid var(--gray-500);
-    object-fit: contain;
+    object-fit: cover;
+    overflow: hidden;
   }
 
   label {
