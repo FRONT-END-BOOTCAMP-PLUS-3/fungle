@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import CommunityPostForm from "../../../components/CommunityPostForm";
 import { useRouter } from "next/navigation";
+import { ErrorMessage } from "./CommunityEdit.styled";
 
 type PostData = {
   title: string;
@@ -10,6 +11,7 @@ type PostData = {
 };
 const CommunityEdit = ({ postId }: { postId: string }) => {
   const [postData, setPostData] = useState<PostData | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -28,7 +30,15 @@ const CommunityEdit = ({ postId }: { postId: string }) => {
           content: postData.content,
           fields: postData.recruitmentNames,
         });
-      } catch {}
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+          setErrorMessage(
+            "게시글을 불러오는 중 알 수 없는 오류가 발생했습니다."
+          );
+        }
+      }
     };
 
     fetchPostData();
@@ -75,13 +85,19 @@ const CommunityEdit = ({ postId }: { postId: string }) => {
   };
 
   return (
-    <CommunityPostForm
-      mode="edit"
-      initalTitle={postData?.title}
-      initalContent={postData?.content}
-      initalSelectedFields={initialSelectedFields}
-      onSubmit={handleEdit}
-    />
+    <>
+      {errorMessage ? (
+        <ErrorMessage>{errorMessage}</ErrorMessage>
+      ) : (
+        <CommunityPostForm
+          mode="edit"
+          initalTitle={postData?.title}
+          initalContent={postData?.content}
+          initalSelectedFields={initialSelectedFields}
+          onSubmit={handleEdit}
+        />
+      )}
+    </>
   );
 };
 
