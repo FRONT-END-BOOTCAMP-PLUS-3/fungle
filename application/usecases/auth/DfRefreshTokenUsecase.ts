@@ -26,7 +26,7 @@ export class DfRefreshTokenUsecase implements IRefreshTokenUsecase {
 
     // db에 저장된 refresh token 조회
     const storedToken = await this.authRepository.findRefreshTokenByUserId(
-      decoded.id
+      decoded.userId
     );
 
     if (!storedToken || storedToken !== refreshToken) {
@@ -39,7 +39,10 @@ export class DfRefreshTokenUsecase implements IRefreshTokenUsecase {
     const newRefreshToken = generateRefreshToken(decoded.userId);
 
     // 새로운 refresh token으로 업데이트
-    await this.authRepository.updateRefreshToken(decoded.id, newRefreshToken);
+    await this.authRepository.updateRefreshToken(
+      decoded.userId,
+      newRefreshToken
+    );
 
     return { accessToken: newAccessToken, newRefreshToken };
   }
