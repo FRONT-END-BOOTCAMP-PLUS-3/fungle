@@ -7,6 +7,7 @@ import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
 
 import { useEffect, useState } from "react";
 import { ButtonBox, TextAreaWrapper, Form } from "./CommunityPostForm.styled";
+import { ErrorMessage } from "../[id]/edit/components/CommunityEdit.styled";
 
 type CommunityPostFormProps = {
   mode: "create" | "edit";
@@ -68,6 +69,17 @@ const CommunityPostForm = ({
     if (!title || !content || selectedFields.length === 0) {
       return alert("모든 값을 입력해주세요");
     }
+
+    const isTitleSame = title === initalTitle;
+    const isContentSame = content === initalContent;
+    const isFieldsSame =
+      JSON.stringify([...selectedFields].sort()) ===
+      JSON.stringify([...initalSelectedFields].sort());
+
+    if (isTitleSame && isContentSame && isFieldsSame) {
+      return alert("변경된 내용이 없습니다.");
+    }
+
     try {
       await onSubmit(title, content, selectedFields);
     } catch (error: unknown) {
@@ -81,36 +93,39 @@ const CommunityPostForm = ({
 
   return (
     <>
-      {errorMessage && <div>{errorMessage}</div>}
-      <Form onSubmit={handleSubmit}>
-        <div>
-          <Input
-            label="제목"
-            hideLabel={true}
-            placeholder="제목을 입력해주세요"
-            onChange={handleTitleChange}
-            value={title}
-          />
-        </div>
+      {errorMessage ? (
+        <ErrorMessage>{errorMessage}</ErrorMessage>
+      ) : (
+        <Form onSubmit={handleSubmit}>
+          <div>
+            <Input
+              label="제목"
+              hideLabel={true}
+              placeholder="제목을 입력해주세요"
+              onChange={handleTitleChange}
+              value={title}
+            />
+          </div>
 
-        <Dropdown
-          options={RECRUITMENT_FIELDS}
-          onSelect={handleSelect}
-          selected={selectedFields}
-        />
-        <TextAreaWrapper>
-          <Textarea
-            ariaLabel="게시글 내용"
-            onChange={handleChangeContent}
-            height="100%"
-            defaultValue={content}
+          <Dropdown
+            options={RECRUITMENT_FIELDS}
+            onSelect={handleSelect}
+            selected={selectedFields}
           />
-          <ButtonBox>
-            <Button backgroudColor={"white"}>취소</Button>
-            <Button>{mode === "create" ? "작성" : "수정"}</Button>
-          </ButtonBox>
-        </TextAreaWrapper>
-      </Form>
+          <TextAreaWrapper>
+            <Textarea
+              ariaLabel="게시글 내용"
+              onChange={handleChangeContent}
+              height="100%"
+              defaultValue={content}
+            />
+            <ButtonBox>
+              <Button backgroudColor={"white"}>취소</Button>
+              <Button>{mode === "create" ? "작성" : "수정"}</Button>
+            </ButtonBox>
+          </TextAreaWrapper>
+        </Form>
+      )}
     </>
   );
 };

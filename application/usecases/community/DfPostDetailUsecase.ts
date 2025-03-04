@@ -10,7 +10,7 @@ export class DfPostDetailUsecase {
 
   async execute(id: number): Promise<PostWithLikesAndUserNicknameDto> {
     try {
-      const post = await this.postRepository.findPost(id);
+      const post = await this.postRepository.findPostWithPostLike(id);
 
       if (!post) {
         throw new Error("Post not found");
