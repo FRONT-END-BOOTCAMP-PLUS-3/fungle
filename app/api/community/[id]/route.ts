@@ -6,9 +6,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   requets: NextRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } }
 ) => {
-  const { id } = params;
+  const { id } = await params;
 
   if (!id) return "ID가 없습니다.";
 
@@ -23,6 +23,7 @@ export const GET = async (
 
     const postDetail = await postDetailUsecase.execute(id);
 
+    console.log(postDetail);
     return NextResponse.json(postDetail);
   } catch (error: unknown) {
     let message = "Unknown error";
