@@ -28,6 +28,7 @@ export class DfPostDetailUsecase {
         view: post.view,
         userNickname: user?.nickname,
         likes: post._count?.communityPostLikes || 0,
+        likedUserId: post.communityPostLikes.map((like) => like.userId),
       };
 
       return postDetail;

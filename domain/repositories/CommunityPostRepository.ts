@@ -12,6 +12,11 @@ export type PostWithRelations = Prisma.CommunityPostGetPayload<{
 
 export type PostWithPostLikes = Prisma.CommunityPostGetPayload<{
   include: {
+    communityPostLikes: {
+      select: {
+        userId: true;
+      };
+    };
     _count: {
       select: {
         communityPostLikes: true;
