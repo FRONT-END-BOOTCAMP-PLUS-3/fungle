@@ -38,12 +38,7 @@ const ProfilePostList = () => {
         if (!response.ok) throw new Error("게시글을 불러오는 데 실패했습니다.");
 
         const data = await response.json();
-        // 시간 내림차순 정렬
-        const sortedPosts = data.posts.sort(
-          (a: PostWithRecruitmentDto, b: PostWithRecruitmentDto) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        setPosts(sortedPosts);
+        setPosts(data.posts);
       } catch (error) {
         setError("게시글을 불러오는 중 오류가 발생했습니다.");
       }
