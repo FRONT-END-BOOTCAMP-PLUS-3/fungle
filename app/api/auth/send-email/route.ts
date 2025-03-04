@@ -1,4 +1,4 @@
-import { PrVerificationRepository } from "@/infrastructure/repositories/PrVerificationRepository";
+import { IMVerificationRepository } from "@/infrastructure/repositories/IMVerificationRepository";
 import { SendEmailUseCase } from "@/application/usecases/auth/DfSendEmailUsecase";
 import { DfGenerateVerificationCodeUseCase } from "@/application/usecases/auth/DfGenerateVerifyCodeUsecase";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const { email } = request;
 
     // ✅ 인스턴스 생성 (함수 내부에서 생성하도록 변경)
-    const verificationRepository = new PrVerificationRepository();
+    const verificationRepository = IMVerificationRepository.getInstance();
     const generateVerificationCodeUseCase =
       new DfGenerateVerificationCodeUseCase();
     const sendEmailUseCase = new SendEmailUseCase(
