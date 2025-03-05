@@ -20,7 +20,7 @@ const banners: Banner[] = [
 
 const BannerWrapper = styled.div`
   width: 100%;
-  margin: 20px auto;
+  margin: 1.25rem auto;
 `;
 
 const StyledImage = styled.img`
