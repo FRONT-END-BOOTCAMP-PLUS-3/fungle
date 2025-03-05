@@ -1,4 +1,4 @@
-import { Novel, Prisma } from "@prisma/client"; 
+import { Novel, Prisma } from "@prisma/client";
 
 export interface NovelRepository {
   createNovel(data: {
@@ -13,4 +13,5 @@ export interface NovelRepository {
   getNovelById(novelId: number): Promise<Novel | null>;
 
   addGenres(novelId: number, genres: number[]): Promise<Prisma.BatchPayload>;
+  getNovelsByUserId(userId: string): Promise<Novel[] | null>;
 }
