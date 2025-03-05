@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   PostBox,
   PostContent,
-  PostFooter,
   PostInfo,
   PostRecruitment,
   PostStatus,
@@ -12,6 +11,7 @@ import {
 } from "../community/components/CommunityPostList.styled";
 import { realTimeView } from "../community/utils/realTimeView";
 import {
+  CustomPostFooter,
   NoPosts,
   PostAndLikedListWrapper,
 } from "./PostAndLikedListWrapper.styled";
@@ -19,6 +19,7 @@ import useAuthStore from "@/store/useAuthStore";
 import { useEffect, useState } from "react";
 import { PostWithRecruitmentDto } from "@/application/usecases/community/dto/PostWithRecruitmentDto";
 import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
+import Button from "@/components/button/Button";
 
 const ProfilePostList = () => {
   const { user } = useAuthStore();
@@ -47,6 +48,10 @@ const ProfilePostList = () => {
     fetchPosts();
   }, [user]);
 
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
   if (posts.length === 0) return <NoPosts>작성한 게시글이 없습니다.</NoPosts>;
 
   return (
@@ -74,12 +79,15 @@ const ProfilePostList = () => {
                     .join(", ")}
                 </PostRecruitment>
               )}
-              <PostFooter>
+              <CustomPostFooter>
                 <PostInfo>
                   <PostUserNickname>{post.userNickname}</PostUserNickname>
                   <PostTime>{realTimeView(new Date(post.createdAt))}</PostTime>
                 </PostInfo>
-              </PostFooter>
+                <Button buttonSize="small" onClick={handleButtonClick}>
+                  모집 완료
+                </Button>
+              </CustomPostFooter>
             </PostBox>
           </Link>
         </PostAndLikedListWrapper>
