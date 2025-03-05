@@ -21,7 +21,6 @@ const Textarea = ({
 }: TextareaProps) => {
   return (
     <>
-      <Label />
       <TextareaComponent
         placeholder={placeholder}
         width={width}
