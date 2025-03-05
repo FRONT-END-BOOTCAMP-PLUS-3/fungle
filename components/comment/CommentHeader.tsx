@@ -27,7 +27,7 @@ const CommentHeader = ({ postId }: { postId: string }) => {
       }
     };
     fetchCommentsCounts();
-  }, [postId]);
+  }, [postId, trigger]);
   const handleComment = () => {
     setIsOpenTextarea((prev) => !prev);
   };
