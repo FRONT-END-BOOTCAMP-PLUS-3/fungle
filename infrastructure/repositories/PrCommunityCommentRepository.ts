@@ -65,4 +65,38 @@ export class PrCommunityCommentRepository
       throw new Error("infra : 댓글을 작성하는 데 실패했습니다.");
     }
   }
+
+  async commentUpdate(
+    id: string,
+    userId: string,
+    content: string
+  ): Promise<boolean> {
+    const commentId = Number(id);
+    try {
+      const existingComment = await prisma.communityComment.findUnique({
+        where: { id: commentId },
+      });
+
+      if (!existingComment) {
+        throw new Error("댓글을 찾을 수 없습니다.");
+      }
+
+      if (existingComment.userId !== userId) {
+        throw new Error("댓글 작성자만 수정할 수 있습니다.");
+      }
+
+      await prisma.communityComment.update({
+        where: { id: commentId },
+        data: { comment: content },
+      });
+
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("infra: 알 수 없는 오류가 발생했습니다.");
+      }
+    }
+  }
 }
