@@ -294,4 +294,25 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
       throw new Error("게시글 조회 중 오류가 발생했습니다.");
     }
   }
+
+  async updatePostStatus(userId: string, postId: number): Promise<void> {
+    try {
+      const post = await prisma.communityPost.findUnique({
+        where: { id: postId, userId },
+      });
+
+      if (!post) {
+        throw new Error("게시글을 찾을 수 없습니다.");
+      }
+
+      if (post.status === "recruiting") {
+        await prisma.communityPost.update({
+          where: { id: postId },
+          data: { status: "completed" },
+        });
+      }
+    } catch {
+      throw new Error("게시글 모집 상태 변경에 실패했습니다.");
+    }
+  }
 }
