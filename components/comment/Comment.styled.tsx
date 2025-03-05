@@ -1,6 +1,11 @@
 "use client";
 import styled from "styled-components";
 
+export const CommentFlexWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+`;
 export const CommunityLikeButton = styled.button`
   display: flex;
   gap: 0.3125rem;
