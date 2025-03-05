@@ -9,6 +9,7 @@ export const FilterContainer = styled.div`
 
 export const DropdownWrapper = styled.div`
    width: 25%;
+  
   `
 ;
 

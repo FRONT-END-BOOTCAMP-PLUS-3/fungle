@@ -7,6 +7,7 @@ import { Container, SectionTitle } from "@/app/user/novel/NovelPage.styled";
 import SearchBook from "@/app/user/novel/component/SearchBook";
 import SerialDayBook from "@/app/user/novel/component/SerialDayBook";
 import Top10List from "@/app/user/novel/component/Top10";
+import FloatingButton from "./component/FloatingButton";
 
 const Page = () => {
   const [selectedOption, setSelectedOption] = useState("genre");
@@ -34,6 +35,8 @@ const Page = () => {
       <SectionTitle>Top 10</SectionTitle>
       <Top10List />
 
+      <FloatingButton />
+      
     </Container>
   );
 };

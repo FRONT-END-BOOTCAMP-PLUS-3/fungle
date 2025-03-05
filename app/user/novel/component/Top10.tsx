@@ -7,7 +7,7 @@ const Top10List = () => {
   return (
     <>
       <ListContainer>
-        {[1, 2, 3, 4].map((rank, index, array) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9 ,10].map((rank, index, array) => (
           <ListItem key={rank} $isLast={index === array.length - 1}>
             <span className="rank">{rank}</span>
             <div className="thumbnail">
