@@ -19,7 +19,6 @@ const LikeButton = ({ novelId, initialLikeCount }: LikeButtonProps) => {
     try {
       const response = await fetch(`/api/novel/like`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ novelId }),
       });
