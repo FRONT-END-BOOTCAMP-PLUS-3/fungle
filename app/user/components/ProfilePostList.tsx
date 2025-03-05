@@ -48,9 +48,38 @@ const ProfilePostList = () => {
     fetchPosts();
   }, [user]);
 
-  const handleButtonClick = (e: React.MouseEvent) => {
+  const handleButtonClick = async (e: React.MouseEvent, postId: number) => {
     e.preventDefault();
-    confirm("상태를 모집 완료로 변경하시겠습니까?");
+
+    const isConfirmed = confirm("상태를 모집 완료로 변경하시겠습니까?");
+    if (!isConfirmed) return;
+
+    try {
+      const response = await fetch("/api/user/community", {
+        method: "PATCH",
+        credentials: "include",
+        body: JSON.stringify({
+          postId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("모집 상태 변경에 실패했습니다.");
+      }
+
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId ? { ...post, status: "completed" } : post
+        )
+      );
+
+      const result = await response.json();
+      alert(result.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    }
   };
 
   if (posts.length === 0) return <NoPosts>작성한 게시글이 없습니다.</NoPosts>;
@@ -86,7 +115,10 @@ const ProfilePostList = () => {
                   <PostTime>{realTimeView(new Date(post.createdAt))}</PostTime>
                 </PostInfo>
                 {post.status === "recruiting" ? (
-                  <Button buttonSize="small" onClick={handleButtonClick}>
+                  <Button
+                    buttonSize="small"
+                    onClick={(e) => handleButtonClick(e, post.id)}
+                  >
                     모집 완료
                   </Button>
                 ) : (
