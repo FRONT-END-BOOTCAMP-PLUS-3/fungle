@@ -79,31 +79,35 @@ const ProfileNovelList = () => {
                 height={80}
                 className="episode-img"
               />
-              <div className="episode-info">
-                <Link href={`/user/novel/${novel.id}`} passHref>
-                  <p className="episode-title">{novel.title}</p>
-                </Link>
-                <p className="episode-date">{novel.createdAt.toString()}</p>
+              <div className="novel-title-status">
+                <div className="episode-info">
+                  <div className="novel-title">
+                    <Link href={`/user/novel/${novel.id}`} passHref>
+                      <p className="episode-title">{novel.title}</p>
+                    </Link>
+                    <ArrowWrapper
+                      onClick={() => toggleOpen(novel.id)}
+                      $isOpen={!!isOpenMap[novel.id]}
+                    >
+                      <Image
+                        src={"/icon/dropdown_arrow.svg"}
+                        alt="소설 검토 상태 확인"
+                        width={12}
+                        height={6}
+                      />
+                    </ArrowWrapper>
+                  </div>
+                </div>
+                <div className="novel-manage">
+                  <p className="episode-date">{novel.createdAt.toString()}</p>
+                  <ButtonWrapper>
+                    <Button buttonSize="small">연재 상태</Button>
+                    <Button buttonSize="xsmall" backgroudColor="leave">
+                      삭제
+                    </Button>
+                  </ButtonWrapper>
+                </div>
               </div>
-            </div>
-            <div className="novel-manage">
-              <ArrowWrapper
-                onClick={() => toggleOpen(novel.id)}
-                $isOpen={!!isOpenMap[novel.id]}
-              >
-                <Image
-                  src={"/icon/dropdown_arrow.svg"}
-                  alt="소설 검토 상태 확인"
-                  width={12}
-                  height={6}
-                />
-              </ArrowWrapper>
-              <ButtonWrapper>
-                <Button buttonSize="small">연재 상태</Button>
-                <Button buttonSize="xsmall" backgroudColor="leave">
-                  삭제
-                </Button>
-              </ButtonWrapper>
             </div>
           </ProfileNovelItem>
 
