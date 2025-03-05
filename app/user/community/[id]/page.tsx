@@ -3,7 +3,6 @@ import { Main } from "./CommunityDetailPage.styled";
 import CommunityPostHeader from "./components/CommunityPostHeader";
 import CommunityPostContent from "./components/CommunityPostContent";
 import CommentHeader from "@/components/comment/CommentHeader";
-import Comment from "@/components/comment/Comment";
 
 interface PageParams {
   params: Promise<{ id: string }>;
@@ -40,8 +39,6 @@ const Page = async ({ params }: PageParams) => {
       <CommunityPostContent postDetail={post} />
 
       <CommentHeader postId={postId} />
-
-      <Comment postId={postId} />
     </Main>
   );
 };
