@@ -50,6 +50,7 @@ const ProfilePostList = () => {
 
   const handleButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    confirm("상태를 모집 완료로 변경하시겠습니까?");
   };
 
   if (posts.length === 0) return <NoPosts>작성한 게시글이 없습니다.</NoPosts>;
@@ -84,9 +85,13 @@ const ProfilePostList = () => {
                   <PostUserNickname>{post.userNickname}</PostUserNickname>
                   <PostTime>{realTimeView(new Date(post.createdAt))}</PostTime>
                 </PostInfo>
-                <Button buttonSize="small" onClick={handleButtonClick}>
-                  모집 완료
-                </Button>
+                {post.status === "recruiting" ? (
+                  <Button buttonSize="small" onClick={handleButtonClick}>
+                    모집 완료
+                  </Button>
+                ) : (
+                  ""
+                )}
               </CustomPostFooter>
             </PostBox>
           </Link>
