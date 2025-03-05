@@ -52,7 +52,7 @@ const CommentHeader = ({ postId }: { postId: string }) => {
         />
       </TextareaWrapper>
 
-      <Comment postId={postId} trigger={trigger} />
+      <Comment postId={postId} trigger={trigger} setTrigger={setTrigger} />
     </CommentSection>
   );
 };

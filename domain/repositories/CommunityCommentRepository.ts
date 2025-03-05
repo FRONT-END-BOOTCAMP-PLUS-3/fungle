@@ -21,4 +21,5 @@ export interface CommunityCommentRepository {
   findAll(postId: string): Promise<CommentWithRelations[]>;
   commentCount(postId: string): Promise<number>;
   create(id: string, userId: string, comment: string): Promise<boolean>;
+  commentUpdate(id: string, userId: string, content: string): Promise<boolean>;
 }

@@ -19,6 +19,8 @@ import MoreOptionsMenu from "@/app/user/community/components/MoreOptionMenu";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/utils/date/formatDate";
 import { CommunityComment } from "@prisma/client";
+import CommunityCommentEdit from "@/app/user/community/components/CommunityCommentEdit";
+import useAuthStore from "@/store/useAuthStore";
 
 type CommentsWithNickname = CommunityComment & {
   userNickname: string;
@@ -27,11 +29,22 @@ type CommentsWithNickname = CommunityComment & {
   replies: number | 0;
 };
 
-const Comment = ({ postId, trigger }: { postId: string; trigger: boolean }) => {
+const Comment = ({
+  postId,
+  trigger,
+  setTrigger,
+}: {
+  postId: string;
+  trigger: boolean;
+  setTrigger: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [comments, setComments] = useState<CommentsWithNickname[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
 
+  const { user } = useAuthStore();
+  const userId = user?.id;
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -57,6 +70,10 @@ const Comment = ({ postId, trigger }: { postId: string; trigger: boolean }) => {
     fetchComments();
   }, [postId, trigger]);
 
+  const handleEdit = (commentId: number) => {
+    setEditingCommentId(commentId);
+  };
+
   if (loading) {
     return <main>로딩 중...</main>;
   }
@@ -72,6 +89,10 @@ const Comment = ({ postId, trigger }: { postId: string; trigger: boolean }) => {
     }
   };
 
+  const handleCancelEdit = () => {
+    setEditingCommentId(null);
+  };
+
   return (
     <CommentFlexWrapper>
       {comments.map((comment) => {
@@ -80,64 +101,82 @@ const Comment = ({ postId, trigger }: { postId: string; trigger: boolean }) => {
 
         return (
           <CommunityPostCommentWrapper key={comment.id}>
-            <CommunityPostCommentInfo>
-              <CommunityPostCommentInfoBox>
-                <CommunityPostCommentProfile>
-                  <Image
-                    src={comment.profileImage}
-                    alt={`${comment.userNickname}님 프로필 사진`}
-                    fill
-                    style={{ objectFit: "cover" }}
-                  />
-                </CommunityPostCommentProfile>
-                <div style={{ lineHeight: "1.5" }}>
-                  <CommunityPostCommentAutor>
-                    {comment.userNickname}
-                  </CommunityPostCommentAutor>
-                  <CommunityPostCommentCreated>
-                    {createdAtFormatted}
-                  </CommunityPostCommentCreated>
-                </div>
-              </CommunityPostCommentInfoBox>
+            {editingCommentId === comment.id ? (
+              <CommunityCommentEdit
+                setTrigger={setTrigger}
+                commentContent={comment.comment}
+                commentId={comment.id}
+                onCancel={handleCancelEdit}
+              />
+            ) : (
+              <>
+                <CommunityPostCommentInfo>
+                  <CommunityPostCommentInfoBox>
+                    <CommunityPostCommentProfile>
+                      <Image
+                        src={comment.profileImage}
+                        alt={`${comment.userNickname}님 프로필 사진`}
+                        fill
+                        style={{ objectFit: "cover" }}
+                      />
+                    </CommunityPostCommentProfile>
+                    <div style={{ lineHeight: "1.5" }}>
+                      <CommunityPostCommentAutor>
+                        {comment.userNickname}
+                      </CommunityPostCommentAutor>
+                      <CommunityPostCommentCreated>
+                        {createdAtFormatted}
+                      </CommunityPostCommentCreated>
+                    </div>
+                  </CommunityPostCommentInfoBox>
 
-              <MoreOptionsMenu onDelete={handleDelete} />
-            </CommunityPostCommentInfo>
+                  {userId === comment.userId && (
+                    <MoreOptionsMenu
+                      mode="comment"
+                      onDelete={handleDelete}
+                      onEdit={() => handleEdit(comment.id)}
+                      isOwner={true}
+                    />
+                  )}
+                </CommunityPostCommentInfo>
 
-            <CommunityPostContent key={comment.id}>
-              {comment.comment}
-            </CommunityPostContent>
+                <CommunityPostContent key={comment.id}>
+                  {comment.comment}
+                </CommunityPostContent>
 
-            <CommunityCommentWrapper>
-              <CommunityCommentBox>
-                <CommunityLikeButton>
-                  <Image
-                    src="/icon/heart.svg"
-                    alt="좋아요 버튼"
-                    width={20}
-                    height={20}
-                  />
-                  {comment.likes} 개
-                </CommunityLikeButton>
-                <CommunityPostCommentReply>
-                  <Image
-                    src="/icon/talk.svg"
-                    alt="답글 버튼"
-                    width={20}
-                    height={20}
-                  />
-                  답글
-                </CommunityPostCommentReply>
-              </CommunityCommentBox>
-              <CommunityReplyButton>
-                <Image
-                  src="/icon/dropdown_arrow.svg"
-                  alt="답글 화살표"
-                  width={15}
-                  height={15}
-                />
-                답글 {comment.replies}개
-              </CommunityReplyButton>
-            </CommunityCommentWrapper>
+                <CommunityCommentWrapper>
+                  <CommunityCommentBox>
+                    <CommunityLikeButton>
+                      <Image
+                        src="/icon/heart.svg"
+                        alt="좋아요 버튼"
+                        width={20}
+                        height={20}
+                      />
+                      {comment.likes} 개
+                    </CommunityLikeButton>
+                    <CommunityPostCommentReply>
+                      <Image
+                        src="/icon/talk.svg"
+                        alt="답글 버튼"
+                        width={20}
+                        height={20}
+                      />
+                      답글
+                    </CommunityPostCommentReply>
+                  </CommunityCommentBox>
+                  <CommunityReplyButton>
+                    <Image
+                      src="/icon/dropdown_arrow.svg"
+                      alt="답글 화살표"
+                      width={15}
+                      height={15}
+                    />
+                    답글 {comment.replies}개
+                  </CommunityReplyButton>
+                </CommunityCommentWrapper>
+              </>
+            )}
           </CommunityPostCommentWrapper>
         );
       })}
