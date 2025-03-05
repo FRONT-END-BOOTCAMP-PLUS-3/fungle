@@ -3,7 +3,7 @@ import { UserRepository } from "@/domain/repositories/UserRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PUT = async (req: NextRequest) => {
+export const PATCH = async (req: NextRequest) => {
   try {
     // 로그인 된 사용자인지 검증
     const refreshToken = req.cookies.get("refreshToken")?.value;
