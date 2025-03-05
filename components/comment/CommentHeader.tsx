@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import Input from "../input/Input";
 import CommentCreateTextarea from "./CommentCreateTextarea";
 import { CommentSection, TextareaWrapper } from "./CommentHeader.styled";
-
+import Comment from "./Comment";
 const CommentHeader = ({ postId }: { postId: string }) => {
   const [isOpenTextarea, setIsOpenTextarea] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
-
+  const [trigger, setTrigger] = useState(false);
   useEffect(() => {
-    const fetchComments = async () => {
+    const fetchCommentsCounts = async () => {
       try {
         const response = await fetch(`/api/community/comment/${postId}`);
         const data = await response.json();
@@ -26,8 +26,8 @@ const CommentHeader = ({ postId }: { postId: string }) => {
         }
       }
     };
-    fetchComments();
-  }, [postId]);
+    fetchCommentsCounts();
+  }, [postId, trigger]);
   const handleComment = () => {
     setIsOpenTextarea((prev) => !prev);
   };
@@ -48,8 +48,11 @@ const CommentHeader = ({ postId }: { postId: string }) => {
           isOpenTextarea={isOpenTextarea}
           setIsOpenTextarea={setIsOpenTextarea}
           postId={postId}
+          setTrigger={setTrigger}
         />
       </TextareaWrapper>
+
+      <Comment postId={postId} trigger={trigger} />
     </CommentSection>
   );
 };

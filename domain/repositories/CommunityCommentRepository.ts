@@ -20,4 +20,5 @@ export type CommentWithRelations = Prisma.CommunityCommentGetPayload<{
 export interface CommunityCommentRepository {
   findAll(postId: string): Promise<CommentWithRelations[]>;
   commentCount(postId: string): Promise<number>;
+  create(id: string, userId: string, comment: string): Promise<boolean>;
 }

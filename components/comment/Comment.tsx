@@ -13,6 +13,7 @@ import {
   CommunityPostContent,
   CommunityReplyButton,
   CommunityPostCommentReply,
+  CommentFlexWrapper,
 } from "./Comment.styled";
 import MoreOptionsMenu from "@/app/user/community/components/MoreOptionMenu";
 import { useEffect, useState } from "react";
@@ -26,10 +27,11 @@ type CommentsWithNickname = CommunityComment & {
   replies: number | 0;
 };
 
-const Comment = ({ postId }: { postId: string }) => {
+const Comment = ({ postId, trigger }: { postId: string; trigger: boolean }) => {
   const [comments, setComments] = useState<CommentsWithNickname[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -52,9 +54,8 @@ const Comment = ({ postId }: { postId: string }) => {
         setLoading(false);
       }
     };
-
     fetchComments();
-  }, [postId]);
+  }, [postId, trigger]);
 
   if (loading) {
     return <main>로딩 중...</main>;
@@ -72,7 +73,7 @@ const Comment = ({ postId }: { postId: string }) => {
   };
 
   return (
-    <>
+    <CommentFlexWrapper>
       {comments.map((comment) => {
         const createdAtDate = new Date(comment.createdAt);
         const createdAtFormatted = formatDate(createdAtDate);
@@ -140,7 +141,7 @@ const Comment = ({ postId }: { postId: string }) => {
           </CommunityPostCommentWrapper>
         );
       })}
-    </>
+    </CommentFlexWrapper>
   );
 };
 
