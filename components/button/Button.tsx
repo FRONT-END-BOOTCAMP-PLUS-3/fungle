@@ -3,7 +3,7 @@ import { ButtonComponent } from "./Button.styled";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   fontSize?: "big" | "medium" | "small";
   buttonSize?: "big" | "medium" | "small" | "xsmall";
-  backgroudColor?: "primary" | "white" | "leave";
+  backgroudColor?: "primary" | "white" | "leave" | "success";
   disabled?: boolean;
   children?: React.ReactNode;
 }
