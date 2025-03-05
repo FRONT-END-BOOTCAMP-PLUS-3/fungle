@@ -1,6 +1,7 @@
 "use client";
 
 import { MyBookContainer, Card, SectionTitle } from "@/app/user/novel/component/MyBook.styled";
+import ProgressBar from "@/components/progressbar/ProgressBar";
 
 const books = [
   { id: 1, title: "제목", status: "complete", funding: 200000, progress: 80 },
@@ -10,38 +11,30 @@ const books = [
 
 const MyBook = () => {
   return (
-  <div>
-    <SectionTitle>내가 쓴 글</SectionTitle>
-    <MyBookContainer>
-      {books.map((book) => (
-        <Card key={book.id}>
-          <div className="thumbnail">
-            <img src="/image/book.svg" alt="소설 썸네일" />
-            <span className={`status ${book.status}`}>
-              {book.status === "complete" && "완결"}
-              {book.status === "paused" && "휴재중"}
-              {book.status === "serializing" && "연재중"}
-            </span>
-          </div>
-          <p className="title">{book.title}</p>
-          <div className="info">
-            <p>1단계 ⭐</p>
-            <p>펀딩금액 {book.funding.toLocaleString()}</p>
-          </div>
-          <div className="progress-container">
-            <div className="progress-bar">
-              <div
-                className="progress"
-                style={{ width: `${book.progress}%` }}
-              ></div>
+    <div>
+      <SectionTitle>내가 쓴 글</SectionTitle>
+      <MyBookContainer>
+        {books.map((book) => (
+          <Card key={book.id}>
+            <div className="thumbnail">
+              <img src="/image/book.svg" alt="소설 썸네일" />
+              <span className={`status ${book.status}`}>
+                {book.status === "complete" && "완결"}
+                {book.status === "paused" && "휴재중"}
+                {book.status === "serializing" && "연재중"}
+              </span>
             </div>
-          </div>
-        </Card>
-      ))}
-    </MyBookContainer>
-  </div>
+            <p className="title">{book.title}</p>
+            <div className="info">
+              <p>1단계 ⭐</p>
+              <p>펀딩금액 {book.funding.toLocaleString()}</p>
+            </div>
+            <ProgressBar progress={book.progress} />
+          </Card>
+        ))}
+      </MyBookContainer>
+    </div>
   );
 };
-
 
 export default MyBook;
