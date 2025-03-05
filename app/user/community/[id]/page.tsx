@@ -2,7 +2,7 @@ import { Main } from "./CommunityDetailPage.styled";
 
 import CommunityPostHeader from "./components/CommunityPostHeader";
 import CommunityPostContent from "./components/CommunityPostContent";
-import CommentCreate from "@/components/comment/CommentCreate";
+import CommentHeader from "@/components/comment/CommentHeader";
 import Comment from "@/components/comment/Comment";
 
 interface PageParams {
@@ -39,7 +39,7 @@ const Page = async ({ params }: PageParams) => {
 
       <CommunityPostContent postDetail={post} />
 
-      <CommentCreate post={post} />
+      <CommentHeader postId={postId} />
 
       <Comment postId={postId} />
     </Main>
