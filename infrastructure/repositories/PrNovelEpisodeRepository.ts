@@ -14,7 +14,7 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
       where: { id: episodeId },
       data: {
         view: {
-          increment: 1, 
+          increment: 1,
         },
       },
     });
@@ -24,16 +24,28 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
     return await prisma.novelEpisode.findMany({
       where: {
         novelId: novelId,
-        status: "approved", 
+        status: "approved",
       },
       orderBy: {
         createdAt: "asc",
       },
     });
   }
-  
 
-  async createEpisode(novelId: number, userId: string, episode: number, title: string, content: string): Promise<NovelEpisode> {
+  async getEpisodesByUserId(userId: string): Promise<NovelEpisode[] | null> {
+    return await prisma.novelEpisode.findMany({
+      where: { userId: userId },
+      orderBy: { createdAt: "asc" },
+    });
+  }
+
+  async createEpisode(
+    novelId: number,
+    userId: string,
+    episode: number,
+    title: string,
+    content: string
+  ): Promise<NovelEpisode> {
     return await prisma.novelEpisode.create({
       data: {
         novelId,

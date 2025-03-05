@@ -149,6 +149,11 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
       const post = await prisma.communityPost.findUnique({
         where: { id: postId },
         include: {
+          communityPostLikes: {
+            select: {
+              userId: true,
+            },
+          },
           _count: {
             select: {
               communityPostLikes: true,

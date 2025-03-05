@@ -6,8 +6,8 @@ import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelE
 import { PrGenreRepository } from "../repositories/PrGenreRepository";
 import { DfNovelByIdUseCase } from "@/application/usecases/novel/DfNovelUsecase";
 import { DfEpisodesByNovelIdUsecase } from "@/application/usecases/novel/DfEpisodesByNovelIdUsecase";
-import { DfEpisodeByIdUseCase } from "@/application/usecases/novel/DfEpisodeByIdUsecase";
-import { DfCreateNovelUseCase } from "@/application/usecases/novel/DfCreateNovelUsecase";
+import { DfEpisodeByIdUsecase } from "@/application/usecases/novel/DfEpisodeByIdUsecase";
+import { DfCreateNovelUsecase } from "@/application/usecases/novel/DfCreateNovelUsecase";
 import { DfCreateEpisodeUseCase } from "@/application/usecases/novel/DfCreateEpisodeUsecase"; 
 import { DfIncreaseViewCountUsecase } from "@/application/usecases/novel/DfIncreaseViewCountUsecase";
 import { FileService } from "@/infrastructure/services/FileService";
@@ -22,7 +22,7 @@ export const novelDi = {
   genreRepository: new PrGenreRepository(),
 
   getEpisodesByNovelIdUseCase: new DfEpisodesByNovelIdUsecase(new PrNovelEpisodeRepository()),
-  getEpisodeByIdUseCase: new DfEpisodeByIdUseCase(new PrNovelEpisodeRepository()),
+  getEpisodeByIdUseCase: new DfEpisodeByIdUsecase(new PrNovelEpisodeRepository()),
 
   getNovelByIdUseCase: new DfNovelByIdUseCase(
     new PrNovelRepository(),
@@ -32,7 +32,7 @@ export const novelDi = {
     new DfEpisodesByNovelIdUsecase(new PrNovelEpisodeRepository())
   ),
 
-  createNovelUseCase: new DfCreateNovelUseCase(
+  createNovelUseCase: new DfCreateNovelUsecase(
     new PrNovelRepository(),
     new PrGenreRepository(), 
     FileService 

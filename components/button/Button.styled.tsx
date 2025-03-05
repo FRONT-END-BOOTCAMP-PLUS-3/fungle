@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface ButtonProps {
   $fontSize?: "big" | "medium" | "small";
   $buttonSize?: "big" | "medium" | "small" | "xsmall";
-  $backgroundColor?: "primary" | "white" | "leave";
+  $backgroundColor?: "primary" | "white" | "leave" | "success";
   disabled?: boolean;
 }
 
@@ -24,6 +24,8 @@ export const ButtonComponent = styled.button<ButtonProps>`
       ? "var(--primary-color)"
       : props.$backgroundColor === "white"
       ? "var(--white-color)"
+      : props.$backgroundColor === "success"
+      ? "var(--success-color)"
       : "var(--leave-color)"};
   border: ${(props) =>
     props.$backgroundColor === "white" ? "1px solid var(--gray-500)" : "none"};

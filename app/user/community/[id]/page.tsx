@@ -2,8 +2,7 @@ import { Main } from "./CommunityDetailPage.styled";
 
 import CommunityPostHeader from "./components/CommunityPostHeader";
 import CommunityPostContent from "./components/CommunityPostContent";
-import CommentCreate from "@/components/comment/CommentCreate";
-import Comment from "@/components/comment/Comment";
+import CommentHeader from "@/components/comment/CommentHeader";
 
 interface PageParams {
   params: Promise<{ id: string }>;
@@ -39,9 +38,7 @@ const Page = async ({ params }: PageParams) => {
 
       <CommunityPostContent postDetail={post} />
 
-      <CommentCreate post={post} />
-
-      <Comment postId={postId} />
+      <CommentHeader postId={postId} />
     </Main>
   );
 };
