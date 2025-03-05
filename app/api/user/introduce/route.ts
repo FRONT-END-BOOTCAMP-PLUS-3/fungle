@@ -1,26 +1,18 @@
-import { DfVerifyRefreshToken } from "@/application/usecases/auth/DfVerifyRefreshToken";
 import { UserRepository } from "@/domain/repositories/UserRepository";
+import { userDi } from "@/infrastructure/config/userDi";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PATCH = async (req: NextRequest) => {
   try {
-    // 로그인 된 사용자인지 검증
-    const refreshToken = req.cookies.get("refreshToken")?.value;
-    if (!refreshToken) {
-      return NextResponse.json({ user: null }, { status: 401 });
-    }
-
-    const userRepository: UserRepository = new PrUserRepository();
-    const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-    const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
-
-    const userId = verifiedUser?.id;
-    const { introduce } = await req.json();
-
+    const userId = await userDi.getUserIdUsecase.execute(req);
     if (!userId) {
       return NextResponse.json({ error: "로그인이 되어 있지 않습니다." });
     }
+
+    const userRepository: UserRepository = new PrUserRepository();
+
+    const { introduce } = await req.json();
 
     await userRepository.updateIntroduce(userId, introduce);
     return NextResponse.json(
