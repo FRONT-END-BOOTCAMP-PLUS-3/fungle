@@ -162,6 +162,7 @@ model NovelEpisode {
   createdAt    DateTime       @default(now())
   title        String
   status       String         @default("pending")
+  isFinalEpisode  Boolean @default(false)
   novelComment NovelComment[]
   novel        Novel          @relation("NovelEpisodes", fields: [novelId], references: [id], onDelete: Cascade)
   user         User           @relation("UserNovelEpisodes", fields: [userId], references: [id], onDelete: Cascade)
