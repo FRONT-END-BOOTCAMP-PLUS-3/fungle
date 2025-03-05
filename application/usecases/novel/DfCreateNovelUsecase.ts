@@ -4,7 +4,7 @@ import { FileService } from "@/infrastructure/services/FileService";
 import { CreateNovelDto } from "@/application/usecases/novel/dto/CreateNovel";
 import { NovelResponseDto } from "@/application/usecases/novel/dto/NovelResponse";
 
-export class DfCreateNovelUseCase {
+export class DfCreateNovelUsecase {
   constructor(
     private novelRepository: NovelRepository,
     private genreRepository: GenreRepository,
