@@ -1,17 +1,23 @@
 "use client";
 
-import { ListContainer, ListItem } from "@/app/user/novel/NovelPage.styled";
+import { ListContainer, ListItem } from "@/app/user/novel/component/Top10.styled";
+import Image from "next/image";
 
 const Top10List = () => {
   return (
     <>
-      <h2>TOP 10</h2>
       <ListContainer>
         {[1, 2, 3, 4].map((rank, index, array) => (
           <ListItem key={rank} $isLast={index === array.length - 1}>
             <span className="rank">{rank}</span>
             <div className="thumbnail">
-              <img src="/bookCover/1740912955011-jojobook.jpg" alt="소설 썸네일" />
+            <Image 
+              src="/bookCover/1740912955011-jojobook.jpg" 
+              alt="소설 썸네일" 
+              width={60} 
+              height={80} 
+              objectFit="cover"
+            />
             </div>
             <div className="content">
               <p className="title">야구는 나쁜놈이 잘한다</p>

@@ -4,29 +4,36 @@ import BannerCarousel from "@/app/user/novel/component/BannerCarousel";
 import MyBook from "@/app/user/novel/component/MyBook";
 import { useState } from "react";
 import { Container, SectionTitle } from "@/app/user/novel/NovelPage.styled";
-import FilterComponent from "@/app/user/novel/component/SearchBook";
-import DaysComponent from "@/app/user/novel/component/SerialDay";
+import SearchBook from "@/app/user/novel/component/SearchBook";
+import SerialDayBook from "@/app/user/novel/component/SerialDayBook";
 import Top10List from "@/app/user/novel/component/Top10";
 
 const Page = () => {
-  const [selectedOption, setSelectedOption] = useState("latest");
+  const [selectedOption, setSelectedOption] = useState("genre");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDay, setSelectedDay] = useState<string>("수"); 
 
   return (
     <Container>
+
       <BannerCarousel />
+
+      <SectionTitle>내가 쓴 글</SectionTitle>
       <MyBook />
-      <FilterComponent 
+
+      <SearchBook 
         selectedOption={selectedOption} 
         setSelectedOption={setSelectedOption} 
         searchQuery={searchQuery} 
         setSearchQuery={setSearchQuery} 
       />
 
-      <DaysComponent selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
+      <SectionTitle>요일별 연재</SectionTitle>
+      <SerialDayBook selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
 
+      <SectionTitle>Top 10</SectionTitle>
       <Top10List />
+
     </Container>
   );
 };

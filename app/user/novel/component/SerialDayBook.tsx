@@ -1,6 +1,7 @@
 "use client";
 
-import { DaysContainer, Day, GridContainer, Card } from "@/app/user/novel/NovelPage.styled";
+import Image from "next/image";
+import { DaysContainer, Day, GridContainer, Card } from "@/app/user/novel/component/SerialDayBook.styled";
 import ProgressBar from "@/components/progressbar/ProgressBar";
 
 interface DaysProps {
@@ -8,10 +9,9 @@ interface DaysProps {
   setSelectedDay: (value: string) => void;
 }
 
-const DaysComponent = ({ selectedDay, setSelectedDay }: DaysProps) => {
+const SerialDayBook = ({ selectedDay, setSelectedDay }: DaysProps) => {
   return (
     <>
-      <h2>요일별 연재</h2>
       <DaysContainer>
         {["월", "화", "수", "목", "금", "토", "일"].map((day) => (
           <Day key={day} $active={selectedDay === day} onClick={() => setSelectedDay(day)}>
@@ -23,7 +23,13 @@ const DaysComponent = ({ selectedDay, setSelectedDay }: DaysProps) => {
         {[1, 2, 3, 4, 5, 6].map((item) => (
           <Card key={item}>
             <div className="thumbnail">
-              <img src="/bookCover/1740912955011-jojobook.jpg" alt="소설 썸네일" />
+              <Image 
+                src="/bookCover/1740912955011-jojobook.jpg" 
+                alt="소설 썸네일"
+                width={120} 
+                height={160} 
+                layout="responsive"
+              />
             </div>
             <div className="content">
               <p className="title">나쁜 남자가 끌리는 이유</p>
@@ -41,4 +47,4 @@ const DaysComponent = ({ selectedDay, setSelectedDay }: DaysProps) => {
   );
 };
 
-export default DaysComponent;
+export default SerialDayBook;

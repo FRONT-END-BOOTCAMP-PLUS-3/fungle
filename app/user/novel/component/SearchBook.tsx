@@ -2,7 +2,8 @@
 
 import Dropdown from "@/components/dropdown/Dropdown";
 import Input from "@/components/input/Input";
-import { FilterContainer, DropdownWrapper, SearchWrapper } from "@/app/user/novel/NovelPage.styled";
+import { FilterContainer, DropdownWrapper, SearchWrapper } from "@/app/user/novel/component/SearchBook.styled";
+import { SEARCH_OPTIONS } from "@/constants/SEARCH_OPTIONS";
 
 interface FilterProps {
   selectedOption: string;
@@ -11,17 +12,11 @@ interface FilterProps {
   setSearchQuery: (value: string) => void;
 }
 
-const options = [
-  { value: "genre", label: "장르" },
-  { value: "title", label: "제목" },
-  { value: "author", label: "작가명" },
-];
-
-const FilterComponent = ({ selectedOption, setSelectedOption, searchQuery, setSearchQuery }: FilterProps) => {
+const SearchBook = ({ selectedOption, setSelectedOption, searchQuery, setSearchQuery }: FilterProps) => {
   return (
     <FilterContainer>
       <DropdownWrapper>
-        <Dropdown options={options} onSelect={setSelectedOption} selected={selectedOption} />
+        <Dropdown options={SEARCH_OPTIONS} onSelect={setSelectedOption} selected={selectedOption} />
       </DropdownWrapper>
       <SearchWrapper>
         <Input
@@ -36,4 +31,4 @@ const FilterComponent = ({ selectedOption, setSelectedOption, searchQuery, setSe
   );
 };
 
-export default FilterComponent;
+export default SearchBook;

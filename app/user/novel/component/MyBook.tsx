@@ -1,6 +1,7 @@
 "use client";
 
-import { MyBookContainer, Card, SectionTitle } from "@/app/user/novel/component/MyBook.styled";
+import Image from "next/image";
+import { MyBookContainer, Card } from "@/app/user/novel/component/MyBook.styled";
 import ProgressBar from "@/components/progressbar/ProgressBar";
 
 const books = [
@@ -12,12 +13,17 @@ const books = [
 const MyBook = () => {
   return (
     <div>
-      <SectionTitle>내가 쓴 글</SectionTitle>
       <MyBookContainer>
         {books.map((book) => (
           <Card key={book.id}>
             <div className="thumbnail">
-              <img src="/image/book.svg" alt="소설 썸네일" />
+              <Image 
+                src="/image/book.svg" 
+                alt="소설 썸네일" 
+                width={120} 
+                height={160} 
+                layout="responsive"
+              />
               <span className={`status ${book.status}`}>
                 {book.status === "complete" && "완결"}
                 {book.status === "paused" && "휴재중"}
