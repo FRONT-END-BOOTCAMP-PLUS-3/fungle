@@ -10,84 +10,123 @@ import {
 } from "./ProfileNovelList.styled";
 import { useEffect, useRef, useState } from "react";
 import Button from "@/components/button/Button";
+import { NovelEpisodesByUserIdDto } from "@/application/usecases/novel/dto/NovelEpisodesByUserId";
+import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
 
 const ProfileNovelList = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const episodeListRef = useRef<HTMLUListElement>(null);
+  const [isOpenMap, setIsOpenMap] = useState<{ [key: string]: boolean }>({});
+  const [novels, setNovels] = useState<
+    (NovelsByUserIdDto & { episodes: NovelEpisodesByUserIdDto[] })[]
+  >([]);
 
-  const toggleOpen = () => {
-    setIsOpen((prev) => !prev);
-  };
+  const episodeListRefs = useRef<{ [key: number]: HTMLUListElement | null }>(
+    {}
+  );
 
   useEffect(() => {
-    if (isOpen && episodeListRef.current) {
-      episodeListRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+    const fetchNovelData = async () => {
+      const response = await fetch("/api/user/novel", {
+        method: "GET",
+        credentials: "include",
       });
-    }
-  }, [isOpen]);
+
+      const data = await response.json();
+      const formattedData = data.novels.map((novel: NovelsByUserIdDto) => ({
+        ...novel,
+        createdAt: new Date(novel.createdAt).toLocaleDateString("ko-KR", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
+      }));
+
+      setNovels(formattedData);
+    };
+
+    fetchNovelData();
+  }, []);
+
+  const toggleOpen = (novelId: number) => {
+    setIsOpenMap((prev) => {
+      const newState = {
+        ...prev,
+        [novelId]: !prev[novelId],
+      };
+
+      if (!prev[novelId]) {
+        setTimeout(() => {
+          episodeListRefs.current[novelId]?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 100);
+      }
+
+      return newState;
+    });
+  };
 
   return (
-    // <EpisodeItem key={episode.id}>
     <div>
-      <ProfileNovelItem>
-        {/* <Link href={`/user/novel/${novel.id}`} passHref> */}
-        <div className="novel-wrapper">
-          <Image
-            src="/image/book.svg"
-            // alt={episode.title}
-            alt="소설 제목"
-            width={80}
-            height={80}
-            className="episode-img"
-          />
-          <div className="episode-info">
-            {/* <Link href={`/user/novel/${novel.id}`} passHref> */}
-            <Link href={`/user/novel/1`} passHref>
-              <p className="episode-title">
-                {/* {index + 1}화 {episode.title} */}
-                소설 제목
-              </p>
-            </Link>
-            {/* <p className="episode-date">{episode.createdAt}</p> */}
-            <p className="episode-date">날짜</p>
-          </div>
-        </div>
-        <div className="novel-manage">
-          <ArrowWrapper onClick={toggleOpen} $isOpen={isOpen}>
-            <Image
-              src={"/icon/dropdown_arrow.svg"}
-              alt="소설 검토 상태 확인"
-              width={12}
-              height={6}
-            />
-          </ArrowWrapper>
-          <ButtonWrapper>
-            <Button buttonSize="small">연재 상태</Button>
-            <Button buttonSize="xsmall" backgroudColor="leave">
-              삭제
-            </Button>
-          </ButtonWrapper>
-        </div>
-      </ProfileNovelItem>
+      {novels.map((novel) => (
+        <div key={novel.id}>
+          <ProfileNovelItem key={novel.id}>
+            <div className="novel-wrapper">
+              <Image
+                src={novel.image || "/image/book.svg"}
+                alt={novel.title}
+                width={80}
+                height={80}
+                className="episode-img"
+              />
+              <div className="episode-info">
+                <Link href={`/user/novel/${novel.id}`} passHref>
+                  <p className="episode-title">{novel.title}</p>
+                </Link>
+                <p className="episode-date">{novel.createdAt.toString()}</p>
+              </div>
+            </div>
+            <div className="novel-manage">
+              <ArrowWrapper
+                onClick={() => toggleOpen(novel.id)}
+                $isOpen={!!isOpenMap[novel.id]}
+              >
+                <Image
+                  src={"/icon/dropdown_arrow.svg"}
+                  alt="소설 검토 상태 확인"
+                  width={12}
+                  height={6}
+                />
+              </ArrowWrapper>
+              <ButtonWrapper>
+                <Button buttonSize="small">연재 상태</Button>
+                <Button buttonSize="xsmall" backgroudColor="leave">
+                  삭제
+                </Button>
+              </ButtonWrapper>
+            </div>
+          </ProfileNovelItem>
 
-      {isOpen && (
-        <EpisodeList ref={episodeListRef}>
-          <EpisodeWrapper>
-            <li>1화 어쩌구저쩌구</li>
-            <EpisodeStatus>검토 대기</EpisodeStatus>
-          </EpisodeWrapper>
-          <EpisodeWrapper>
-            <li>2화 짱이 될테야</li>
-            <EpisodeStatus>검토 대기</EpisodeStatus>
-          </EpisodeWrapper>
-          <EpisodeWrapper>
-            <li>3화 몽돌키보드 소리 좋네요..</li>
-            <EpisodeStatus>검토 대기</EpisodeStatus>
-          </EpisodeWrapper>
-        </EpisodeList>
-      )}
+          {isOpenMap[novel.id] &&
+            novel.episodes.map((episode) => (
+              <EpisodeList
+                ref={(el) => {
+                  episodeListRefs.current[novel.id] = el;
+                }}
+                key={episode.id}
+              >
+                <EpisodeWrapper>
+                  <li>
+                    {episode.id}화 {episode.title}
+                  </li>
+                  <EpisodeStatus status={episode.status}>
+                    {episode.statusLabel}
+                  </EpisodeStatus>
+                </EpisodeWrapper>
+              </EpisodeList>
+            ))}
+        </div>
+      ))}
     </div>
   );
 };

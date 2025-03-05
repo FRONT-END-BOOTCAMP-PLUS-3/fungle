@@ -60,10 +60,15 @@ export const EpisodeWrapper = styled.div`
   }
 `;
 
-export const EpisodeStatus = styled.div`
+export const EpisodeStatus = styled.div<{ status: string }>`
   width: 4rem;
   border-radius: 0.625rem;
-  background-color: var(--gray-500);
+  background-color: ${({ status }) =>
+    status === "pending"
+      ? "var(--gray-500)"
+      : status === "approved"
+      ? "var(--success-color)"
+      : "var(--leave-color)"};
   color: var(--white-color);
   font-size: var(--font-size-sm);
   font-weight: 600;
