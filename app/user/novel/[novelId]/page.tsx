@@ -9,6 +9,7 @@ import { Main, GradientWrapper, NovelHeader, StatusSection, Badge, UploadInfo, A
 import { GENRES } from "@/constants/GENRES";
 import { SERIAL_STATUS } from "@/constants/STATUS";
 import { SERIAL_DAY } from "@/constants/SERIAL_DAY";
+import LikeButton from "../component/NovelLikeButton";
 
 const Page = () => {
   const params = useParams();
@@ -114,8 +115,7 @@ const Page = () => {
               </div>
 
               <div>
-                <Image src="/icon/heart.svg" alt="좋아요" width={30} height={30} />
-                {novel.likeCount}
+                <LikeButton novelId={novel.id} initialLikeCount={novel.likeCount} />
               </div>
             </UploadInfo>
             <p className="body1">{novel.novelIntroduce}</p>
