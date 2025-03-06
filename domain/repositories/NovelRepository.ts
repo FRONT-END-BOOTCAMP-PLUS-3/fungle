@@ -15,5 +15,8 @@ export interface NovelRepository {
   addGenres(novelId: number, genres: number[]): Promise<Prisma.BatchPayload>;
   getNovelsByUserId(userId: string): Promise<Novel[] | null>;
   getNovelsBySerialDay(serialDay: string): Promise<Novel[] | null>;
-  getNovelsWithBanners(): Promise<{ id: number; title: string; bannerImage: string; }[]>;
+  getNovelsWithBanners(): Promise<
+    { id: number; title: string; bannerImage: string }[]
+  >;
+  deleteNovelById(novelId: number): Promise<boolean>;
 }
