@@ -65,6 +65,37 @@ const ProfileNovelList = () => {
     });
   };
 
+  const handleDeleteClick = async (novelId: number) => {
+    const isConfirmed = confirm("해당 소설을 삭제하시겠습니까?");
+    if (!isConfirmed) return;
+
+    try {
+      const response = await fetch("/api/user/novel", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ novelId }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "소설 삭제에 실패했습니다.");
+        return;
+      }
+
+      alert(data.message);
+      setNovels((prevNovels) =>
+        prevNovels.filter((novel) => novel.id !== novelId)
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("소설 삭제에 실패했습니다.");
+      }
+    }
+  };
+
   return (
     <div>
       {novels.map((novel) => (
@@ -101,7 +132,11 @@ const ProfileNovelList = () => {
                   <p className="episode-date">{novel.createdAt.toString()}</p>
                   <ButtonWrapper>
                     <Button buttonSize="small">연재 상태</Button>
-                    <Button buttonSize="xsmall" backgroudColor="leave">
+                    <Button
+                      buttonSize="xsmall"
+                      backgroudColor="leave"
+                      onClick={() => handleDeleteClick(novel.id)}
+                    >
                       삭제
                     </Button>
                   </ButtonWrapper>
