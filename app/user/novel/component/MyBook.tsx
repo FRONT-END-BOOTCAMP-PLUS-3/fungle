@@ -1,46 +1,92 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { MyBookContainer, Card } from "@/app/user/novel/component/MyBook.styled";
 import ProgressBar from "@/components/progressbar/ProgressBar";
+import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
+import { useRouter } from "next/navigation";
+import EmptyBookList from "./EmptyBookList";
 
-const books = [
-  { id: 1, title: "제목", status: "complete", funding: 200000, progress: 80 },
-  { id: 2, title: "제목", status: "paused", funding: 200000, progress: 60 },
-  { id: 3, title: "제목", status: "serializing", funding: 200000, progress: 90 },
-];
+
 
 const MyBook = () => {
+  const router = useRouter();
+  const [books, setBooks] = useState<NovelsByUserIdDto[]>([]);
+
+  useEffect(() => {
+    const fetchNovels = async () => {
+      try {
+        const response = await fetch("/api/user/novel");
+        const data = await response.json();
+
+        if (response.ok && data.novels) {
+          const formattedBooks: NovelsByUserIdDto[] = data.novels.map((novel: any) => ({
+            id: novel.id,
+            title: novel.title,
+            image: novel.image || "/image/book.svg",
+            createdAt: new Date(novel.createdAt),
+            serialStatus: novel.serialStatus,
+            episodes: novel.episodes || [],
+          }));
+
+          setBooks(formattedBooks); 
+        } else {
+          console.error("Failed to fetch novels");
+        }
+      } catch (error) {
+        console.error("Error fetching novels:", error);
+      }
+    };
+
+    fetchNovels();
+  }, []);
+
+  const getStatusLabel = (status : string) => {
+    switch (status) {
+      case "ongoing":
+        return "연재중";
+      case "completed":
+        return "완결";
+      case "paused":
+        return "휴재";
+      default:
+        return "알 수 없음";
+    }
+  };
+
   return (
     <div>
       <MyBookContainer>
-        {books.map((book) => (
-          <Card key={book.id}>
-            <div className="thumbnail">
-              <Image 
-                src="/image/book.svg" 
-                alt="소설 썸네일" 
-                width={120} 
-                height={160} 
-                layout="responsive"
-              />
-              <span className={`status ${book.status}`}>
-                {book.status === "complete" && "완결"}
-                {book.status === "paused" && "휴재중"}
-                {book.status === "serializing" && "연재중"}
-              </span>
-            </div>
-            <p className="title">{book.title}</p>
-            <div className="info">
-              <p>1단계 ⭐</p>
-              <p>펀딩금액 {book.funding.toLocaleString()}</p>
-            </div>
-            <ProgressBar progress={book.progress} />
-          </Card>
-        ))}
+        {books.length > 0 ? (
+          books.map((book) => (
+            <Card key={book.id} onClick={() => router.push(`/user/novel/${book.id}`)}>
+              <div className="thumbnail">
+                <Image
+                  src={book.image || "/image/book.svg"}
+                  alt="소설 썸네일"
+                  width={120}
+                  height={160}
+                  layout="responsive"
+                />
+                <span className={`status ${book.serialStatus}`}>
+                  {getStatusLabel(book.serialStatus)}
+                </span>
+              </div>
+              <p className="title">{book.title}</p>
+              <div className="info">
+                <p>1단계 ⭐</p>
+                <p>펀딩금액 20000 </p> 
+              </div>
+              <ProgressBar progress={80} /> 
+            </Card>
+          ))
+        ) : (
+          <EmptyBookList />
+        )}
       </MyBookContainer>
     </div>
   );
-};
+};  
 
 export default MyBook;

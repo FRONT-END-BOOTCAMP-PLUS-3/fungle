@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Main, EpisodeTitle, AuthorInfo, ProfileImage, AuthorDetails, AuthorMeta, CommentWrapper, Content } from "./EpisodePage.styled";
-import CommentCreate from "@/components/comment/CommentCreate";
-import Comment from "@/components/comment/Comment";
+// import CommentCreate from "@/components/comment/CommentCreate";
+// import Comment from "@/components/comment/Comment";
 import NovelCompleted from "@/components/novelcompleted/NovelCompleted";
 import { NovelDto } from "@/application/usecases/novel/dto/Novel";
 import { NovelEpisodeDto } from "@/application/usecases/novel/dto/NovelEpisode";
@@ -121,10 +121,10 @@ const Page = () => {
 
       {isCompleted && isLastEpisode && <NovelCompleted title={novel.title} />}
 
-      <CommentCreate post={post} />
+      {/* <CommentCreate post={post} />
       <CommentWrapper>
          <Comment postId={post.postId} />
-      </CommentWrapper>
+      </CommentWrapper> */}
     </Main>
   );
 };
