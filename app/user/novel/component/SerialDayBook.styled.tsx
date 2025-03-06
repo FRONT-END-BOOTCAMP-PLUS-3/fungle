@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Image from "next/image";
 
 interface DayProps {
   $active: boolean;
@@ -56,6 +57,13 @@ export const Thumbnail = styled.div`
   width: 100%;
   border-radius: 0.625rem 0.625rem 0 0;
   overflow: hidden;
+  height: auto;
+`;
+
+export const StyledImage = styled(Image)`
+  width: 100%;  
+  height: 100%; 
+  object-fit: cover;  
 `;
 
 export const Content = styled.div`

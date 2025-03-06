@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Image from "next/image";
 
 export const MyBookContainer = styled.div`
   display: flex;
@@ -53,6 +54,12 @@ export const Thumbnail = styled.div`
   width: 100%;
   border-radius: 0.625rem;
   overflow: hidden;
+`;
+
+export const StyledImage = styled(Image)`
+  width: 100%;  
+  height: 100%; 
+  object-fit: cover;  
 `;
 
 export const Status = styled.span<{ $status: string }>`

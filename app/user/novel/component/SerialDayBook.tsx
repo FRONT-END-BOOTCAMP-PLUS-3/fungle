@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { 
-  DaysContainer, Day, GridContainer, BookCard, Thumbnail, Content, Title, Info 
+  DaysContainer, Day, GridContainer, BookCard, Thumbnail, Content, Title, Info, 
+  StyledImage
 } from "@/app/user/novel/component/SerialDayBook.styled";
 import ProgressBar from "@/components/progressbar/ProgressBar";
 import { SerialDayNovelDto } from "@/application/usecases/novel/dto/SerialDayNovel";
@@ -68,11 +68,12 @@ const SerialDayBook = ({ selectedDay, setSelectedDay }: DaysProps) => {
           {books.map((book) => (
             <BookCard key={book.id} onClick={() => router.push(`/user/novel/${book.id}`)}> 
               <Thumbnail>
-                <Image 
+                <StyledImage
                   src={book.image || "/image/book.svg"} 
                   alt="소설 썸네일"
                   width={120} 
                   height={160} 
+                  
                 />
               </Thumbnail>
               <Content>

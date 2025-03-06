@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { MyBookContainer, BookCard, Thumbnail, Status, Title, Info } from "@/app/user/novel/component/MyBook.styled";
+import { MyBookContainer, BookCard, Thumbnail, Status, Title, Info , StyledImage } from "@/app/user/novel/component/MyBook.styled";
 import ProgressBar from "@/components/progressbar/ProgressBar";
 import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
 import EmptyBookList from "./EmptyBookList";
@@ -58,7 +57,7 @@ const MyBook = () => {
           books.map((book) => (
             <BookCard key={book.id} onClick={() => router.push(`/user/novel/${book.id}`)}>
               <Thumbnail>
-                <Image src={book.image || "/image/book.svg"} alt="소설 썸네일" width={120} height={160} />
+                <StyledImage src={book.image || "/image/book.svg"} alt="소설 썸네일" width={120} height={160} />
                 <Status $status={book.serialStatus}>{getStatusLabel(book.serialStatus)}</Status>
               </Thumbnail>
               <Title>{book.title}</Title>
