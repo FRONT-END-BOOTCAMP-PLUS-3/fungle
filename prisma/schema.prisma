@@ -46,7 +46,7 @@ model CommunityPost {
 
 model RecruitmentCategory {
   id                        Int                        @id @default(autoincrement())
-  name                      String                     @unique
+  name                      String  @unique
   CommunityPostRecruitments CommunityPostRecruitment[] @relation("PostRecruitments")
 }
 
@@ -69,27 +69,29 @@ model CommunityPostLike {
 }
 
 model Funding {
-  id            String         @id @default(uuid())
-  userId        String
-  novelId       Int            @unique
-  status        String         @default("pending")
-  createdAt     DateTime       @default(now())
-  endDate       DateTime
+  id           String           @id @default(uuid())
+  userId       String
+  novelId      Int           @unique
+  goalAmount  Int
   currentAmount Int?
-  goalAmount    Int
-  rewardType    String?
-  title         String
-  novel         Novel          @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  createdAt    DateTime      @default(now())
+  endDate      DateTime
+  rewardType  String?  // "전자책", "종이책", "굿즈"
+  status String @default("pending")
+  title String
+  novel        Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  fundingUsers FundingUser[] @relation("FundingUsers")
   fundingStages FundingStage[] @relation("FundingStages")
-  fundingUsers  FundingUser[]  @relation("FundingUsers")
 }
 
 model FundingStage {
-  id          Int     @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   fundingId   String
   stageNumber Int
-  isActive    Boolean @default(false)
-  funding     Funding @relation("FundingStages", fields: [fundingId], references: [id], onDelete: Cascade)
+  isActive  Boolean @default(false)
+  
+
+  funding Funding @relation("FundingStages", fields: [fundingId], references: [id], onDelete: Cascade)
 }
 
 model FundingUser {
@@ -117,7 +119,7 @@ model Novel {
   title          String
   serialDay      String
   novelIntroduce String
-  serialStatus   String         @default("pending")
+  serialStatus   String  @default("pending")
   userId         String
   bannerImage    String?
   funding        Funding?
@@ -151,19 +153,19 @@ model NovelCommentLike {
 }
 
 model NovelEpisode {
-  id             Int            @id @default(autoincrement())
-  novelId        Int
-  userId         String
-  episode        Int
-  content        String
-  view           Int            @default(0)
-  createdAt      DateTime       @default(now())
-  title          String
-  status         String         @default("pending")
-  isFinalEpisode Boolean        @default(false)
-  novelComment   NovelComment[]
-  novel          Novel          @relation("NovelEpisodes", fields: [novelId], references: [id], onDelete: Cascade)
-  user           User           @relation("UserNovelEpisodes", fields: [userId], references: [id], onDelete: Cascade)
+  id           Int            @id @default(autoincrement())
+  novelId      Int
+  userId       String
+  episode      Int
+  content      String
+  view         Int            @default(0)
+  createdAt    DateTime       @default(now())
+  title        String
+  status       String         @default("pending")
+  isFinalEpisode  Boolean @default(false)
+  novelComment NovelComment[]
+  novel        Novel          @relation("NovelEpisodes", fields: [novelId], references: [id], onDelete: Cascade)
+  user         User           @relation("UserNovelEpisodes", fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([novelId, episode])
 }
