@@ -21,7 +21,7 @@ const ProfileIntroduce = () => {
   const updateIntroduce = async (newIntroduce: string) => {
     try {
       const response = await fetch("/api/user/introduce", {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ introduce: newIntroduce }),
         credentials: "include",

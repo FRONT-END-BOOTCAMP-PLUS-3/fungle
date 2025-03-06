@@ -69,4 +69,6 @@ export interface CommunityPostRepository {
   ): Promise<number>;
 
   deletePost(id: string, userId: string): Promise<boolean>;
+  getPostByUserId(userId: string): Promise<PostWithRelations[]>;
+  updatePostStatus(userId: string, postId: number): Promise<void>;
 }

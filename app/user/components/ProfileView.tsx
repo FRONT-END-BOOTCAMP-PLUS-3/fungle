@@ -40,7 +40,7 @@ const ProfileView = () => {
   const updateNickname = async (newNickname: string) => {
     try {
       const response = await fetch("/api/user/nickname", {
-        method: "PUT",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user?.id, newNickname }),
         credentials: "include",
@@ -58,6 +58,7 @@ const ProfileView = () => {
 
       alert("닉네임이 성공적으로 변경되었습니다!");
       setNicknameError(""); // 닉네임 변경 성공 시 오류 초기화
+      setIsEditing(false);
 
       return data.nickname;
     } catch (error) {
@@ -124,7 +125,7 @@ const ProfileView = () => {
 
     try {
       const response = await fetch("/api/user/profile-image", {
-        method: "PUT",
+        method: "PATCH",
         body: formData,
         credentials: "include",
       });

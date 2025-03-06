@@ -5,7 +5,7 @@ import { userDi } from "@/infrastructure/config/userDi";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PUT = async (req: NextRequest) => {
+export const PATCH = async (req: NextRequest) => {
   try {
     const userId = await userDi.getUserIdUsecase.execute(req);
     if (!userId) {
