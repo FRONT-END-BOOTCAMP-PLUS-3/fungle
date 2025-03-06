@@ -58,5 +58,4 @@ export const novelDi = {
     new PrUserRepository()
   ),
   getBannerNovelsUsecase: new DfBannerNovelsUsecase(new PrNovelRepository()),
-}
 };
