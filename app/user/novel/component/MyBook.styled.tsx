@@ -59,16 +59,16 @@ export const Card = styled.div`
     border-radius: 0.3125rem;
   }
 
-  .status.complete {
-    background-color: var(--success-color);
+  .status.completed {
+    background-color: var(--leave-color);
   }
 
   .status.paused {
     background-color: var(--gray-500);
   }
 
-  .status.serializing {
-    background-color: var(--leave-color);
+  .status.ongoing {
+    background-color: var(--success-color);
   }
 
   .title {
