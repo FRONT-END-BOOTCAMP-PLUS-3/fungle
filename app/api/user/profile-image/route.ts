@@ -2,6 +2,7 @@ import { DfUpdateProfileImage } from "@/application/usecases/user/DfUpdateProfil
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { userDi } from "@/infrastructure/config/userDi";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
+import { FileService } from "@/infrastructure/services/FileService";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PATCH = async (req: NextRequest) => {
@@ -15,11 +16,15 @@ export const PATCH = async (req: NextRequest) => {
     }
 
     const userRepository: UserRepository = new PrUserRepository();
+    const fileService = new FileService();
 
     const formData = await req.formData();
     const profileImage = formData.get("profileImage") as File;
 
-    const updateProfileImageUsecase = new DfUpdateProfileImage(userRepository);
+    const updateProfileImageUsecase = new DfUpdateProfileImage(
+      userRepository,
+      fileService
+    );
     await updateProfileImageUsecase.execute({ userId, profileImage });
 
     return NextResponse.json(
