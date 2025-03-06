@@ -1,19 +1,21 @@
 import { UserRepository } from "@/domain/repositories/UserRepository";
-import { DfVerifyRefreshToken } from "./DfVerifyRefreshToken";
 import { NextRequest } from "next/server";
+import { DfVerifyAccessToken } from "./DfVerifyAccessToken";
+import { cookies } from "next/headers";
 
 export class DfGetUserIdUsecase {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly verifyRefreshTokenUsecase: DfVerifyRefreshToken
+    private readonly verifyAccessTokenUsecase: DfVerifyAccessToken
   ) {}
-  async execute(req: NextRequest): Promise<string | null> {
+  async execute(): Promise<string | null> {
+    const cookieStore = await cookies();
     // 로그인 된 사용자인지 검증
-    const refreshToken = req.cookies.get("refreshToken")?.value;
-    if (!refreshToken) return null;
+    const accessToken = cookieStore.get("accessToken")?.value;
+    if (!accessToken) return null;
 
-    const verifiedUser = await this.verifyRefreshTokenUsecase.execute(
-      refreshToken
+    const verifiedUser = await this.verifyAccessTokenUsecase.execute(
+      accessToken
     );
     if (!verifiedUser) return null;
 

@@ -29,7 +29,6 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(request),
-        credentials: "include",
       }
     );
 
@@ -39,14 +38,22 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
       return { message: data.error || "로그인 실패", isLoggedIn: false };
     }
 
-    if (data.refreshToken) {
-      const cookieStore = await cookies();
+    const cookieStore = await cookies();
+
+    if (data.refreshToken && data.accessToken) {
       cookieStore.set("refreshToken", data.refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: "strict",
         path: "/",
         maxAge: 7 * 24 * 60 * 60, // 7일 유지
+      });
+      cookieStore.set("accessToken", data.accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/",
+        maxAge: 30 * 60, // 30분 유지
       });
     } else {
       return { message: "토큰이 누락되었습니다.", isLoggedIn: false };

@@ -1,4 +1,4 @@
-import { DfVerifyRefreshToken } from "@/application/usecases/auth/DfVerifyRefreshToken";
+import { DfVerifyAccessToken } from "@/application/usecases/auth/DfVerifyAccessToken";
 import { DfPostDetailByUserIdUsecase } from "@/application/usecases/community/DfPostDetailByUserIdUsecase";
 import { DfPostStatusUpdateUsecase } from "@/application/usecases/community/DfPostStatusUpdateUsecase";
 import { CommunityPostRepository } from "@/domain/repositories/CommunityPostRepository";
@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const userId = await userDi.getUserIdUsecase.execute(req);
+    const userId = await userDi.getUserIdUsecase.execute();
 
     if (!userId) {
       return NextResponse.json({ posts: [] }, { status: 400 });
@@ -38,17 +38,7 @@ export const GET = async (req: NextRequest) => {
 
 export const PATCH = async (req: NextRequest) => {
   try {
-    // 로그인 된 사용자인지 검증
-    const refreshToken = req.cookies.get("refreshToken")?.value;
-    if (!refreshToken) {
-      return NextResponse.json({ user: null }, { status: 401 });
-    }
-
-    const userRepository: UserRepository = new PrUserRepository();
-    const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-    const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
-
-    const userId = verifiedUser?.id;
+    const userId = await userDi.getUserIdUsecase.execute();
 
     if (!userId) {
       return NextResponse.json({ posts: [] }, { status: 400 });

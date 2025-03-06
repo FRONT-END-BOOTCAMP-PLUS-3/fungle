@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { LikeContainer, LikeButtonStyled, LikeCount } from "@/app/user/novel/component/NovelLikeButton.styled";
+import {
+  LikeContainer,
+  LikeButtonStyled,
+  LikeCount,
+} from "@/app/user/novel/component/NovelLikeButton.styled";
 
 interface LikeButtonProps {
   novelId: number;
@@ -10,16 +14,14 @@ interface LikeButtonProps {
 }
 
 const LikeButton = ({ novelId, initialLikeCount }: LikeButtonProps) => {
-
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
 
   const toggleLike = async () => {
-
     try {
       const response = await fetch(`/api/novel/like`, {
         method: "POST",
-        credentials: "include",
+
         body: JSON.stringify({ novelId }),
       });
 

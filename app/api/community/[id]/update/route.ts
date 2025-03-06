@@ -1,5 +1,6 @@
-import { DfVerifyRefreshToken } from "@/application/usecases/auth/DfVerifyRefreshToken";
+import { DfVerifyAccessToken } from "@/application/usecases/auth/DfVerifyAccessToken";
 import { DfPostUpdateUsecase } from "@/application/usecases/community/DfPostUpdateUsecase";
+import { userDi } from "@/infrastructure/config/userDi";
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { cookies } from "next/headers";
@@ -13,24 +14,17 @@ export const PUT = async (
     const { id } = await params;
     const body = await request.json();
 
-    const cookieStore = await cookies();
-    const refreshToken = cookieStore.get("refreshToken")?.value;
-
-    if (!refreshToken) {
-      return NextResponse.json({ error: "No refresh token" }, { status: 401 });
+    const userId = await userDi.getUserIdUsecase.execute();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "유효하지 않은 사용자" },
+        { status: 401 }
+      );
     }
 
     const { title, content, fields } = body;
 
     const userRepository = new PrUserRepository();
-    const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-    const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
-
-    if (!verifiedUser) {
-      return NextResponse.json({ user: null }, { status: 401 });
-    }
-
-    const { id: userId } = verifiedUser;
 
     const communityPostRepository = new PrCommunityPostRepository();
     const postCreateUsecase = new DfPostUpdateUsecase(communityPostRepository);

@@ -43,7 +43,6 @@ const ProfileView = () => {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user?.id, newNickname }),
-        credentials: "include",
       });
 
       const data = await response.json();
@@ -127,7 +126,6 @@ const ProfileView = () => {
       const response = await fetch("/api/user/profile-image", {
         method: "PATCH",
         body: formData,
-        credentials: "include",
       });
 
       const data = await response.json();

@@ -23,9 +23,7 @@ const useAuthStore = create<AuthState>()(
       setUser: (user: User) => set({ user, isLoggedIn: !!user }),
       refreshAuth: async () => {
         try {
-          const response = await fetch("/api/auth/verify", {
-            credentials: "include",
-          });
+          const response = await fetch("/api/auth/verify", {});
 
           if (!response.ok) {
             set({ user: null });
