@@ -22,7 +22,7 @@ export const Day = styled.button<DayProps>`
 
   &:after {
     content: "";
-    display: ${({ $active }) => ($active ? "var(--gray-900)" : "none")};
+    display: ${({ $active }) => ($active ? "block" : "none")};
     width: 80%;
     height: 0.125rem;
     background: var(--primary-color);
@@ -39,37 +39,49 @@ export const GridContainer = styled.div`
   gap: 0.625rem;
 `;
 
-export const Card = styled.div`
+export const BookCard = styled.div`
   border-radius: 0.625rem;
   box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 
-  .thumbnail {
-    position: relative;
-    width: 100%;
-    height: auto;
-    border-radius: 0.625rem 0.625rem 0 0;
-    overflow: hidden;
+  &:hover {
+    transform: scale(1.05);
   }
+`;
 
-  .content{
-    padding: 0.625rem;
-  }
+export const Thumbnail = styled.div`
+  position: relative;
+  width: 100%;
+  border-radius: 0.625rem 0.625rem 0 0;
+  overflow: hidden;
+`;
 
-  .title {
-    text-align: center;
-    font-weight: bold;
+export const Content = styled.div`
+  padding: 0.625rem;
+`;
+
+export const Title = styled.p`
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  width: 100%;
+`;
+
+export const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  font-size: 0.9rem;
+  gap: 0.3125rem;
+  padding: 0 0.5rem;
+
+  & p {
+    margin: 0;
+    text-align: left;
     width: 100%;
-  }
-
-  .info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    width: 100%;
-    font-size: 0.9rem;
-    gap: 0.3125rem;
-    padding: 0 0.5rem;
   }
 `;
