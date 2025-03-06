@@ -1,12 +1,11 @@
 import { UserRepository } from "@/domain/repositories/UserRepository";
-import { NextRequest } from "next/server";
-import { DfVerifyAccessToken } from "./DfVerifyAccessToken";
+import { DfVerifyAccessTokenUsecase } from "./DfVerifyAccessTokenUsecase";
 import { cookies } from "next/headers";
 
 export class DfGetUserIdUsecase {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly verifyAccessTokenUsecase: DfVerifyAccessToken
+    private readonly verifyAccessTokenUsecase: DfVerifyAccessTokenUsecase
   ) {}
   async execute(): Promise<string | null> {
     const cookieStore = await cookies();
@@ -14,11 +13,9 @@ export class DfGetUserIdUsecase {
     const accessToken = cookieStore.get("accessToken")?.value;
     if (!accessToken) return null;
 
-    const verifiedUser = await this.verifyAccessTokenUsecase.execute(
-      accessToken
-    );
-    if (!verifiedUser) return null;
+    const result = await this.verifyAccessTokenUsecase.execute(accessToken);
+    if (!result?.verifiedUser) return null;
 
-    return verifiedUser?.id;
+    return result?.verifiedUser.id;
   }
 }

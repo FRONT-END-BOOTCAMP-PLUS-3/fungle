@@ -1,11 +1,8 @@
-import { DfVerifyAccessToken } from "@/application/usecases/auth/DfVerifyAccessToken";
 import { DfPostDetailByUserIdUsecase } from "@/application/usecases/community/DfPostDetailByUserIdUsecase";
 import { DfPostStatusUpdateUsecase } from "@/application/usecases/community/DfPostStatusUpdateUsecase";
 import { CommunityPostRepository } from "@/domain/repositories/CommunityPostRepository";
-import { UserRepository } from "@/domain/repositories/UserRepository";
 import { userDi } from "@/infrastructure/config/userDi";
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
-import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
