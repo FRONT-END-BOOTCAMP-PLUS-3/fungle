@@ -14,7 +14,7 @@ export const BookImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   margin: 1rem 0;
   font-size: 0.9rem;
   color: #555;
