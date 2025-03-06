@@ -28,6 +28,7 @@ type CommentsWithNickname = CommunityComment & {
   profileImage: string;
   likes: number;
   replies: number | 0;
+  isLiked: boolean;
 };
 
 const Comment = ({
@@ -105,6 +106,31 @@ const Comment = ({
     }
   };
 
+  const handleLike = async (commentId: number) => {
+    try {
+      const response = await fetch(`/api/community/comment/${commentId}/like`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error("좋아요 누르기에 실패했습니다.");
+      }
+
+      const isLiked = await response.json();
+
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId ? { ...comment, isLiked } : comment
+        )
+      );
+
+      setTrigger((prev) => !prev);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   if (loading) {
     return <main>로딩 중...</main>;
   }
@@ -167,9 +193,15 @@ const Comment = ({
 
                   <CommunityCommentWrapper>
                     <CommunityCommentBox>
-                      <CommunityLikeButton>
+                      <CommunityLikeButton
+                        onClick={() => handleLike(comment.id)}
+                      >
                         <Image
-                          src="/icon/heart.svg"
+                          src={
+                            comment.isLiked
+                              ? "/icon/heart_filled.svg"
+                              : "/icon/heart.svg"
+                          }
                           alt="좋아요 버튼"
                           width={20}
                           height={20}
