@@ -3,23 +3,14 @@ import { DfPostDetailByUserIdUsecase } from "@/application/usecases/community/Df
 import { DfPostStatusUpdateUsecase } from "@/application/usecases/community/DfPostStatusUpdateUsecase";
 import { CommunityPostRepository } from "@/domain/repositories/CommunityPostRepository";
 import { UserRepository } from "@/domain/repositories/UserRepository";
+import { userDi } from "@/infrastructure/config/userDi";
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    // 로그인 된 사용자인지 검증
-    const refreshToken = req.cookies.get("refreshToken")?.value;
-    if (!refreshToken) {
-      return NextResponse.json({ user: null }, { status: 401 });
-    }
-
-    const userRepository: UserRepository = new PrUserRepository();
-    const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-    const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
-
-    const userId = verifiedUser?.id;
+    const userId = await userDi.getUserIdUsecase.execute(req);
 
     if (!userId) {
       return NextResponse.json({ posts: [] }, { status: 400 });
