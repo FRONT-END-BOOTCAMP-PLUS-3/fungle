@@ -26,15 +26,15 @@ const useAuthStore = create<AuthState>()(
           const response = await fetch("/api/auth/verify", {});
 
           if (!response.ok) {
-            set({ user: null });
+            set({ user: null, isLoggedIn: false });
             return;
           }
 
           const data = await response.json();
-          set({ user: data.user });
+          set({ user: data.user, isLoggedIn: true });
         } catch (error) {
           console.error("인증 확인 실패:", error);
-          set({ user: null });
+          set({ user: null, isLoggedIn: false });
         }
         // 로그아웃 로직 추가 예정
       },
