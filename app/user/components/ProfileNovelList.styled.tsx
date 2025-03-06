@@ -47,6 +47,11 @@ export const ProfileNovelItem = styled(EpisodeItem)`
     white-space: normal;
     justify-content: space-between;
   }
+
+  .author-nickname {
+    font-size: var(--font-size-sm);
+    color: var(--gray-700);
+  }
 `;
 
 export const ArrowWrapper = styled.div<{ $isOpen: boolean }>`
