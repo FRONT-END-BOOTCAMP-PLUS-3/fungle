@@ -1,8 +1,10 @@
 import { DfVerifyRefreshToken } from "@/application/usecases/auth/DfVerifyRefreshToken";
 import { DfCommentCountUsecase } from "@/application/usecases/comment/DfCommentCountUsecase";
 import { DfCommentCreateUsecase } from "@/application/usecases/comment/DfCommentCreateUsecase";
+import { DfCommentDeleteUseccase } from "@/application/usecases/comment/DfCommentDeleteUseccase";
 import { DfCommentUpdateUsecase } from "@/application/usecases/comment/DfCommentUpdateUsecase";
 import { UserRepository } from "@/domain/repositories/UserRepository";
+
 import { PrCommunityCommentRepository } from "@/infrastructure/repositories/PrCommunityCommentRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { cookies } from "next/headers";
@@ -118,6 +120,49 @@ export const PATCH = async (
     }
     return NextResponse.json(
       { error: "Route : postId가 없습니다." },
+      { status: 500 }
+    );
+  }
+};
+
+export const DELETE = async (
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) => {
+  const { id } = await params;
+
+  try {
+    const cookieStore = await cookies();
+    const refreshToken = cookieStore.get("refreshToken")?.value;
+
+    if (!refreshToken) {
+      return NextResponse.json({ error: "No refresh token" }, { status: 401 });
+    }
+
+    const userRepository: UserRepository = new PrUserRepository();
+    const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
+    const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
+
+    if (!verifiedUser) {
+      return NextResponse.json({ user: null }, { status: 401 });
+    }
+
+    const { id: userId } = verifiedUser;
+
+    const communityCommentRepository = new PrCommunityCommentRepository();
+    const commentDeleteUsecase = new DfCommentDeleteUseccase(
+      communityCommentRepository
+    );
+
+    const isDeleted = await commentDeleteUsecase.execute(id, userId);
+
+    return NextResponse.json({ isDeleted });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(
+      { error: "Route : Id가 없습니다." },
       { status: 500 }
     );
   }
