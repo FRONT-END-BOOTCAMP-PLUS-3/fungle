@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { MyBookContainer, Card } from "@/app/user/novel/component/MyBook.styled";
+import { useRouter } from "next/navigation";
+import { MyBookContainer, BookCard, Thumbnail, Status, Title, Info } from "@/app/user/novel/component/MyBook.styled";
 import ProgressBar from "@/components/progressbar/ProgressBar";
 import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
-import { useRouter } from "next/navigation";
 import EmptyBookList from "./EmptyBookList";
-
-
 
 const MyBook = () => {
   const router = useRouter();
@@ -33,14 +31,14 @@ const MyBook = () => {
     
         setBooks(formattedBooks);
       } catch (error) {
-        console.error("Error fetching novels:", error);
+        throw new Error("서버 에러");
       }
     };
 
     fetchNovels();
   }, []);
 
-  const getStatusLabel = (status : string) => {
+  const getStatusLabel = (status: string) => {
     switch (status) {
       case "ongoing":
         return "연재중";
@@ -58,26 +56,18 @@ const MyBook = () => {
       <MyBookContainer>
         {books.length > 0 ? (
           books.map((book) => (
-            <Card key={book.id} onClick={() => router.push(`/user/novel/${book.id}`)}>
-              <div className="thumbnail">
-                <Image
-                  src={book.image || "/image/book.svg"}
-                  alt="소설 썸네일"
-                  width={120}
-                  height={160}
-                  layout="responsive"
-                />
-                <span className={`status ${book.serialStatus}`}>
-                  {getStatusLabel(book.serialStatus)}
-                </span>
-              </div>
-              <p className="title">{book.title}</p>
-              <div className="info">
+            <BookCard key={book.id} onClick={() => router.push(`/user/novel/${book.id}`)}>
+              <Thumbnail>
+                <Image src={book.image || "/image/book.svg"} alt="소설 썸네일" width={120} height={160} />
+                <Status $status={book.serialStatus}>{getStatusLabel(book.serialStatus)}</Status>
+              </Thumbnail>
+              <Title>{book.title}</Title>
+              <Info>
                 <p>1단계 ⭐</p>
-                <p>펀딩금액 20000 </p> 
-              </div>
+                <p>펀딩금액 20,000 </p> 
+              </Info>
               <ProgressBar progress={80} /> 
-            </Card>
+            </BookCard>
           ))
         ) : (
           <EmptyBookList />
@@ -85,6 +75,6 @@ const MyBook = () => {
       </MyBookContainer>
     </div>
   );
-};  
+};    
 
 export default MyBook;

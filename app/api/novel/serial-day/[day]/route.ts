@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi";
 
-export const dynamic = "force-dynamic";
 
-export const GET = async (req: NextRequest, { params }: { params: { day?: string } } ) => {
+export const GET = async (req: NextRequest, { params }: { params: { day: string } } ) => {
   try {
-    const day = params.day; 
+    const day = await params.day; 
 
     if (!day) {
       return NextResponse.json(
@@ -18,7 +17,6 @@ export const GET = async (req: NextRequest, { params }: { params: { day?: string
     return NextResponse.json({ novels }, { status: 200 });
 
   } catch (error) {
-    console.error("연재 요일별 소설 조회 오류:", error);
     return NextResponse.json(
       { error: "서버 내부 오류" },
       { status: 500 }

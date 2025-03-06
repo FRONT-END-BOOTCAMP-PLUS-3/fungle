@@ -16,7 +16,7 @@ export class DfNovelsBySerialDayUsecase {
       novels.map(async (novel) => {
         const user = await this.userRepository.getUserById(novel.userId);
         if (!user) {
-          throw new Error(`유저 정보를 찾을 수 없습니다. (userId: ${novel.userId})`);
+          throw new Error(`유저 정보를 찾을 수 없습니다.`);
         }
 
         return {

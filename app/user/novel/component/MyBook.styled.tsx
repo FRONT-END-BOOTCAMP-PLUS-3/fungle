@@ -25,7 +25,7 @@ export const MyBookContainer = styled.div`
   }
 `;
 
-export const Card = styled.div`
+export const BookCard = styled.div`
   border-radius: 0.625rem;
   padding: 0.625rem;
   box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
@@ -40,56 +40,55 @@ export const Card = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  .thumbnail {
-    position: relative;
-    width: 100%;
-    height: auto;
-    border-radius: 0.625rem;
-    overflow: hidden;
-  }
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 
-  .status {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    background-color: var(--gray-300);
-    color: var(--white-color);
-    font-size: 0.75rem;
-    padding: 0.15rem 0.5rem;
-    border-radius: 0.3125rem;
+  &:hover {
+    transform: scale(1.05);
   }
+`;
 
-  .status.completed {
-    background-color: var(--leave-color);
-  }
+export const Thumbnail = styled.div`
+  position: relative;
+  width: 100%;
+  border-radius: 0.625rem;
+  overflow: hidden;
+`;
 
-  .status.paused {
-    background-color: var(--gray-500);
-  }
+export const Status = styled.span<{ $status: string }>`
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: ${({ $status }) =>
+    $status === "completed"
+      ? "var(--leave-color)"
+      : $status === "paused"
+      ? "var(--gray-500)"
+      : "var(--success-color)"};
+  color: var(--white-color);
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.3125rem;
+`;
 
-  .status.ongoing {
-    background-color: var(--success-color);
-  }
+export const Title = styled.p`
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+  width: 100%;
+`;
 
-  .title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 1rem;
-    width: 100%;
-  }
+export const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  justify-content: center;
+  width: 100%;
+  font-size: 0.9rem;
+  gap: 0.3125rem;
+  padding: 0 0.5rem;
 
-  .info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
-    justify-content: center;
-    width: 100%;
-    font-size: 0.9rem;
-    gap: 0.3125rem;
-    padding: 0 0.5rem;
-  }
-
-  .info p {
+  & p {
     margin: 0;
     text-align: left;
     width: 100%;
