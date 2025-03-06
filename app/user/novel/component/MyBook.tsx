@@ -18,22 +18,20 @@ const MyBook = () => {
     const fetchNovels = async () => {
       try {
         const response = await fetch("/api/user/novel");
+        if (!response.ok) throw new Error("Failed to fetch novels");
+    
         const data = await response.json();
-
-        if (response.ok && data.novels) {
-          const formattedBooks: NovelsByUserIdDto[] = data.novels.map((novel: any) => ({
-            id: novel.id,
-            title: novel.title,
-            image: novel.image || "/image/book.svg",
-            createdAt: new Date(novel.createdAt),
-            serialStatus: novel.serialStatus,
-            episodes: novel.episodes || [],
-          }));
-
-          setBooks(formattedBooks); 
-        } else {
-          console.error("Failed to fetch novels");
-        }
+        const novels = data.novels ?? []; 
+    
+        const formattedBooks: NovelsByUserIdDto[] = novels.map((novel: any) => ({
+          id: novel.id,
+          title: novel.title,
+          image: novel.image || "/image/book.svg",
+          createdAt: new Date(novel.createdAt),
+          serialStatus: novel.serialStatus,
+        }));
+    
+        setBooks(formattedBooks);
       } catch (error) {
         console.error("Error fetching novels:", error);
       }

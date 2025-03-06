@@ -26,7 +26,7 @@ const EmptyBookList = () => {
   return(
   <Container>
     <ImageContainer>
-      <Image src="/image/nobook.svg" alt="등륵된 소설 없음" width={148} height={112}/>
+      <Image src="/image/nobook.svg" alt="등륵된 소설 없음" width={148} height={112} objectFit="cover"/>
     </ImageContainer>
     <p>작성한 소설이 없으시네요! <br/>
     소설을 등록하시겠어요?</p>
