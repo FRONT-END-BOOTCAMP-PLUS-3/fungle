@@ -40,4 +40,9 @@ export class PrNovelRepository implements NovelRepository {
       return null;
     }
   }
+  async getNovelsBySerialDay(serialDay: string): Promise<Novel[]> {
+    return await prisma.novel.findMany({
+      where: { serialDay: serialDay }, 
+    });
+  }
 }

@@ -11,6 +11,7 @@ import { DfCreateNovelUsecase } from "@/application/usecases/novel/DfCreateNovel
 import { DfCreateEpisodeUseCase } from "@/application/usecases/novel/DfCreateEpisodeUsecase"; 
 import { DfIncreaseViewCountUsecase } from "@/application/usecases/novel/DfIncreaseViewCountUsecase";
 import { FileService } from "@/infrastructure/services/FileService";
+import { DfNovelsBySerialDayUsecase } from "@/application/usecases/novel/DfNovelsBySerialDayUsecase";
 
 export const novelDi = {
   novelRepository: new PrNovelRepository(),
@@ -44,4 +45,9 @@ export const novelDi = {
   ),
 
   increaseViewCountUseCase: new DfIncreaseViewCountUsecase(new PrNovelEpisodeRepository()),
+
+  getNovelsBySerialDayUseCase: new DfNovelsBySerialDayUsecase(
+    new PrNovelRepository(),
+    new PrUserRepository()
+  ),
 }
