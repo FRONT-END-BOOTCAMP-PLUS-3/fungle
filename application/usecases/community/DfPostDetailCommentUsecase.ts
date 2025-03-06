@@ -4,9 +4,12 @@ import { PostDetailCommentsWithUserDto } from "./dto/PostDetailCommentsWithUserD
 export class DfPostDetailCommentUsecase {
   constructor(private communityPostRepository: CommunityCommentRepository) {}
 
-  async execute(id: string): Promise<PostDetailCommentsWithUserDto[]> {
+  async execute(
+    id: string,
+    userId: string
+  ): Promise<PostDetailCommentsWithUserDto[]> {
     try {
-      const comments = await this.communityPostRepository.findAll(id);
+      const comments = await this.communityPostRepository.findAll(id, userId);
 
       const flatComments = comments.map((comment) => ({
         id: comment.id,
@@ -19,6 +22,7 @@ export class DfPostDetailCommentUsecase {
         profileImage: comment.user.profileImage,
         likes: comment._count.communityCommentLikes,
         replies: comment.replies ? comment.replies.length : 0,
+        isLiked: comment.communityCommentLikes.length > 0,
       }));
 
       return flatComments;
