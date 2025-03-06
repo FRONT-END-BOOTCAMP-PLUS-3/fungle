@@ -57,8 +57,20 @@ export function sendEmailTemplate(verificationCode: string): string {
       </head>
       <body>
         <div class="email-container">
-          <img src="https://yourcompany.com/logo.png" alt="Fungle Logo" class="logo" />
-          <h2 class="title">Fungle 이메일 인증 코드 안내</h2>
+
+          <div
+            style="
+              display: inline-block;
+              font-family: sans-serif;
+              font-size: 28px;
+              font-weight: bold;
+              color: #0f2d9e;
+            "
+          >
+            FUNGLE
+          </div>
+
+          <h2 class="title">이메일 인증 코드 안내</h2>
           <p class="content">
             안녕하세요,<br />
             Fungle 서비스를 이용해주셔서 감사합니다.<br />
