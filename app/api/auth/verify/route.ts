@@ -1,17 +1,17 @@
-import { DfVerifyRefreshToken } from "@/application/usecases/auth/DfVerifyRefreshToken";
+import { DfVerifyAccessToken } from "@/application/usecases/auth/DfVerifyAccessToken";
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const refreshToken = req.cookies.get("refreshToken")?.value;
-  if (!refreshToken) {
+  const accessToken = req.cookies.get("accessToken")?.value;
+  if (!accessToken) {
     return NextResponse.json({ user: null }, { status: 401 });
   }
 
   const userRepository: UserRepository = new PrUserRepository();
-  const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-  const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
+  const verifyAccessTokenUsecase = new DfVerifyAccessToken(userRepository);
+  const verifiedUser = await verifyAccessTokenUsecase.execute(accessToken);
 
   if (!verifiedUser) {
     return NextResponse.json({ user: null }, { status: 401 });

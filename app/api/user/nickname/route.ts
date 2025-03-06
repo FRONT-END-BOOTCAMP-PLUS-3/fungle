@@ -6,7 +6,7 @@ import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository
 import { NextRequest, NextResponse } from "next/server";
 
 export const PATCH = async (req: NextRequest) => {
-  const userId = await userDi.getUserIdUsecase.execute(req);
+  const userId = await userDi.getUserIdUsecase.execute();
   if (!userId) {
     return NextResponse.json(
       { message: "사용자를 찾을 수 없습니다." },

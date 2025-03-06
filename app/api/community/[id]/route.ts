@@ -1,6 +1,6 @@
-import { DfVerifyRefreshToken } from "@/application/usecases/auth/DfVerifyRefreshToken";
 import { DfPostDeleteUsecase } from "@/application/usecases/community/DfPostDeleteUsecase";
 import { DfPostDetailUsecase } from "@/application/usecases/community/DfPostDetailUsecase";
+import { userDi } from "@/infrastructure/config/userDi";
 
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
@@ -50,20 +50,13 @@ export const DELETE = async (
 
     if (!id) return "ID가 없습니다.";
 
-    const cookieStore = await cookies();
-    const refreshToken = cookieStore.get("refreshToken")?.value;
-
-    if (!refreshToken) {
-      return NextResponse.json({ error: "No refresh token" }, { status: 401 });
+    const userId = await userDi.getUserIdUsecase.execute();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "유효하지 않은 사용자" },
+        { status: 401 }
+      );
     }
-
-    const userRepository = new PrUserRepository();
-    const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-    const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
-    if (!verifiedUser) {
-      return NextResponse.json({ user: null }, { status: 401 });
-    }
-    const { id: userId } = verifiedUser;
 
     const communityPostRepository = new PrCommunityPostRepository();
     const postDeleteUsecase = new DfPostDeleteUsecase(communityPostRepository);

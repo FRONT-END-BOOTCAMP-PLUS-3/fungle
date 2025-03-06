@@ -1,13 +1,9 @@
-import { DfVerifyRefreshToken } from "@/application/usecases/auth/DfVerifyRefreshToken";
 import { DfCommentCountUsecase } from "@/application/usecases/comment/DfCommentCountUsecase";
 import { DfCommentCreateUsecase } from "@/application/usecases/comment/DfCommentCreateUsecase";
 import { DfCommentDeleteUseccase } from "@/application/usecases/comment/DfCommentDeleteUseccase";
 import { DfCommentUpdateUsecase } from "@/application/usecases/comment/DfCommentUpdateUsecase";
-import { UserRepository } from "@/domain/repositories/UserRepository";
-
+import { userDi } from "@/infrastructure/config/userDi";
 import { PrCommunityCommentRepository } from "@/infrastructure/repositories/PrCommunityCommentRepository";
-import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
@@ -45,22 +41,13 @@ export const POST = async (
   const { comment } = body;
 
   try {
-    const cookieStore = await cookies();
-    const refreshToken = cookieStore.get("refreshToken")?.value;
-
-    if (!refreshToken) {
-      return NextResponse.json({ error: "No refresh token" }, { status: 401 });
+    const userId = await userDi.getUserIdUsecase.execute();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "유효하지 않은 사용자" },
+        { status: 401 }
+      );
     }
-
-    const userRepository: UserRepository = new PrUserRepository();
-    const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-    const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
-
-    if (!verifiedUser) {
-      return NextResponse.json({ user: null }, { status: 401 });
-    }
-
-    const { id: userId } = verifiedUser;
 
     const communityCommentRepository = new PrCommunityCommentRepository();
     const commentCreatetUsecase = new DfCommentCreateUsecase(
@@ -89,22 +76,13 @@ export const PATCH = async (
   const { comment } = body;
 
   try {
-    const cookieStore = await cookies();
-    const refreshToken = cookieStore.get("refreshToken")?.value;
-
-    if (!refreshToken) {
-      return NextResponse.json({ error: "No refresh token" }, { status: 401 });
+    const userId = await userDi.getUserIdUsecase.execute();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "유효하지 않은 사용자" },
+        { status: 401 }
+      );
     }
-
-    const userRepository: UserRepository = new PrUserRepository();
-    const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-    const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
-
-    if (!verifiedUser) {
-      return NextResponse.json({ user: null }, { status: 401 });
-    }
-
-    const { id: userId } = verifiedUser;
 
     const communityCommentRepository = new PrCommunityCommentRepository();
     const commentUpdateUsecase = new DfCommentUpdateUsecase(
@@ -132,22 +110,13 @@ export const DELETE = async (
   const { id } = await params;
 
   try {
-    const cookieStore = await cookies();
-    const refreshToken = cookieStore.get("refreshToken")?.value;
-
-    if (!refreshToken) {
-      return NextResponse.json({ error: "No refresh token" }, { status: 401 });
+    const userId = await userDi.getUserIdUsecase.execute();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "유효하지 않은 사용자" },
+        { status: 401 }
+      );
     }
-
-    const userRepository: UserRepository = new PrUserRepository();
-    const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-    const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
-
-    if (!verifiedUser) {
-      return NextResponse.json({ user: null }, { status: 401 });
-    }
-
-    const { id: userId } = verifiedUser;
 
     const communityCommentRepository = new PrCommunityCommentRepository();
     const commentDeleteUsecase = new DfCommentDeleteUseccase(

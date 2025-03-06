@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const userId = await userDi.getUserIdUsecase.execute(req);
+    const userId = await userDi.getUserIdUsecase.execute();
 
     if (!userId) {
       return NextResponse.json({ novels: null }, { status: 400 });
