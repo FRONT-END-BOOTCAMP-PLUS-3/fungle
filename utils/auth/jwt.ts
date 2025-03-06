@@ -13,9 +13,9 @@ export const generateRefreshToken = (userId: string) => {
   });
 };
 
-export const verifyAccessToken = (token: string): { id: string } | null => {
+export const verifyAccessToken = (token: string): { userId: string } | null => {
   try {
-    return jwt.verify(token, ACCESS_SECRET) as { id: string };
+    return jwt.verify(token, ACCESS_SECRET) as { userId: string };
   } catch (error) {
     return null;
   }

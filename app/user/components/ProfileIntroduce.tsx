@@ -24,7 +24,6 @@ const ProfileIntroduce = () => {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ introduce: newIntroduce }),
-        credentials: "include",
       });
 
       if (response.status === 401) {

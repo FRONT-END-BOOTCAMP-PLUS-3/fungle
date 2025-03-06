@@ -27,7 +27,6 @@ const ProfileNovelList = () => {
     const fetchNovelData = async () => {
       const response = await fetch("/api/user/novel", {
         method: "GET",
-        credentials: "include",
       });
 
       const data = await response.json();

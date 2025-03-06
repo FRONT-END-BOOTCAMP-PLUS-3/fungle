@@ -1,8 +1,8 @@
 import { UserRepository } from "@/domain/repositories/UserRepository";
-import { verifyRefreshToken } from "@/utils/auth/jwt";
+import { verifyAccessToken } from "@/utils/auth/jwt";
 import { User } from "@prisma/client";
 
-export class DfVerifyRefreshToken {
+export class DfVerifyAccessToken {
   constructor(private userRepository: UserRepository) {}
 
   async execute(
@@ -13,7 +13,7 @@ export class DfVerifyRefreshToken {
   > | null> {
     try {
       // 토큰이 유효한지 검증
-      const decoded = verifyRefreshToken(token);
+      const decoded = verifyAccessToken(token);
       if (!decoded || !decoded.userId) return null;
 
       // db에 사용자가 존재하는지 검증

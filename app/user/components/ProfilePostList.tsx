@@ -33,7 +33,6 @@ const ProfilePostList = () => {
       try {
         const response = await fetch("/api/user/community", {
           method: "GET",
-          credentials: "include",
         });
 
         if (!response.ok) throw new Error("게시글을 불러오는 데 실패했습니다.");
@@ -57,7 +56,7 @@ const ProfilePostList = () => {
     try {
       const response = await fetch("/api/user/community", {
         method: "PATCH",
-        credentials: "include",
+
         body: JSON.stringify({
           postId,
         }),

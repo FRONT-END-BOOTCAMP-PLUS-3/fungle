@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const PATCH = async (req: NextRequest) => {
   try {
-    const userId = await userDi.getUserIdUsecase.execute(req);
+    const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {
       return NextResponse.json({ error: "로그인이 되어 있지 않습니다." });
     }

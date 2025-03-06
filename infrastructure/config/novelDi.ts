@@ -6,13 +6,13 @@ import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelE
 import { PrGenreRepository } from "../repositories/PrGenreRepository";
 import { DfNovelByIdUseCase } from "@/application/usecases/novel/DfNovelUsecase";
 import { DfEpisodesByNovelIdUsecase } from "@/application/usecases/novel/DfEpisodesByNovelIdUsecase";
-import { DfEpisodeByIdUsecase } from "@/application/usecases/novel/DfEpisodeByIdUsecase";
 import { DfCreateNovelUsecase } from "@/application/usecases/novel/DfCreateNovelUsecase";
-import { DfCreateEpisodeUseCase } from "@/application/usecases/novel/DfCreateEpisodeUsecase"; 
+import { DfCreateEpisodeUseCase } from "@/application/usecases/novel/DfCreateEpisodeUsecase";
 import { DfIncreaseViewCountUsecase } from "@/application/usecases/novel/DfIncreaseViewCountUsecase";
 import { FileService } from "@/infrastructure/services/FileService";
 import { DfNovelsBySerialDayUsecase } from "@/application/usecases/novel/DfNovelsBySerialDayUsecase";
 import { DfBannerNovelsUsecase } from "@/application/usecases/novel/DfBannerNovelsUsecase";
+import { DfEpisodeByIdUsecase } from "@/application/usecases/novel/DfEpisodeByIdUsecase";
 
 export const novelDi = {
   novelRepository: new PrNovelRepository(),
@@ -23,8 +23,12 @@ export const novelDi = {
   fileService: new FileService(),
   genreRepository: new PrGenreRepository(),
 
-  getEpisodesByNovelIdUseCase: new DfEpisodesByNovelIdUsecase(new PrNovelEpisodeRepository()),
-  getEpisodeByIdUseCase: new DfEpisodeByIdUsecase(new PrNovelEpisodeRepository()),
+  getEpisodesByNovelIdUseCase: new DfEpisodesByNovelIdUsecase(
+    new PrNovelEpisodeRepository()
+  ),
+  getEpisodeByIdUseCase: new DfEpisodeByIdUsecase(
+    new PrNovelEpisodeRepository()
+  ),
 
   getNovelByIdUseCase: new DfNovelByIdUseCase(
     new PrNovelRepository(),
@@ -36,21 +40,23 @@ export const novelDi = {
 
   createNovelUseCase: new DfCreateNovelUsecase(
     new PrNovelRepository(),
-    new PrGenreRepository(), 
-    FileService 
+    new PrGenreRepository(),
+    FileService
   ),
 
   createEpisodeUseCase: new DfCreateEpisodeUseCase(
     new PrNovelEpisodeRepository(),
-    new PrNovelRepository() 
+    new PrNovelRepository()
   ),
 
-  increaseViewCountUseCase: new DfIncreaseViewCountUsecase(new PrNovelEpisodeRepository()),
+  increaseViewCountUseCase: new DfIncreaseViewCountUsecase(
+    new PrNovelEpisodeRepository()
+  ),
 
   getNovelsBySerialDayUseCase: new DfNovelsBySerialDayUsecase(
     new PrNovelRepository(),
     new PrUserRepository()
   ),
-
   getBannerNovelsUsecase: new DfBannerNovelsUsecase(new PrNovelRepository()),
 }
+};
