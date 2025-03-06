@@ -1,9 +1,7 @@
-import { DfVerifyAccessToken } from "@/application/usecases/auth/DfVerifyAccessToken";
 import { DfPostUpdateUsecase } from "@/application/usecases/community/DfPostUpdateUsecase";
 import { userDi } from "@/infrastructure/config/userDi";
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (
@@ -23,8 +21,6 @@ export const PUT = async (
     }
 
     const { title, content, fields } = body;
-
-    const userRepository = new PrUserRepository();
 
     const communityPostRepository = new PrCommunityPostRepository();
     const postCreateUsecase = new DfPostUpdateUsecase(communityPostRepository);

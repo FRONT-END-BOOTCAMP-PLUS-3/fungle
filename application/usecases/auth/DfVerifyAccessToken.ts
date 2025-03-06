@@ -14,7 +14,6 @@ export class DfVerifyAccessToken {
     try {
       // 토큰이 유효한지 검증
       const decoded = verifyAccessToken(token);
-      console.log(decoded);
       if (!decoded || !decoded.userId) return null;
 
       // db에 사용자가 존재하는지 검증
