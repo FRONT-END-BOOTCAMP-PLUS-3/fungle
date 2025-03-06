@@ -13,6 +13,7 @@ import { formatDate } from "@/utils/date/formatDate";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ErrorMessage } from "../edit/components/CommunityEdit.styled";
+import useAuthStore from "@/store/useAuthStore";
 
 type CommunityPostWithNickname = CommunityPost & {
   userNickname: string;
@@ -24,6 +25,8 @@ interface CommunityPostHeaderProps {
 const CommunityPostHeader = ({ postDetail }: CommunityPostHeaderProps) => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+  const { user } = useAuthStore();
+  const userId = user?.id;
   const handleDelete = async () => {
     if (confirm("정말 삭제하시겠습니까?")) {
       try {
@@ -61,8 +64,13 @@ const CommunityPostHeader = ({ postDetail }: CommunityPostHeaderProps) => {
         <CommunityPostHeaderSection>
           <CommunityPostInfo>
             <CommunityPostTitle>{postDetail.title}</CommunityPostTitle>
-
-            <MoreOptionsMenu onDelete={handleDelete} postId={postDetail.id} />
+            {userId === postDetail.userId && (
+              <MoreOptionsMenu
+                mode="post"
+                onDelete={handleDelete}
+                postId={postDetail.id}
+              />
+            )}
           </CommunityPostInfo>
           <div>
             <p>{postDetail.userNickname}</p>

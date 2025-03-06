@@ -10,7 +10,8 @@ export const Main = styled.div`
 
 export const Divider = styled.hr`
   width: 100%;
-  height: 1px;
+  height: 0.0635rem;
+  min-height: 0.0635rem;
   background: var(--gray-300);
   border: 0;
 `;

@@ -1,23 +1,22 @@
-import { DfVerifyRefreshToken } from "@/application/usecases/auth/DfVerifyRefreshToken";
 import { DfUpdateNicknameUsecase } from "@/application/usecases/user/DfUpdateNicknameUsecase";
 import { NicknameError } from "@/application/usecases/user/error/NicknameError";
 import { UserRepository } from "@/domain/repositories/UserRepository";
+import { userDi } from "@/infrastructure/config/userDi";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PUT = async (req: NextRequest) => {
-  // 로그인 된 사용자인지 검증
-  const refreshToken = req.cookies.get("refreshToken")?.value;
-  if (!refreshToken) {
-    return NextResponse.json({ user: null }, { status: 401 });
+export const PATCH = async (req: NextRequest) => {
+  const userId = await userDi.getUserIdUsecase.execute(req);
+  if (!userId) {
+    return NextResponse.json(
+      { message: "사용자를 찾을 수 없습니다." },
+      { status: 400 }
+    );
   }
 
   const userRepository: UserRepository = new PrUserRepository();
-  const verifyRefreshTokenUsecase = new DfVerifyRefreshToken(userRepository);
-  const verifiedUser = await verifyRefreshTokenUsecase.execute(refreshToken);
 
   const { newNickname } = await req.json();
-  const userId = verifiedUser?.id ?? "";
   const updateNicknameUsecase = new DfUpdateNicknameUsecase(userRepository);
 
   try {
