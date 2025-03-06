@@ -33,9 +33,6 @@ export const Author = styled.p`
 export const Description = styled.p`
   line-height: 1.125rem;
   margin-bottom: 1rem;
-  .body2 {
-    margin-bottom: 1rem;
-  }
 `;
 
 export const MoreButton = styled.button`
