@@ -45,4 +45,18 @@ export class PrNovelRepository implements NovelRepository {
       where: { serialDay: serialDay }, 
     });
   }
-}
+
+  async getNovelsWithBanners(): Promise<{ id: number; title: string; bannerImage: string }[]> {
+    return await prisma.novel.findMany({
+      where: { bannerImage: { not: null } }, 
+      select: {
+        id: true,
+        title: true,
+        bannerImage: true,
+      },
+    }) as { id: number; title: string; bannerImage: string }[];
+  }
+  
+  
+  }
+  

@@ -1,34 +1,43 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
-import styled from "styled-components";
+import { BannerWrapper, StyledImage } from "@/app/user/novel/component/BannerCorousel.styled";
 
 interface Banner {
-  id: number;
-  src: string;
-  alt: string;
+  id: number; 
+  bannerImage: string;
 }
 
-const banners: Banner[] = [
-  { id: 1, src: "/banner/badBoyBanner.svg", alt: "배너 1" },
-  { id: 2, src: "/banner/napoliBanner.svg", alt: "배너 2" },
-  { id: 3, src: "/banner/manimBanner.svg", alt: "배너 3" },
-];
-
-const BannerWrapper = styled.div`
-  width: 100%;
-  margin: 1.25rem auto;
-`;
-
-const StyledImage = styled.img`
-  width: 100%;
-  object-fit: cover;
-`;
-
 const BannerCarousel = () => {
+  const router = useRouter();
+  const [banners, setBanners] = useState<Banner[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const response = await fetch("/api/novel/banner");
+        if (!response.ok) throw new Error("Failed to fetch banners");
+
+        const data = await response.json();
+        setBanners(data.banners);
+      } catch (error) {
+        throw new Error("배너 불러오기 에러");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBanners();
+  }, []);
+
+  if (loading) return <p>배너를 불러오는 중...</p>;
+
   return (
     <BannerWrapper>
       <Swiper
@@ -39,8 +48,8 @@ const BannerCarousel = () => {
         modules={[Autoplay]}
       >
         {banners.map((banner) => (
-          <SwiperSlide key={banner.id}>
-            <StyledImage src={banner.src} alt={banner.alt} />
+          <SwiperSlide key={banner.id} onClick={() => router.push(`/user/novel/${banner.id}`)}>
+            <StyledImage src={banner.bannerImage} alt={`배너 ${banner.id}`} />
           </SwiperSlide>
         ))}
       </Swiper>
