@@ -1,6 +1,7 @@
 import { DfDeleteNovelUsecase } from "@/application/usecases/novel/DfDeleteNovelUsecase";
 import { DfEpisodeByUserIdUsecase } from "@/application/usecases/novel/DfEpisodeByUserIdUsecase";
 import { DfNovelByUserIdUsecase } from "@/application/usecases/novel/DfNovelByUserIdUsecase";
+import { DfUpdateNovelSerialStatusUsecase } from "@/application/usecases/novel/DfUpdateNovelSerialStatusUsecase";
 import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
 import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { userDi } from "@/infrastructure/config/userDi";
@@ -79,6 +80,56 @@ export const DELETE = async (req: NextRequest) => {
     if (error instanceof Error) {
       return NextResponse.json(
         { error: "소설 삭제 중 오류가 발생했습니다." },
+        { status: 500 }
+      );
+    }
+  }
+};
+
+export const PATCH = async (req: NextRequest) => {
+  try {
+    const userId = await userDi.getUserIdUsecase.execute();
+    if (!userId) {
+      return NextResponse.json(
+        { error: "유효하지 않은 사용자" },
+        { status: 401 }
+      );
+    }
+
+    const { novelId, status } = await req.json();
+    if (!novelId || !status) {
+      return NextResponse.json(
+        {
+          error:
+            !novelId && !status
+              ? "소설 ID와 연재 상태 값이 제공되지 않았습니다."
+              : !novelId
+              ? "소설 ID가 제공되지 않았습니다."
+              : "연재 상태 값이 제공되지 않았습니다.",
+        },
+        { status: 400 }
+      );
+    }
+
+    const novelRepository: NovelRepository = new PrNovelRepository();
+    const updateNovelSerialStatusUsecase = new DfUpdateNovelSerialStatusUsecase(
+      novelRepository
+    );
+
+    const result = await updateNovelSerialStatusUsecase.execute(
+      novelId,
+      status
+    );
+
+    if (!result.success) {
+      return NextResponse.json({ error: result.message }, { status: 400 });
+    }
+
+    return NextResponse.json({ message: result.message }, { status: 200 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: "소설 연재 상태 변경 중 오류가 발생했습니다." },
         { status: 500 }
       );
     }
