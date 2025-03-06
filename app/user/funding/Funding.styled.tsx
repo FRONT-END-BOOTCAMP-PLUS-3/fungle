@@ -1,16 +1,15 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  max-width: 400px;
+  max-width: 25rem;
   margin: 0 auto;
   padding: 1rem;
-  font-family: "Arial", sans-serif;
+  padding-bottom: 5rem;
 `;
 
 export const BookImage = styled.div`
-  width: 100%;
-  width: 96px;
-  height: 129px;
+  width: 6rem;
+  height: 8rem;
   background: #ddd;
   display: flex;
   align-items: center;
@@ -32,8 +31,8 @@ export const Author = styled.p`
 `;
 
 export const Description = styled.p`
-  line-height: 18px;
-  margin-bottom: 17px;
+  line-height: 1.125rem;
+  margin-bottom: 1rem;
   .body2 {
     margin-bottom: 1rem;
   }
@@ -42,7 +41,7 @@ export const Description = styled.p`
 export const MoreButton = styled.button`
   background: none;
   border: none;
-  color: #0066cc;
+  color: var(--gray-500);
   font-size: 0.9rem;
   cursor: pointer;
 `;
@@ -52,37 +51,30 @@ export const FundingAmount = styled.div`
   font-weight: bold;
 `;
 
-export const ProgressBar = styled.div`
-  width: 100%;
-  height: 8px;
-  background: var(--gray-300);
-  border-radius: 4px;
-  position: relative;
-`;
-
-export const Progress = styled.div<{ percent: number }>`
-  width: ${(props) => props.percent}%;
-  height: 100%;
-  background: #000;
-  border-radius: 4px;
-`;
-
 export const ButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 21rem;
+  height: 4rem;
   display: flex;
   justify-content: center;
+  align-items: center;
+  z-index: 1000;
 `;
 
 export const IntroContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-content: center;
   align-items: center;
-  margin-bottom: 26px;
+  margin-bottom: 1.6rem;
 `;
 
 export const AmountContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  gap: 0.5rem;
 `;
 
 export const NumberText = styled.div`
