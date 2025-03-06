@@ -126,8 +126,12 @@ const Comment = ({
       );
 
       setTrigger((prev) => !prev);
-    } catch (error) {
-      console.error(error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("좋아요 처리 중 오류가 발생했습니다.");
+      }
     }
   };
 
