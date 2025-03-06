@@ -14,4 +14,5 @@ export interface NovelRepository {
 
   addGenres(novelId: number, genres: number[]): Promise<Prisma.BatchPayload>;
   getNovelsByUserId(userId: string): Promise<Novel[] | null>;
+  getNovelsBySerialDay(serialDay: string): Promise<Novel[] | null>;
 }
