@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import Button from "@/components/button/Button";
 import { NovelEpisodesByUserIdDto } from "@/application/usecases/novel/dto/NovelEpisodesByUserId";
 import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
+import StatusUpdateButton from "./StatusUpdateButton";
 
 const ProfileNovelList = () => {
   const [isOpenMap, setIsOpenMap] = useState<{ [key: string]: boolean }>({});
@@ -96,6 +97,36 @@ const ProfileNovelList = () => {
     }
   };
 
+  const handleStatusUpdate = async (novelId: number, status: string) => {
+    try {
+      const response = await fetch("/api/user/novel", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ novelId, status }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "연재 상태 변경에 실패했습니다.");
+        return false;
+      }
+
+      setNovels((prevNovels) =>
+        prevNovels.map((novel) =>
+          novel.id === novelId ? { ...novel, serialStatus: status } : novel
+        )
+      );
+      return true;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert("연재 상태 변경에 실패했습니다.");
+        return false;
+      }
+    }
+    return false;
+  };
+
   return (
     <div>
       {novels.map((novel) => (
@@ -131,11 +162,17 @@ const ProfileNovelList = () => {
                 <div className="novel-manage">
                   <p className="episode-date">{novel.createdAt.toString()}</p>
                   <ButtonWrapper>
-                    <Button buttonSize="small">연재 상태</Button>
+                    <StatusUpdateButton
+                      currentStatus={novel.serialStatus}
+                      onUpdateStatus={(newStatus) =>
+                        handleStatusUpdate(novel.id, newStatus)
+                      }
+                    />
                     <Button
                       buttonSize="xsmall"
                       backgroudColor="leave"
                       onClick={() => handleDeleteClick(novel.id)}
+                      disabled={novel.serialStatus === "completed"}
                     >
                       삭제
                     </Button>
@@ -146,7 +183,7 @@ const ProfileNovelList = () => {
           </ProfileNovelItem>
 
           {isOpenMap[novel.id] &&
-            novel.episodes.map((episode) => (
+            novel.episodes.map((episode, index) => (
               <EpisodeList
                 ref={(el) => {
                   episodeListRefs.current[novel.id] = el;
@@ -155,7 +192,7 @@ const ProfileNovelList = () => {
               >
                 <EpisodeWrapper>
                   <li>
-                    {episode.id}화 {episode.title}
+                    {index + 1}화 {episode.title}
                   </li>
                   <EpisodeStatus status={episode.status}>
                     {episode.statusLabel}
