@@ -152,10 +152,11 @@ const Page = () => {
         <>
           <InputContainer>
             <Input
-              label=""
+              label="제목"
               placeholder="제목을 입력해주세요."
               value={title}
               onChange={handleTitleChange}
+              hideLabel={true}
             />
           </InputContainer>
           <Textarea
