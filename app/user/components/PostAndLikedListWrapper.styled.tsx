@@ -21,3 +21,14 @@ export const CustomPostFooter = styled(PostFooter)`
   justify-content: space-between;
   align-items: center;
 `;
+
+export const DropdownWrapper = styled.div`
+  display: flex;
+  width: 30%;
+  padding-top: 0.5rem;
+
+  ul {
+    font-size: var(--font-size-placeholder);
+    text-align: left;
+  }
+`;
