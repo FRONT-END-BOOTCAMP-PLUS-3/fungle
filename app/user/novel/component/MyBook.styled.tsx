@@ -54,11 +54,12 @@ export const Thumbnail = styled.div`
   width: 100%;
   border-radius: 0.625rem;
   overflow: hidden;
+  height: auto;
 `;
 
 export const StyledImage = styled(Image)`
   width: 100%;  
-  height: 100%; 
+  min-height: 12.25rem;
   object-fit: cover;  
 `;
 
@@ -81,8 +82,10 @@ export const Status = styled.span<{ $status: string }>`
 export const Title = styled.p`
   text-align: center;
   font-weight: bold;
-  font-size: 1rem;
   width: 100%;
+  white-space: normal; 
+  word-wrap: break-word; 
+  overflow-wrap: break-word; 
 `;
 
 export const Info = styled.div`
