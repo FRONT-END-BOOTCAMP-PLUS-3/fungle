@@ -43,7 +43,6 @@ const Page = () => {
 
       const data = await response.json();
       setSerialStatus(data.serialStatus);
-      console.log("소설 상태:", data.serialStatus);
 
       if (data.serialStatus === "completed") {
         alert("이 소설은 이미 완결되었습니다. 연재할 수 없습니다.");
