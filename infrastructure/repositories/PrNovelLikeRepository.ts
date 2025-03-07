@@ -1,9 +1,13 @@
 import { prisma } from "@/infrastructure/config/prisma";
 import { NovelLikeRepository } from "@/domain/repositories/NoveLikeRepository";
 import { ToggleNovelLikeDto } from "@/application/usecases/novel/dto/ToggleNovelLike";
+import { LikedNovelDto } from "@/application/usecases/novel/dto/LikedNovel";
 
 export class PrNovelLikeRepository implements NovelLikeRepository {
-  async toggleLike(novelId: number, userId: string): Promise<ToggleNovelLikeDto> {
+  async toggleLike(
+    novelId: number,
+    userId: string
+  ): Promise<ToggleNovelLikeDto> {
     try {
       const existingLike = await prisma.novelLike.findUnique({
         where: {
@@ -41,5 +45,34 @@ export class PrNovelLikeRepository implements NovelLikeRepository {
     return await prisma.novelLike.count({
       where: { novelId },
     });
+  }
+
+  async getLikedNovelsByUserId(userId: string): Promise<LikedNovelDto[]> {
+    const likedNovels = await prisma.novelLike.findMany({
+      where: { userId },
+      select: {
+        novel: {
+          select: {
+            id: true,
+            title: true,
+            serialStatus: true,
+            image: true,
+            createdAt: true,
+          },
+        },
+      },
+      orderBy: {
+        novel: {
+          createdAt: "desc",
+        },
+      },
+    });
+
+    return likedNovels.map((like) => ({
+      id: like.novel.id,
+      title: like.novel.title,
+      serialStatus: like.novel.serialStatus,
+      image: like.novel.image,
+    }));
   }
 }
