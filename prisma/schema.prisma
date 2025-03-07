@@ -73,12 +73,12 @@ model Funding {
   userId       String
   novelId      Int           @unique
   goalAmount  Int
-  currentAmount Int?
+  currentAmount Int  @default(0)
   createdAt    DateTime      @default(now())
   endDate      DateTime
   rewardType  String?  // "전자책", "종이책", "굿즈"
   status String @default("ongoing") // "ongoing", "completed"
-  introduce String
+  introduce String? 
   novel        Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
   fundingUsers FundingUser[] @relation("FundingUsers")
   fundingStages FundingStage[] @relation("FundingStages")
@@ -87,7 +87,7 @@ model Funding {
 model FundingStage {
   id           Int           @id @default(autoincrement())
   fundingId   String
-  stageNumber Int
+  stageNumber Int @default(1)
   isActive  Boolean @default(false)
   
 

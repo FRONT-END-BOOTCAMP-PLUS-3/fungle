@@ -152,8 +152,8 @@ const ProfileView = () => {
         <Image
           src={previewImage}
           alt="프로필 이미지"
-          width={100}
-          height={100}
+          fill
+          style={{ objectFit: "cover" }}
         />
         <label htmlFor="image-upload" />
         <input

@@ -3,7 +3,10 @@ import { UpdateProfileImageDto } from "./dto/UpdateProfileImage";
 import { FileService } from "@/infrastructure/services/FileService";
 
 export class DfUpdateProfileImage {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private fileService: FileService
+  ) {}
 
   async execute(data: UpdateProfileImageDto) {
     let profileImageUrl = null;

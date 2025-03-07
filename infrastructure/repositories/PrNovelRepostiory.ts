@@ -34,7 +34,10 @@ export class PrNovelRepository implements NovelRepository {
 
   async getNovelsByUserId(userId: string): Promise<Novel[] | null> {
     try {
-      const novels = await prisma.novel.findMany({ where: { userId: userId } });
+      const novels = await prisma.novel.findMany({
+        where: { userId: userId },
+        orderBy: { createdAt: "desc" },
+      });
       return novels;
     } catch (error) {
       return null;
@@ -42,21 +45,55 @@ export class PrNovelRepository implements NovelRepository {
   }
   async getNovelsBySerialDay(serialDay: string): Promise<Novel[]> {
     return await prisma.novel.findMany({
-      where: { serialDay: serialDay }, 
+      where: { serialDay: serialDay },
     });
   }
 
-  async getNovelsWithBanners(): Promise<{ id: number; title: string; bannerImage: string }[]> {
-    return await prisma.novel.findMany({
-      where: { bannerImage: { not: null } }, 
+  async deleteNovelById(novelId: number): Promise<boolean> {
+    try {
+      const deletedNovel = await prisma.novel.delete({
+        where: { id: novelId },
+      });
+      return !!deletedNovel;
+    } catch (error) {
+      if (error instanceof Error) {
+        return false;
+      }
+
+      throw error;
+    }
+  }
+
+  async getNovelsWithBanners(): Promise<
+    { id: number; title: string; bannerImage: string }[]
+  > {
+    return (await prisma.novel.findMany({
+      where: { bannerImage: { not: null } },
       select: {
         id: true,
         title: true,
         bannerImage: true,
       },
-    }) as { id: number; title: string; bannerImage: string }[];
+    })) as { id: number; title: string; bannerImage: string }[];
   }
-  
-  
+
+  async updateNovelSerialStatus(
+    novelId: number,
+    status: string
+  ): Promise<boolean> {
+    try {
+      const updatedNovel = await prisma.novel.update({
+        where: { id: novelId },
+        data: { serialStatus: status },
+      });
+
+      return !!updatedNovel;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return false;
+      }
+
+      throw error;
+    }
   }
-  
+}
