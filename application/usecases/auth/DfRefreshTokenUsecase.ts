@@ -1,12 +1,12 @@
 import {
   generateAccessToken,
   generateRefreshToken,
-  verifyAccessToken,
+  verifyRefreshToken,
 } from "@/utils/auth/jwt";
 import { AuthRepository } from "@/domain/repositories/AuthRepository";
 import { IRefreshTokenUsecase } from "./interfaces/IRefreshTokenUsecase";
 
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN_SECRET!;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN_SECRET!;
 
 export class DfRefreshTokenUsecase implements IRefreshTokenUsecase {
   private authRepository: AuthRepository;
@@ -19,7 +19,7 @@ export class DfRefreshTokenUsecase implements IRefreshTokenUsecase {
     refreshToken: string
   ): Promise<{ accessToken: string; newRefreshToken: string }> {
     // refresh token이 유효한지 검증
-    const decoded = verifyAccessToken(ACCESS_TOKEN);
+    const decoded = verifyRefreshToken(refreshToken);
     if (!decoded || typeof decoded !== "object" || !decoded.userId) {
       throw new Error("유효하지 않은 토큰입니다.");
     }
