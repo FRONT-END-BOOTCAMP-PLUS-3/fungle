@@ -3,7 +3,7 @@ export interface FundingDto {
   userId: string;
   novelId: number;
   goalAmount: number;
-  currentAmount: number | null;
+  currentAmount: number;
   createdAt: Date;
   endDate: Date;
   rewardType: string | null;
