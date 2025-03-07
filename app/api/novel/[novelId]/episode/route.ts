@@ -15,7 +15,7 @@ export const POST = async (req: NextRequest, context: { params: { novelId: strin
       return NextResponse.json({ error: "잘못된 JSON 형식입니다." }, { status: 400 });
     }
 
-    const { userId, episode, title, content } = body;
+    const { userId, episode, title, content, isFinalEpisode } = body;
     const { novelId } = context.params;
 
     const newEpisode = await novelDi.createEpisodeUseCase.execute(
@@ -23,7 +23,8 @@ export const POST = async (req: NextRequest, context: { params: { novelId: strin
       String(userId),
       Number(episode),
       String(title),
-      String(content)
+      String(content),
+      Boolean(isFinalEpisode)
     );
 
     return NextResponse.json({ message: "에피소드가 성공적으로 생성되었습니다.", episode: newEpisode }, { status: 201 });

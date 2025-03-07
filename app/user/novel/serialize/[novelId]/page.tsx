@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useModalStore } from "@/store/useModalStore";
 import  useAuthStore  from "@/store/useAuthStore";
-import { Container, InputContainer, ButtonContainer } from "@/app/user/novel/serialize/SerializePage.styled";
+import { Container, InputContainer, ButtonContainer, CheckboxContainer } from "@/app/user/novel/serialize/SerializePage.styled";
 import NovelCreateCompleted from "../../create/component/NovelCreateCompleted";
 import ConfirmationModal from "@/app/user/novel/create/component/ConfirmationModal";
 
@@ -23,6 +23,7 @@ const Page = () => {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [episodeNumber, setEpisodeNumber] = useState<number | null>(null); 
+  const [isFinalEpisode, setIsFinalEpisode] = useState(false);
 
   useEffect(() => {
     openModal();
@@ -82,6 +83,7 @@ const Page = () => {
           episode: episodeNumber, 
           title,
           content,
+          isFinalEpisode,
         }),
       });
   
@@ -137,7 +139,16 @@ const Page = () => {
             placeholder="내용을 입력해주세요." 
             defaultValue={content}
             onChange={handleContentChange} 
-          />
+          /> 
+          <CheckboxContainer>
+            <label >
+              <input 
+              type="checkbox"
+              checked={isFinalEpisode} 
+              onChange={(e) => setIsFinalEpisode(e.target.checked)}   /> 
+              &nbsp;마지막 에피소드입니다.
+            </label>
+          </CheckboxContainer>
           <ButtonContainer>
             <Button fontSize="medium" buttonSize="medium" backgroudColor="white" onClick={handleCancel} >
               취소

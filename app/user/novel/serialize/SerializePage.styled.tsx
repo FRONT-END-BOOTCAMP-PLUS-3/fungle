@@ -32,3 +32,7 @@ export const ButtonContainer = styled.div`
   gap: 0.9375rem;
   width: 100%;
 `;
+
+export const CheckboxContainer = styled.div`
+  margin-top: 0.625rem;
+  `;
