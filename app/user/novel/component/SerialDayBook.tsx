@@ -9,11 +9,6 @@ import {
 import ProgressBar from "@/components/progressbar/ProgressBar";
 import { SerialDayNovelDto } from "@/application/usecases/novel/dto/SerialDayNovel";
 
-interface DaysProps {
-  selectedDay: string;
-  setSelectedDay: (value: string) => void;
-}
-
 const dayMapping: { [key: string]: string } = {
   "월": "monday",
   "화": "tuesday",
@@ -24,8 +19,14 @@ const dayMapping: { [key: string]: string } = {
   "일": "sunday",
 };
 
-const SerialDayBook = ({ selectedDay, setSelectedDay }: DaysProps) => {
-  const router = useRouter(); 
+const getTodayKoreanDay = (): string => {
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  return days[new Date().getDay()];
+};
+
+const SerialDayBook = () => {
+  const router = useRouter();
+  const [selectedDay, setSelectedDay] = useState<string>(getTodayKoreanDay()); 
   const [books, setBooks] = useState<SerialDayNovelDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -49,7 +50,7 @@ const SerialDayBook = ({ selectedDay, setSelectedDay }: DaysProps) => {
     };
 
     fetchNovelsByDay();
-  }, [selectedDay]); 
+  }, [selectedDay]);
 
   return (
     <>
@@ -73,7 +74,6 @@ const SerialDayBook = ({ selectedDay, setSelectedDay }: DaysProps) => {
                   alt="소설 썸네일"
                   width={120} 
                   height={160} 
-                  
                 />
               </Thumbnail>
               <Content>
