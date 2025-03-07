@@ -14,7 +14,6 @@ const LikedNovelList = () => {
       });
 
       const data = await response.json();
-      console.log(data);
 
       setNovels(data.novels);
     };
