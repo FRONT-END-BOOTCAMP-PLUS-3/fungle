@@ -10,9 +10,14 @@ import Top10List from "@/app/user/novel/component/Top10";
 import FloatingButton from "./component/FloatingButton";
 
 const Page = () => {
+  const getTodayKoreanDay = (): string => {
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    return days[new Date().getDay()];
+  };
   const [selectedOption, setSelectedOption] = useState("genre");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedDay, setSelectedDay] = useState<string>("수"); 
+  const [selectedDay, setSelectedDay] = useState<string>(getTodayKoreanDay()); 
+
 
   return (
     <Container>

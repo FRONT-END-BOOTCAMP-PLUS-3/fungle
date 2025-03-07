@@ -2,30 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { ListContainer, ListItem, Rank, Thumbnail, Content, Title, Author, Tags, StyledImage } from "@/app/user/novel/component/Top10.styled";
-
-
-// ✅ Top 10 소설 데이터를 위한 타입 정의
-interface TopNovel {
-  id: number;
-  title: string;
-  author: string;
-  image: string;
-  tags: string[];
-  score: number;
-}
+import { mapGenresToKorean } from "@/constants/GENRES";
+import { TopListDTO } from "@/application/usecases/novel/dto/TopList"; 
 
 const Top10List = () => {
-  const [topNovels, setTopNovels] = useState<TopNovel[]>([]);
+  const [topNovels, setTopNovels] = useState<TopListDTO[]>([]); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // ✅ API 호출하여 Top 10 소설 가져오기
     const fetchTopNovels = async () => {
       try {
         const response = await fetch("/api/novel/top10");
-        const data: TopNovel[] = await response.json();
-        console.log("Top 10 소설 데이터:", data);
-        setTopNovels(data);
+        const data: TopListDTO[] = await response.json();
+
+        const convertedData = data.map(novel => ({
+          ...novel,
+          tags: mapGenresToKorean(novel.tags),
+        }));
+
+        console.log("Top 10 소설 데이터:", convertedData);
+        setTopNovels(convertedData);
       } catch (error) {
         console.error("Top 10 소설을 불러오는 중 오류 발생:", error);
       } finally {
@@ -37,7 +33,7 @@ const Top10List = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>; // ✅ 로딩 표시
+    return <p>Loading...</p>;
   }
 
   return (

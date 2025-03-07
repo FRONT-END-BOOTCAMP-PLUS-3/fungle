@@ -11,3 +11,8 @@ export const GENRES = [
   { value: "sports", label: "스포츠" },
   { value: "growth", label: "성장물" },
 ];
+
+
+export const mapGenresToKorean = (tags: string[]): string[] => {
+  return tags.map(tag => GENRES.find(g => g.value === tag)?.label || tag);
+};
