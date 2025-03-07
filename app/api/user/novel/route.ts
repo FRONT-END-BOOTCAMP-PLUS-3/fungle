@@ -1,10 +1,14 @@
+import { DfFundingUsecase } from "@/application/usecases/funding/DfFundingUsecase";
 import { DfDeleteNovelUsecase } from "@/application/usecases/novel/DfDeleteNovelUsecase";
 import { DfEpisodeByUserIdUsecase } from "@/application/usecases/novel/DfEpisodeByUserIdUsecase";
 import { DfNovelByUserIdUsecase } from "@/application/usecases/novel/DfNovelByUserIdUsecase";
 import { DfUpdateNovelSerialStatusUsecase } from "@/application/usecases/novel/DfUpdateNovelSerialStatusUsecase";
+import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
+import { FundingRepository } from "@/domain/repositories/FundingRepository";
 import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
 import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { userDi } from "@/infrastructure/config/userDi";
+import { PrFundingRepository } from "@/infrastructure/repositories/PrFundingRepository";
 import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelEpisodeRepository";
 import { PrNovelRepository } from "@/infrastructure/repositories/PrNovelRepostiory";
 import { FileService } from "@/infrastructure/services/FileService";
@@ -21,6 +25,8 @@ export const GET = async (req: NextRequest) => {
     const novelRepository: NovelRepository = new PrNovelRepository();
     const episodeRepository: NovelEpisodeRepository =
       new PrNovelEpisodeRepository();
+    const fundingRepository: FundingRepository = new PrFundingRepository();
+
     const novelEpisodeByUserIdUsecase = new DfEpisodeByUserIdUsecase(
       episodeRepository
     );
@@ -28,14 +34,26 @@ export const GET = async (req: NextRequest) => {
       novelRepository,
       novelEpisodeByUserIdUsecase
     );
+    const fundingUsecase = new DfFundingUsecase(fundingRepository);
 
-    const novels = await novelByUserIdUsecase.execute(userId);
+    const novels: NovelsByUserIdDto[] | null =
+      await novelByUserIdUsecase.execute(userId);
 
     if (!novels) {
       return NextResponse.json({ novels: null }, { status: 400 });
     }
 
-    return NextResponse.json({ novels: novels }, { status: 200 });
+    const novelsWithFunding = await Promise.all(
+      novels.map(async (novel) => {
+        const funding = await fundingUsecase.execute(novel.id);
+        return {
+          ...novel,
+          hasActiveFunding: funding?.hasActiveFunding ?? false,
+        };
+      })
+    );
+
+    return NextResponse.json({ novels: novelsWithFunding }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "소설 데이터를 가져오는 중 오류가 발생했습니다." },
