@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styled from "styled-components";
 
 export const ProfileSection = styled.section`
@@ -16,6 +15,7 @@ export const ProfileContainer = styled.div`
   height: 6.25rem;
   display: flex;
   position: relative;
+  overflow: hidden;
 
   img {
     border-radius: 50%;

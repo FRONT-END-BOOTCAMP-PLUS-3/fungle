@@ -1,7 +1,6 @@
 import { DfPostUpdateUsecase } from "@/application/usecases/community/DfPostUpdateUsecase";
 import { userDi } from "@/infrastructure/config/userDi";
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
-import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (

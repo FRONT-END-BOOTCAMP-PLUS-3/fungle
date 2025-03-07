@@ -10,4 +10,5 @@ export interface NovelsByUserIdDto {
     status: string;
     statusLabel: string;
   }[];
+  hasActiveFunding: boolean;
 }

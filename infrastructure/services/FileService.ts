@@ -38,6 +38,22 @@ export class FileService {
     return `/bookCover/${fileName}`;
   }
 
+  static async deleteCoverImage(imagePath: string): Promise<void> {
+    try {
+      const filePath = path.join(process.cwd(), "public", imagePath);
+
+      await fs.unlink(filePath);
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        (error as any).code === "ENOENT"
+      )
+        return;
+      throw error;
+    }
+  }
+
   static async saveProfileImage(userId: string, file: File): Promise<string> {
     const profileImageDir = path.join(process.cwd(), "public", "profileImage");
     await fs.mkdir(profileImageDir, { recursive: true });
