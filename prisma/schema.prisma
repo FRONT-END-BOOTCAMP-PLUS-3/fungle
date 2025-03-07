@@ -77,8 +77,8 @@ model Funding {
   createdAt    DateTime      @default(now())
   endDate      DateTime
   rewardType  String?  // "전자책", "종이책", "굿즈"
-  status String @default("pending")
-  title String
+  status String @default("ongoing") // "ongoing", "completed"
+  introduce String
   novel        Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
   fundingUsers FundingUser[] @relation("FundingUsers")
   fundingStages FundingStage[] @relation("FundingStages")
