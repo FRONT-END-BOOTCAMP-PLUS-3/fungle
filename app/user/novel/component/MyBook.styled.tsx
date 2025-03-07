@@ -77,6 +77,7 @@ export const Status = styled.span<{ $status: string }>`
   font-size: 0.75rem;
   padding: 0.15rem 0.5rem;
   border-radius: 0.3125rem;
+  width: 3.125rem;
 `;
 
 export const Title = styled.p`

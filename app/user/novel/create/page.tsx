@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";
 import Dropdown from "@/components/dropdown/Dropdown";
@@ -22,24 +22,43 @@ const Page = () => {
   const router = useRouter();
   const { user } = useAuthStore();
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [selectedSchedule, setSelectedSchedule] = useState<string | string[]>(
-    ""
-  );
-
+  const [selectedSchedule, setSelectedSchedule] = useState<string | string[]>("");
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  useEffect(() => {
+    const checkUserNovels = async () => {
+      if (!user) return;
+
+      try {
+        const response = await fetch(`/api/user/novel`);
+        if (!response.ok) throw new Error("사용자 소설 데이터를 가져올 수 없습니다.");
+
+        const data = await response.json();
+        const novels = data.novels ?? []; 
+
+        const hasOngoingNovel = novels.some((novel: any) => novel.serialStatus === "ongoing");
+
+        if (hasOngoingNovel) {
+          alert("현재 연재 중인 소설이 있습니다. 새로운 소설을 만들 수 없습니다.");
+          router.push("/user/novel"); 
+        }
+      } catch (error) {
+        throw new Error("서버 에러");
+      }
+    };
+
+    checkUserNovels();
+  }, [user, router]);
+
   const handleGenreSelect = (value: string) => {
     setSelectedGenres((prev) => {
       if (prev.includes(value)) {
-        const newGenres = prev.filter((genre) => genre !== value);
-        return newGenres;
+        return prev.filter((genre) => genre !== value);
       } else if (prev.length < 5) {
-        const newGenres = [...prev, value];
-        return newGenres;
+        return [...prev, value];
       }
-
       return prev;
     });
   };
@@ -57,12 +76,7 @@ const Page = () => {
       return;
     }
 
-    if (
-      !title ||
-      !description ||
-      selectedGenres.length === 0 ||
-      !selectedSchedule
-    ) {
+    if (!title || !description || selectedGenres.length === 0 || !selectedSchedule) {
       alert("모든 필드를 입력해주세요.");
       return;
     }
@@ -95,8 +109,7 @@ const Page = () => {
       alert("소설 생성이 완료되었습니다! 1화 연재로 넘어갑니다.");
       router.push(`/user/novel/serialize/${novelId}`);
     } catch (error) {
-      console.error("소설 생성 중 오류 발생:", error);
-      alert("소설 생성 중 오류가 발생했습니다.");
+      throw new Error("서버 에러");
     }
   };
 
@@ -117,71 +130,31 @@ const Page = () => {
       <Form>
         <CreateLabel>책 표지</CreateLabel>
         <CoverUpload onClick={handleCoverClick}>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleCoverUpload}
-            id="cover-upload"
-            hidden
-          />
+          <input type="file" accept="image/*" onChange={handleCoverUpload} id="cover-upload" hidden />
           {!coverImage ? (
             <div>
-              <Image
-                src="/icon/plus.svg"
-                alt="plus book cover"
-                width={30}
-                height={40}
-              />
+              <Image src="/icon/plus.svg" alt="plus book cover" width={30} height={40} />
             </div>
           ) : (
-            <CoverImage
-              src={URL.createObjectURL(coverImage)}
-              alt="Book cover preview"
-            />
+            <CoverImage src={URL.createObjectURL(coverImage)} alt="Book cover preview" />
           )}
         </CoverUpload>
 
-        <Input
-          label="책 제목"
-          placeholder="제목을 입력해주세요."
-          value={title}
-          onChange={handleTitleChange}
-        />
-        <Input
-          label="책 소개"
-          placeholder="책 내용을 소개해주세요."
-          value={description}
-          onChange={handleDescriptionChange}
-        />
+        <Input label="책 제목" placeholder="제목을 입력해주세요." value={title} onChange={handleTitleChange} />
+        <Input label="책 소개" placeholder="책 내용을 소개해주세요." value={description} onChange={handleDescriptionChange} />
 
         <CreateLabel>
           장르 <span className="genre-max-select">(최대 5개 선택 가능)</span>
         </CreateLabel>
-        <Dropdown
-          options={GENRES}
-          onSelect={handleGenreSelect}
-          selected={selectedGenres}
-        />
+        <Dropdown options={GENRES} onSelect={handleGenreSelect} selected={selectedGenres} />
 
         <CreateLabel>
-          연재일{" "}
-          <span className="genre-max-select">
-            정하신 날짜는 변경이 불가능 합니다.
-          </span>
+          연재일 <span className="genre-max-select">정하신 날짜는 변경이 불가능 합니다.</span>
         </CreateLabel>
-        <Dropdown
-          options={SERIAL_DAY}
-          onSelect={setSelectedSchedule}
-          selected={selectedSchedule}
-        />
+        <Dropdown options={SERIAL_DAY} onSelect={setSelectedSchedule} selected={selectedSchedule} />
 
         <ButtonWrapper>
-          <Button
-            fontSize="small"
-            buttonSize="small"
-            backgroudColor="primary"
-            onClick={handleCreateNovel}
-          >
+          <Button fontSize="small" buttonSize="small" backgroudColor="primary" onClick={handleCreateNovel}>
             새 시리즈 만들기
           </Button>
         </ButtonWrapper>
