@@ -29,7 +29,7 @@ export class DfRefreshTokenUsecase implements IRefreshTokenUsecase {
       decoded.userId
     );
 
-    if (!storedToken || storedToken !== refreshToken) {
+    if (!storedToken) {
       throw new Error("토큰이 존재하지 않습니다.");
     }
 
