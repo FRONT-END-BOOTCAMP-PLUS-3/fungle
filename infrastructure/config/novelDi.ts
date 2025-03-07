@@ -13,6 +13,7 @@ import { FileService } from "@/infrastructure/services/FileService";
 import { DfNovelsBySerialDayUsecase } from "@/application/usecases/novel/DfNovelsBySerialDayUsecase";
 import { DfBannerNovelsUsecase } from "@/application/usecases/novel/DfBannerNovelsUsecase";
 import { DfEpisodeByIdUsecase } from "@/application/usecases/novel/DfEpisodeByIdUsecase";
+import { DfTopNovelsUsecase } from "@/application/usecases/novel/DfTopNovelsUsecase";
 
 export const novelDi = {
   novelRepository: new PrNovelRepository(),
@@ -58,4 +59,12 @@ export const novelDi = {
     new PrUserRepository()
   ),
   getBannerNovelsUsecase: new DfBannerNovelsUsecase(new PrNovelRepository()),
+
+  getTopNovelsUseCase: new DfTopNovelsUsecase(
+    new PrNovelRepository(),
+    new PrNovelGenreRepository(),
+    new PrUserRepository(),
+    new PrNovelLikeRepository(),
+    new PrNovelEpisodeRepository()
+  ),
 };

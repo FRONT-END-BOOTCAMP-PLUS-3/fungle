@@ -20,4 +20,5 @@ export interface NovelRepository {
   >;
   deleteNovelById(novelId: number): Promise<boolean>;
   updateNovelSerialStatus(novelId: number, status: string): Promise<boolean>;
+  getAllNovels(): Promise<Novel[]>;
 }

@@ -13,4 +13,5 @@ export interface NovelEpisodeRepository {
     isFinalEpisode: boolean
   ): Promise<NovelEpisode>;
   increaseViewCount(episodeId: number): Promise<void>;
+  getTotalViewsByNovelId(novelId: number): Promise<number>;
 }
