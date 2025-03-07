@@ -42,7 +42,7 @@ const SerialDayBook: React.FC<SerialDayBookProps> = ({ selectedDay, setSelectedD
         const data = await response.json();
         setBooks(data.novels);
       } catch (error) {
-        console.error("Error fetching novels:", error);
+        throw new Error("서버 에러");
       } finally {
         setLoading(false);
       }

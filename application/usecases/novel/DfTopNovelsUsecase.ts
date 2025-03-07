@@ -20,7 +20,6 @@ export class DfTopNovelsUsecase {
     const novelData = await Promise.all(
       novels.map(async (novel) => {
         try {
-          // ✅ 개별적으로 데이터 가져오기 (병렬 처리 최적화)
           const [user, genres, likeCount, totalViews] = await Promise.all([
             this.userRepository.getUserById(novel.userId),
             this.novelGenreRepository.getGenresByNovelId(novel.id),
@@ -33,8 +32,8 @@ export class DfTopNovelsUsecase {
             title: novel.title,
             author: user?.nickname ?? "Unknown",
             image: novel.image || "/image/book.svg",
-            tags: genres ?? [], // ✅ 장르 추가
-            score: totalViews + likeCount, // ✅ 조회수 + 좋아요 점수
+            tags: genres ?? [], 
+            score: totalViews + likeCount,
           } as TopListDTO;
         } catch (error) {
           console.error(`소설 ID ${novel.id} 점수 계산 오류:`, error);

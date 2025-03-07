@@ -13,6 +13,7 @@ const Top10List = () => {
     const fetchTopNovels = async () => {
       try {
         const response = await fetch("/api/novel/top10");
+        if (!response.ok) throw new Error("Failed to fetch novels top 10");
         const data: TopListDTO[] = await response.json();
 
         const convertedData = data.map(novel => ({
@@ -20,10 +21,9 @@ const Top10List = () => {
           tags: mapGenresToKorean(novel.tags),
         }));
 
-        console.log("Top 10 소설 데이터:", convertedData);
         setTopNovels(convertedData);
       } catch (error) {
-        console.error("Top 10 소설을 불러오는 중 오류 발생:", error);
+        throw new Error("서버 에러");
       } finally {
         setLoading(false);
       }
@@ -47,7 +47,6 @@ const Top10List = () => {
               alt={`${novel.title} 썸네일`}
               width={60}
               height={80}
-              objectFit="cover"
             />
           </Thumbnail>
           <Content>
