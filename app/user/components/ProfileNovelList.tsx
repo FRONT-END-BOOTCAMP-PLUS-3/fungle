@@ -167,12 +167,18 @@ const ProfileNovelList = () => {
                       onUpdateStatus={(newStatus) =>
                         handleStatusUpdate(novel.id, newStatus)
                       }
+                      hasPendingEpisode={novel.episodes.some(
+                        (episode) => episode.status === "pending"
+                      )}
                     />
                     <Button
                       buttonSize="xsmall"
                       backgroudColor="leave"
                       onClick={() => handleDeleteClick(novel.id)}
-                      disabled={novel.serialStatus === "completed"}
+                      disabled={
+                        novel.serialStatus === "completed" &&
+                        novel.hasActiveFunding === true
+                      }
                     >
                       삭제
                     </Button>

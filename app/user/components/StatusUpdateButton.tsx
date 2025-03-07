@@ -10,17 +10,21 @@ import { SERIAL_STATUS, STATUS_TRANSITIONS } from "@/constants/STATUS";
 interface StatusUpdateButtonProps {
   currentStatus: string;
   onUpdateStatus: (newStatus: string) => Promise<boolean>;
+  hasPendingEpisode: boolean; // 새로운 prop 추가
 }
 
 const StatusUpdateButton = ({
   currentStatus,
   onUpdateStatus,
+  hasPendingEpisode,
 }: StatusUpdateButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
+    if (!hasPendingEpisode) {
+      setIsOpen((prev) => !prev);
+    }
   };
 
   useEffect(() => {
@@ -51,6 +55,8 @@ const StatusUpdateButton = ({
   const availableStatuses = STATUS_TRANSITIONS[currentStatus] || [];
 
   const handleStatusClick = async (status: string) => {
+    if (hasPendingEpisode) return;
+
     const success = await onUpdateStatus(status);
     if (success) {
       setIsOpen(false);
@@ -62,12 +68,12 @@ const StatusUpdateButton = ({
       <Button
         buttonSize="small"
         onClick={toggleMenu}
-        disabled={availableStatuses.length === 0}
+        disabled={availableStatuses.length === 0 || hasPendingEpisode}
       >
         {SERIAL_STATUS.find((s) => s.value === currentStatus)?.label ||
           "알 수 없음"}
       </Button>
-      {isOpen && availableStatuses.length > 0 && (
+      {isOpen && availableStatuses.length > 0 && !hasPendingEpisode && (
         <MenuWrapper ref={menuRef}>
           {availableStatuses.map((status) => (
             <MenuItem key={status} onClick={() => handleStatusClick(status)}>
