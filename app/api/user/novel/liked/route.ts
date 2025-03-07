@@ -22,5 +22,10 @@ export const GET = async () => {
     );
 
     return NextResponse.json({ novels: likedNovels }, { status: 200 });
-  } catch {}
+  } catch (error) {
+    return NextResponse.json(
+      { error: "좋아요를 누른 소설 목록을 가져오는 데 실패했습니다." },
+      { status: 500 }
+    );
+  }
 };
