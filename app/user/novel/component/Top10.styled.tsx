@@ -1,7 +1,5 @@
 import styled from "styled-components";
-
-styled
-
+import Image from "next/image";
 
 interface ListItemProps {
   $isLast: boolean;
@@ -16,42 +14,49 @@ export const ListContainer = styled.div`
 export const ListItem = styled.div<ListItemProps>`
   display: flex;
   align-items: center;
-  padding:  0.9375rem;
+  padding: 0.9375rem;
   border-bottom: ${({ $isLast }) => ($isLast ? "none" : "0.0625rem solid var(--gray-500)")};
-  gap:  0.9375rem;
+  gap: 0.9375rem;
+`;
 
-  .rank {
-    font-size: var(--font-size-xxl);
-    font-weight: bold;
-  }
+export const Rank = styled.span`
+  font-size: var(--font-size-xxl);
+  font-weight: bold;
+`;
 
-  .thumbnail {
-    position: relative;
-    width: 3.75rem;  
-    height: 5rem;    
-    border-radius: 0.3125rem;
-    overflow: hidden;
-  }
+export const Thumbnail = styled.div`
+  position: relative;
+  width: 3.75rem;  
+  height: 5rem;    
+  border-radius: 0.3125rem;
+  overflow: hidden;
+`;
 
-  .content {
-    display: flex;
-    flex-direction: column;
-  }
+export const StyledImage = styled(Image)`
+  width: 100%;  
+  object-fit: cover;
+  min-height: 5.375rem;
 
-  .title {
-    font-size: var(--font-size-lg);
-    font-weight: bold;
-  }
+`;
 
-  .author {
-    font-size: var(--font-size-base);
-    color: var(--gray-500);
-    margin-top : -0.4375rem;
-  }
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
-  .tags {
-    font-size: var(--font-size-footer);
-    color: var(--primary-color);
-    margin-top: 0.4375rem;
-  }
+export const Title = styled.p`
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+`;
+
+export const Author = styled.p`
+  font-size: var(--font-size-base);
+  color: var(--gray-500);
+  margin-top: -0.4375rem;
+`;
+
+export const Tags = styled.p`
+  font-size: var(--font-size-footer);
+  color: var(--primary-color);
+  margin-top: 0.4375rem;
 `;

@@ -96,4 +96,8 @@ export class PrNovelRepository implements NovelRepository {
       throw error;
     }
   }
+
+  async getAllNovels(): Promise<Novel[]> {
+    return await prisma.novel.findMany();
+  }
 }

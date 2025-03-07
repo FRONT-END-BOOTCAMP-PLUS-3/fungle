@@ -19,14 +19,13 @@ const dayMapping: { [key: string]: string } = {
   "일": "sunday",
 };
 
-const getTodayKoreanDay = (): string => {
-  const days = ["일", "월", "화", "수", "목", "금", "토"];
-  return days[new Date().getDay()];
-};
+interface SerialDayBookProps {
+  selectedDay: string;
+  setSelectedDay: (day: string) => void;
+}
 
-const SerialDayBook = () => {
+const SerialDayBook: React.FC<SerialDayBookProps> = ({ selectedDay, setSelectedDay }) => {
   const router = useRouter();
-  const [selectedDay, setSelectedDay] = useState<string>(getTodayKoreanDay()); 
   const [books, setBooks] = useState<SerialDayNovelDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -43,7 +42,7 @@ const SerialDayBook = () => {
         const data = await response.json();
         setBooks(data.novels);
       } catch (error) {
-        console.error("Error fetching novels:", error);
+        throw new Error("서버 에러");
       } finally {
         setLoading(false);
       }

@@ -58,4 +58,11 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
       },
     });
   }
+  async getTotalViewsByNovelId(novelId: number): Promise<number> {
+    const result = await prisma.novelEpisode.aggregate({
+      where: { novelId },
+      _sum: { view: true }
+    });
+    return result._sum.view || 0;
+  }
 }

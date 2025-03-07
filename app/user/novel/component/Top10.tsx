@@ -1,33 +1,62 @@
 "use client";
 
-import { ListContainer, ListItem } from "@/app/user/novel/component/Top10.styled";
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import { ListContainer, ListItem, Rank, Thumbnail, Content, Title, Author, Tags, StyledImage } from "@/app/user/novel/component/Top10.styled";
+import { mapGenresToKorean } from "@/constants/GENRES";
+import { TopListDTO } from "@/application/usecases/novel/dto/TopList"; 
 
 const Top10List = () => {
+  const [topNovels, setTopNovels] = useState<TopListDTO[]>([]); 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTopNovels = async () => {
+      try {
+        const response = await fetch("/api/novel/top10");
+        if (!response.ok) throw new Error("Failed to fetch novels top 10");
+        const data: TopListDTO[] = await response.json();
+
+        const convertedData = data.map(novel => ({
+          ...novel,
+          tags: mapGenresToKorean(novel.tags),
+        }));
+
+        setTopNovels(convertedData);
+      } catch (error) {
+        throw new Error("서버 에러");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTopNovels();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
-    <>
-      <ListContainer>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9 ,10].map((rank, index, array) => (
-          <ListItem key={rank} $isLast={index === array.length - 1}>
-            <span className="rank">{rank}</span>
-            <div className="thumbnail">
-            <Image 
-              src="/bookCover/1740912955011-jojobook.jpg" 
-              alt="소설 썸네일" 
-              width={60} 
-              height={80} 
-              objectFit="cover"
+    <ListContainer>
+      {topNovels.map((novel, index, array) => (
+        <ListItem key={novel.id} $isLast={index === array.length - 1}>
+          <Rank>{index + 1}</Rank>
+          <Thumbnail>
+            <StyledImage
+              src={novel.image}
+              alt={`${novel.title} 썸네일`}
+              width={60}
+              height={80}
             />
-            </div>
-            <div className="content">
-              <p className="title">야구는 나쁜놈이 잘한다</p>
-              <p className="author">한교동짬뽕</p>
-              <p className="tags">#로맨스 #액션 #판타지</p>
-            </div>
-          </ListItem>
-        ))}
-      </ListContainer>
-    </>
+          </Thumbnail>
+          <Content>
+            <Title>{novel.title}</Title>
+            <Author>{novel.author}</Author>
+            <Tags>#{novel.tags.join(" #")}</Tags>
+          </Content>
+        </ListItem>
+      ))}
+    </ListContainer>
   );
 };
 
