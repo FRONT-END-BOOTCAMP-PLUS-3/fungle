@@ -9,7 +9,8 @@ export interface NovelEpisodeRepository {
     userId: string,
     episode: number,
     title: string,
-    content: string
+    content: string,
+    isFinalEpisode: boolean
   ): Promise<NovelEpisode>;
   increaseViewCount(episodeId: number): Promise<void>;
 }

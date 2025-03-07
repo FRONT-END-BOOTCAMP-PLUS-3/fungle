@@ -44,7 +44,8 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
     userId: string,
     episode: number,
     title: string,
-    content: string
+    content: string,
+    isFinalEpisode: boolean
   ): Promise<NovelEpisode> {
     return await prisma.novelEpisode.create({
       data: {
@@ -53,6 +54,7 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
         episode,
         title,
         content,
+        isFinalEpisode
       },
     });
   }
