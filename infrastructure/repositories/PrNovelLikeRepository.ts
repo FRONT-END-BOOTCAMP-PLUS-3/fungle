@@ -58,6 +58,11 @@ export class PrNovelLikeRepository implements NovelLikeRepository {
             serialStatus: true,
             image: true,
             createdAt: true,
+            user: {
+              select: {
+                nickname: true,
+              },
+            },
           },
         },
       },
@@ -73,6 +78,7 @@ export class PrNovelLikeRepository implements NovelLikeRepository {
       title: like.novel.title,
       serialStatus: like.novel.serialStatus,
       image: like.novel.image,
+      nickname: like.novel.user.nickname,
     }));
   }
 }

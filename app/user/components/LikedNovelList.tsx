@@ -40,7 +40,7 @@ const LikedNovelList = () => {
                   <div className="novel-title">
                     <Link href={`/user/novel/${novel.id}`} passHref>
                       <p className="episode-title">{novel.title}</p>
-                      <p className="author-nickname">작가 닉네임</p>
+                      <p className="author-nickname">{novel.nickname}</p>
                     </Link>
                   </div>
                 </div>

@@ -3,4 +3,5 @@ export interface LikedNovelDto {
   title: string;
   serialStatus: string;
   image: string | null;
+  nickname: string;
 }
