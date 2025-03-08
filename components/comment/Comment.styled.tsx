@@ -17,7 +17,7 @@ export const CommunityLikeButton = styled.button`
 export const CommunityPostCommentWrapper = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
+  gap: 1rem;
   border: 0.0625rem solid var(--gray-300);
   padding: 0.875rem;
   border-radius: 0.625rem;
@@ -80,14 +80,6 @@ export const CommunityCommentBox = styled.div`
 export const CommunityReplyButton = styled.button`
   display: flex;
   gap: 0.625rem;
-  background-color: inherit;
-  border: none;
-  cursor: pointer;
-`;
-
-export const CommunityPostCommentReply = styled.button`
-  display: flex;
-  gap: 0.3125rem;
   background-color: inherit;
   border: none;
   cursor: pointer;
