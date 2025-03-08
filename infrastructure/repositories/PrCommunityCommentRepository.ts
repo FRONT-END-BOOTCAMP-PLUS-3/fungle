@@ -54,8 +54,14 @@ export class PrCommunityCommentRepository
     }
   }
 
-  async create(id: string, userId: string, comment: string): Promise<boolean> {
+  async create(
+    id: string,
+    userId: string,
+    comment: string,
+    parentId: string
+  ): Promise<boolean> {
     const postId = Number(id);
+    const parent = Number(parentId);
 
     try {
       const newData = await prisma.communityComment.create({
@@ -63,6 +69,7 @@ export class PrCommunityCommentRepository
           comment: comment,
           postId: postId,
           userId: userId,
+          parentId: parent,
         },
       });
 
