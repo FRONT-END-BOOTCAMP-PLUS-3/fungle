@@ -4,9 +4,10 @@ import { useRouter } from "next/navigation";
 import { GridContainer, BookCard, Thumbnail, StyledImage, Content, Title, Info } from "@/app/user/novel/component/SerialDayBook.styled";
 import ProgressBar from "@/components/progressbar/ProgressBar";
 import { ResultNotfoundContainer, ResultImage } from "@/app/user/novel/component/SearchResult.styled";
+import { SearchNovelDTO } from "@/application/usecases/novel/dto/SearchNovel";
 
 interface SearchResultsProps {
-  searchResults: any[];
+  searchResults: SearchNovelDTO[];
 }
 
 const SearchResults = ({ searchResults }: SearchResultsProps) => {
