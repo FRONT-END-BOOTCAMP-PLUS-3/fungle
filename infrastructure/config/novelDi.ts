@@ -14,6 +14,7 @@ import { DfNovelsBySerialDayUsecase } from "@/application/usecases/novel/DfNovel
 import { DfBannerNovelsUsecase } from "@/application/usecases/novel/DfBannerNovelsUsecase";
 import { DfEpisodeByIdUsecase } from "@/application/usecases/novel/DfEpisodeByIdUsecase";
 import { DfTopNovelsUsecase } from "@/application/usecases/novel/DfTopNovelsUsecase";
+import { DfSearchNovelsUsecase } from "@/application/usecases/novel/DfSearchNovelsUsecase";
 
 export const novelDi = {
   novelRepository: new PrNovelRepository(),
@@ -66,5 +67,12 @@ export const novelDi = {
     new PrUserRepository(),
     new PrNovelLikeRepository(),
     new PrNovelEpisodeRepository()
+  ),
+
+  searchNovelsUsecase: new DfSearchNovelsUsecase(
+    new PrNovelRepository(),
+    new PrGenreRepository(),
+    new PrNovelGenreRepository(),
+    new PrUserRepository()
   ),
 };
