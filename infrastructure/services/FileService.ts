@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 
 export class FileService {
-  private static async deleteExistingProfileImage(
+  static async deleteExistingProfileImage(
     userId: string,
     directory: string
   ): Promise<void> {
