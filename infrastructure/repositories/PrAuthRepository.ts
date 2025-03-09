@@ -41,4 +41,8 @@ export class PrAuthRepository implements AuthRepository {
       data: { token: newRefreshToken },
     });
   }
+
+  async deleteRefreshToken(refreshToken: string): Promise<void> {
+    await prisma.refreshToken.deleteMany({ where: { token: refreshToken } });
+  }
 }

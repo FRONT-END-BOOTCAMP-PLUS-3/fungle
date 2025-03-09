@@ -34,7 +34,8 @@ const Header = () => {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await fetch("/api/logout", { method: "POST" });
     setIsLoggedIn(false);
     router.push("/");
   };
