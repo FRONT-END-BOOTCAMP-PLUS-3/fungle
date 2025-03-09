@@ -35,7 +35,7 @@ export const Thumbnail = styled.div`
 export const StyledImage = styled(Image)`
   width: 100%;  
   object-fit: cover;
-  min-height: 5.375rem;
+  height: 5.375rem;
 
 `;
 
