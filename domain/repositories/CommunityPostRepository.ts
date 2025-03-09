@@ -71,4 +71,5 @@ export interface CommunityPostRepository {
   deletePost(id: string, userId: string): Promise<boolean>;
   getPostByUserId(userId: string): Promise<PostWithRelations[]>;
   updatePostStatus(userId: string, postId: number): Promise<void>;
+  getPostCountByUserId(userId: string): Promise<number>;
 }
