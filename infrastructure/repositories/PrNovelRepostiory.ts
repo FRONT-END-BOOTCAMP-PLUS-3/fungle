@@ -1,6 +1,5 @@
 import { prisma } from "@/infrastructure/config/prisma";
 import { NovelRepository } from "@/domain/repositories/NovelRepository";
-import { PrGenreRepository } from "./PrGenreRepository";
 import { Novel, Prisma } from "@prisma/client";
 
 export class PrNovelRepository implements NovelRepository {
@@ -113,10 +112,13 @@ export class PrNovelRepository implements NovelRepository {
         ],
       },
       orderBy: { createdAt: "desc" },
-    }
+    }); 
+  }
+
   async getNovelCountByUserId(userId: string): Promise<number> {
     return await prisma.novel.count({
       where: { userId: userId },
     });
   }
 }
+
