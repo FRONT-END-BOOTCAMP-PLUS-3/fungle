@@ -16,3 +16,8 @@ export const GENRES = [
 export const mapGenresToKorean = (tags: string[]): string[] => {
   return tags.map(tag => GENRES.find(g => g.value === tag)?.label || tag);
 };
+
+export const mapKoreanToGenreValue = (koreanGenre: string): string | null => {
+  const genre = GENRES.find(g => g.label === koreanGenre);
+  return genre ? genre.value : null;
+};

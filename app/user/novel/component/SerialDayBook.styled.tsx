@@ -64,7 +64,6 @@ export const StyledImage = styled(Image)`
   width: 100%;  
   object-fit: cover;
   min-height: 14.25rem;
-
 `;
 
 export const Content = styled.div`

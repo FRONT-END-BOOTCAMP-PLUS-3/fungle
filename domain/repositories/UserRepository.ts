@@ -18,4 +18,5 @@ export interface UserRepository {
     userId: string;
     profileImage: string | null;
   }): Promise<void>;
+  findUserIdsByNickname(nickname: string): Promise<{ id: string }[]>; 
 }

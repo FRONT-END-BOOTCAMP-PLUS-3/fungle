@@ -91,4 +91,11 @@ export class PrUserRepository implements UserRepository {
       data: { profileImage: data.profileImage },
     });
   }
+
+  async findUserIdsByNickname(nickname: string): Promise<{ id: string }[]> {
+    return await prisma.user.findMany({
+      where: { nickname: { contains: nickname, mode: "insensitive" } },
+      select: { id: true },
+    });
+  }
 }

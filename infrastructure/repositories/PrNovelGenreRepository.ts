@@ -13,5 +13,14 @@ export class PrNovelGenreRepository implements NovelGenreRepository {
 
     return genres.map((g) => g.genre.genreName);
   }
+
+  async getNovelIdsByGenreIds(genreIds: number[]): Promise<number[]> {
+    const novelGenres = await prisma.novelGenre.findMany({
+      where: { genreId: { in: genreIds } },
+      select: { novelId: true },
+    });
+
+    return novelGenres.map((ng) => ng.novelId);
+  }
 }
 
