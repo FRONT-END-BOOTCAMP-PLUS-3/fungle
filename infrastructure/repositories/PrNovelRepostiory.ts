@@ -100,4 +100,10 @@ export class PrNovelRepository implements NovelRepository {
   async getAllNovels(): Promise<Novel[]> {
     return await prisma.novel.findMany();
   }
+
+  async getNovelCountByUserId(userId: string): Promise<number> {
+    return await prisma.novel.count({
+      where: { userId: userId },
+    });
+  }
 }
