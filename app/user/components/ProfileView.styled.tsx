@@ -10,6 +10,20 @@ export const ProfileSection = styled.section`
   gap: 1rem;
 `;
 
+export const ProfileWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
+
+export const MoreOptionsButtonWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+
 export const ProfileContainer = styled.div`
   width: 6.25rem;
   height: 6.25rem;

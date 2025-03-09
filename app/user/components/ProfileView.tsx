@@ -2,15 +2,18 @@ import Button from "@/components/button/Button";
 import {
   ErrorMessage,
   InputBox,
+  MoreOptionsButtonWrapper,
   NicknameBox,
   NicknameContainer,
   ProfileContainer,
   ProfileSection,
+  ProfileWrapper,
 } from "./ProfileView.styled";
 import Image from "next/image";
 import useAuthStore from "@/store/useAuthStore";
 import { useEffect, useState } from "react";
 import Input from "@/components/input/Input";
+import ProfileMoreOptions from "./ProfileMoreOptions";
 
 const ProfileView = () => {
   const { user, setUser } = useAuthStore();
@@ -148,21 +151,26 @@ const ProfileView = () => {
 
   return (
     <ProfileSection>
-      <ProfileContainer>
-        <Image
-          src={previewImage}
-          alt="프로필 이미지"
-          fill
-          style={{ objectFit: "cover" }}
-        />
-        <label htmlFor="image-upload" />
-        <input
-          id="image-upload"
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-      </ProfileContainer>
+      <ProfileWrapper>
+        <MoreOptionsButtonWrapper>
+          <ProfileMoreOptions />
+        </MoreOptionsButtonWrapper>
+        <ProfileContainer>
+          <Image
+            src={previewImage}
+            alt="프로필 이미지"
+            fill
+            style={{ objectFit: "cover" }}
+          />
+          <label htmlFor="image-upload" />
+          <input
+            id="image-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </ProfileContainer>
+      </ProfileWrapper>
       <NicknameContainer>
         <NicknameBox>
           {isEditing ? (
