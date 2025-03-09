@@ -1,17 +1,4 @@
-import { DfFundingUsecase } from "@/application/usecases/funding/DfFundingUsecase";
-import { DfEpisodeByUserIdUsecase } from "@/application/usecases/novel/DfEpisodeByUserIdUsecase";
-import { DfNovelByUserIdUsecase } from "@/application/usecases/novel/DfNovelByUserIdUsecase";
-import { DfDeleteUserUsecase } from "@/application/usecases/user/DfDeleteUserUsecase";
-import { FundingRepository } from "@/domain/repositories/FundingRepository";
-import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
-import { NovelRepository } from "@/domain/repositories/NovelRepository";
-import { UserRepository } from "@/domain/repositories/UserRepository";
 import { userDi } from "@/infrastructure/config/userDi";
-import { PrFundingRepository } from "@/infrastructure/repositories/PrFundingRepository";
-import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelEpisodeRepository";
-import { PrNovelRepository } from "@/infrastructure/repositories/PrNovelRepostiory";
-import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
-import { FileService } from "@/infrastructure/services/FileService";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -25,30 +12,7 @@ export const DELETE = async (req: NextRequest) => {
     );
   }
 
-  const fileService = new FileService();
-
-  const userRepository: UserRepository = new PrUserRepository();
-  const novelRepository: NovelRepository = new PrNovelRepository();
-  const novelEpisodeRepository: NovelEpisodeRepository =
-    new PrNovelEpisodeRepository();
-  const fundingRepository: FundingRepository = new PrFundingRepository();
-
-  const episodesByUserIdUsecase = new DfEpisodeByUserIdUsecase(
-    novelEpisodeRepository
-  );
-  const novelByUserIdUsecase = new DfNovelByUserIdUsecase(
-    novelRepository,
-    episodesByUserIdUsecase
-  );
-  const fundingUsecase = new DfFundingUsecase(fundingRepository);
-  const deleteUserUsecase = new DfDeleteUserUsecase(
-    userRepository,
-    novelByUserIdUsecase,
-    fileService,
-    fundingUsecase
-  );
-
-  const isSuccess = await deleteUserUsecase.execute(userId);
+  const isSuccess = await userDi.deleteUserUsecase.execute(userId);
 
   if (!isSuccess)
     return NextResponse.json(
