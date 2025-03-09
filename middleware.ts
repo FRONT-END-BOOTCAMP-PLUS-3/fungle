@@ -7,23 +7,22 @@ const middleware = (req: NextRequest) => {
     "/community": "/user/community",
   };
   const publicRoutes = ["/signup"];
+  const currentPath = req.nextUrl.pathname;
 
   const accessToken = req.cookies.get("accessToken")?.value;
 
   // publicRoute에서는 다음 동작으로 넘어감
-  if (publicRoutes.some((route) => req.nextUrl.pathname === route)) {
+  if (publicRoutes.includes(currentPath)) {
     return NextResponse.next();
   }
 
   // 사용자가 로그인된 상태면 `/login` 페이지에서 `/user/novel`으로 리다이렉트
-  if (accessToken && authRoutes[req.nextUrl.pathname]) {
-    return NextResponse.redirect(
-      new URL(authRoutes[req.nextUrl.pathname], req.url)
-    );
+  if (accessToken && authRoutes[currentPath]) {
+    return NextResponse.redirect(new URL(authRoutes[currentPath], req.url));
   }
 
   // 토큰이 없을 경우 로그인 페이지로 리다이렉트
-  if (!accessToken) {
+  if (!accessToken && currentPath.startsWith("/user")) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
