@@ -42,6 +42,7 @@ const CommunityCommentEdit = ({
       if (result.result === true) {
         onCancel();
         setTrigger((prev) => !prev);
+        alert("수정되었습니다.");
       }
     } catch (error: unknown) {
       if (error instanceof Error) {

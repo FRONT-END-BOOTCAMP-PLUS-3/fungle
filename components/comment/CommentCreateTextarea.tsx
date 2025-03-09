@@ -8,8 +8,9 @@ import { ButtonWrapper } from "./CommentCreateTextarea.styled";
 type CommentCreateTextareaProps = {
   isOpenTextarea: boolean;
   setIsOpenTextarea: React.Dispatch<React.SetStateAction<boolean>>;
-  postId: string;
+  postId: number;
   setTrigger: React.Dispatch<React.SetStateAction<boolean>>;
+  parentId?: number | null;
 };
 
 const CommentCreateTextarea = ({
@@ -17,6 +18,7 @@ const CommentCreateTextarea = ({
   setIsOpenTextarea,
   postId,
   setTrigger,
+  parentId,
 }: CommentCreateTextareaProps) => {
   const [comment, setComment] = useState("");
 
@@ -29,6 +31,7 @@ const CommentCreateTextarea = ({
         },
         body: JSON.stringify({
           comment,
+          parentId,
         }),
       });
 
@@ -69,7 +72,9 @@ const CommentCreateTextarea = ({
         <>
           <Textarea
             ariaLabel="댓글 입력"
-            placeholder="댓글을 입력해주세요."
+            placeholder={
+              parentId ? "답글을 입력해주세요." : "댓글을 입력해주세요."
+            }
             height="20vh"
             onChange={(e) => setComment(e.target.value)}
           />
