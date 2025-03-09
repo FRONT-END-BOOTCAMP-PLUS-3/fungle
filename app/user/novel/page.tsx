@@ -9,6 +9,7 @@ import SerialDayBook from "@/app/user/novel/component/SerialDayBook";
 import Top10List from "@/app/user/novel/component/Top10";
 import FloatingButton from "./component/FloatingButton";
 import SearchResults from "@/app/user/novel/component/SearchResults"; 
+import { SearchNovelDTO } from "@/application/usecases/novel/dto/SearchNovel";
 
 const Page = () => {
   const getTodayKoreanDay = (): string => {
@@ -18,7 +19,7 @@ const Page = () => {
 
   const [selectedOption, setSelectedOption] = useState("title");
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchNovelDTO[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>(getTodayKoreanDay());
   const [isSearching, setIsSearching] = useState(false);
 
