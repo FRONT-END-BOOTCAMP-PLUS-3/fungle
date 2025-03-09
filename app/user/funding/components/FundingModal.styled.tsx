@@ -68,7 +68,7 @@ export const StyledInput = styled.input`
 export const Divider = styled.div`
   background-color: #eee;
   margin: 0.8rem 0;
-  height: 1px;
+  height: 0.06rem;
 `;
 
 // 버튼 감싸는 박스
