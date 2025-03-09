@@ -20,9 +20,11 @@ import {
   ProgressContainer,
   Progress,
 } from "@/components/progressbar/ProgressBar.styled";
+import FundingModal from "./components/FundingModal";
 
 const Page = () => {
   const [showMore, setShowMore] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const progressValue = 70;
 
   const description =
@@ -30,6 +32,14 @@ const Page = () => {
 
   const fullDescription =
     '“자신 없습니다, 물론 못할 자신이요.” 제 잘난 맛에 사는 악마의 재능, 좌완 파이어볼러 이영광, 억울한 학폭 논란에 휩싸이다! "이번 생은 망한 건가?" 다음 생엔 야구를 더 절실히 하겠다는 생각을 한 순간. 고2, 야구부 시절로 회귀했다. 어쩌고 저쩌고';
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Container>
@@ -41,6 +51,7 @@ const Page = () => {
 
       <Title>펀딩 소개</Title>
       <Description>
+        kk
         {showMore ? fullDescription : description}
         <MoreButton onClick={() => setShowMore(!showMore)}>
           {showMore ? "접기" : "더보기"}
@@ -62,8 +73,12 @@ const Page = () => {
         </ProgressBarWrapper>
       </ProgressContainer>
       <ButtonWrapper>
-        <Button buttonSize="big">펀딩 진행하기</Button>
+        <Button buttonSize="big" onClick={openModal}>
+          펀딩 진행하기
+        </Button>
       </ButtonWrapper>
+
+      <FundingModal isOpen={isModalOpen} onClose={closeModal} />
     </Container>
   );
 };
