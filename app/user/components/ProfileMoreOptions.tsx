@@ -5,9 +5,12 @@ import {
   MoreOptionsButton,
 } from "./ProfileMoreOptions.styled";
 import { useEffect, useRef, useState } from "react";
-import UserDeletionButton from "./UserDeletionButton";
 
-const ProfileMoreOptions = () => {
+const ProfileMoreOptions = ({
+  onDeleteClick,
+}: {
+  onDeleteClick: () => void;
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -45,7 +48,7 @@ const ProfileMoreOptions = () => {
       </MoreOptionsButton>
       {isOpen && (
         <Dropdown ref={menuRef}>
-          <UserDeletionButton />
+          <button onClick={onDeleteClick}>탈퇴하기</button>
         </Dropdown>
       )}
     </ButtonWrapper>
