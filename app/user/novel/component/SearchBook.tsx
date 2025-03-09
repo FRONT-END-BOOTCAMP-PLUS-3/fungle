@@ -7,13 +7,14 @@ import { FilterContainer, DropdownWrapper, SearchWrapper, InputWrapper, SearchIc
 import { SEARCH_OPTIONS } from "@/constants/SEARCH_OPTIONS";
 import { mapKoreanToGenreValue } from "@/constants/GENRES";
 import Image from "next/image";
+import { SearchNovelDTO } from "@/application/usecases/novel/dto/SearchNovel";
 
 interface FilterProps {
   selectedOption: string;
   setSelectedOption: (value: string) => void;
   searchQuery: string;
   setSearchQuery: (value: string) => void;
-  setSearchResults: (results: any[]) => void;
+  setSearchResults: (results: SearchNovelDTO[]) => void;
   setIsSearching: (value: boolean) => void;
 }
 
