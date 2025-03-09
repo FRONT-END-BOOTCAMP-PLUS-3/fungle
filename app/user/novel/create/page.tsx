@@ -17,6 +17,7 @@ import { GENRES } from "@/constants/GENRES";
 import { SERIAL_DAY } from "@/constants/SERIAL_DAY";
 import Button from "@/components/button/Button";
 import Image from "next/image";
+import { OngoingNovelDto } from "@/application/usecases/novel/dto/OngoingNovel";
 
 const Page = () => {
   const router = useRouter();
@@ -30,27 +31,28 @@ const Page = () => {
   useEffect(() => {
     const checkUserNovels = async () => {
       if (!user) return;
-
+  
       try {
         const response = await fetch(`/api/user/novel`);
         if (!response.ok) throw new Error("사용자 소설 데이터를 가져올 수 없습니다.");
-
+  
         const data = await response.json();
-        const novels = data.novels ?? []; 
-
-        const hasOngoingNovel = novels.some((novel: any) => novel.serialStatus === "ongoing");
-
-        if (hasOngoingNovel) {
-          alert("현재 연재 중인 소설이 있습니다. 새로운 소설을 만들 수 없습니다.");
-          router.push("/user/novel"); 
+        const novels: OngoingNovelDto[] = data.novels ?? []; 
+  
+        const ongoingNovel = novels.find((novel) => novel.serialStatus === "ongoing");
+  
+        if (ongoingNovel) {
+          alert("현재 연재 중인 소설이 있습니다. 기존 연재 페이지로 이동합니다.");
+          router.push(`/user/novel/serialize/${ongoingNovel.id}`);
         }
       } catch (error) {
         throw new Error("서버 에러");
       }
     };
-
+  
     checkUserNovels();
   }, [user, router]);
+  
 
   const handleGenreSelect = (value: string) => {
     setSelectedGenres((prev) => {
