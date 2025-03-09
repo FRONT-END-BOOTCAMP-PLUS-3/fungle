@@ -3,7 +3,6 @@ import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { Novel, Prisma } from "@prisma/client";
 
 export class PrNovelRepository implements NovelRepository {
-
   async getNovelById(novelId: number): Promise<Novel | null> {
     return await prisma.novel.findUnique({
       where: { id: novelId },
@@ -102,17 +101,28 @@ export class PrNovelRepository implements NovelRepository {
     return await prisma.novel.findMany();
   }
 
-  async getNovelsBySearch(searchQuery: string, filter: string, novelIds: number[], userIds : string[]): Promise<Novel[]> {
+  async getNovelsBySearch(
+    searchQuery: string,
+    filter: string,
+    novelIds: number[],
+    userIds: string[]
+  ): Promise<Novel[]> {
     return await prisma.novel.findMany({
       where: {
         OR: [
-          filter === "title" ? { title: { contains: searchQuery, mode: "insensitive" } } : {},
-          filter === "genre" ? { id: { in: novelIds.length > 0 ? novelIds : undefined } } : {},
-          filter === "author" ? { userId: { in: userIds.length > 0 ? userIds : undefined } } : {}, 
+          filter === "title"
+            ? { title: { contains: searchQuery, mode: "insensitive" } }
+            : {},
+          filter === "genre"
+            ? { id: { in: novelIds.length > 0 ? novelIds : undefined } }
+            : {},
+          filter === "author"
+            ? { userId: { in: userIds.length > 0 ? userIds : undefined } }
+            : {},
         ],
       },
       orderBy: { createdAt: "desc" },
-    }); 
+    });
   }
 
   async getNovelCountByUserId(userId: string): Promise<number> {
@@ -121,4 +131,3 @@ export class PrNovelRepository implements NovelRepository {
     });
   }
 }
-
