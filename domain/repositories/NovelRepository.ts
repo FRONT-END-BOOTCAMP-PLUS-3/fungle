@@ -22,4 +22,5 @@ export interface NovelRepository {
   updateNovelSerialStatus(novelId: number, status: string): Promise<boolean>;
   getAllNovels(): Promise<Novel[]>;
   getNovelsBySearch(searchQuery: string, filter: string, novelIds: number[],  userIds: string[] ): Promise<Novel[]>;
+  getNovelCountByUserId(userId: string): Promise<number>;
 }

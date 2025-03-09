@@ -38,7 +38,7 @@ export const POST = async (
 ) => {
   const { id } = await params;
   const body = await request.json();
-  const { comment } = body;
+  const { comment, parentId } = body;
 
   try {
     const userId = await userDi.getUserIdUsecase.execute();
@@ -53,7 +53,12 @@ export const POST = async (
     const commentCreatetUsecase = new DfCommentCreateUsecase(
       communityCommentRepository
     );
-    const result = await commentCreatetUsecase.execute(id, userId, comment);
+    const result = await commentCreatetUsecase.execute(
+      id,
+      userId,
+      comment,
+      parentId
+    );
 
     return NextResponse.json({ result });
   } catch (error: unknown) {

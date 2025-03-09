@@ -38,7 +38,7 @@ const Page = async ({ params }: PageParams) => {
 
       <CommunityPostContent postDetail={post} />
 
-      <CommentHeader postId={postId} />
+      <CommentHeader post={post} />
     </Main>
   );
 };

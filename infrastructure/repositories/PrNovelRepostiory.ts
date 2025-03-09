@@ -113,6 +113,9 @@ export class PrNovelRepository implements NovelRepository {
         ],
       },
       orderBy: { createdAt: "desc" },
+  async getNovelCountByUserId(userId: string): Promise<number> {
+    return await prisma.novel.count({
+      where: { userId: userId },
     });
   }
 }

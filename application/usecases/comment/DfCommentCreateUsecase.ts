@@ -3,9 +3,19 @@ import { CommunityCommentRepository } from "@/domain/repositories/CommunityComme
 export class DfCommentCreateUsecase {
   constructor(private commentRepository: CommunityCommentRepository) {}
 
-  async execute(id: string, userId: string, comment: string): Promise<boolean> {
+  async execute(
+    id: string,
+    userId: string,
+    comment: string,
+    parentId: string
+  ): Promise<boolean> {
     try {
-      const result = await this.commentRepository.create(id, userId, comment);
+      const result = await this.commentRepository.create(
+        id,
+        userId,
+        comment,
+        parentId
+      );
 
       return result;
     } catch (error: unknown) {

@@ -315,4 +315,8 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
       throw new Error("게시글 모집 상태 변경에 실패했습니다.");
     }
   }
+
+  async getPostCountByUserId(userId: string): Promise<number> {
+    return await prisma.communityPost.count({ where: { userId: userId } });
+  }
 }

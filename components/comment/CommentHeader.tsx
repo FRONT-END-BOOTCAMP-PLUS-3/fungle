@@ -5,14 +5,25 @@ import Input from "../input/Input";
 import CommentCreateTextarea from "./CommentCreateTextarea";
 import { CommentSection, TextareaWrapper } from "./CommentHeader.styled";
 import Comment from "./Comment";
-const CommentHeader = ({ postId }: { postId: string }) => {
+import { CommunityPost } from "@prisma/client";
+
+type CommunityPostWithNicknameAndLikes = CommunityPost & {
+  userNickname: string;
+  likes: number;
+  likedUserId: string[];
+};
+
+interface CommunityPostHeaderProps {
+  post: CommunityPostWithNicknameAndLikes;
+}
+const CommentHeader = ({ post }: CommunityPostHeaderProps) => {
   const [isOpenTextarea, setIsOpenTextarea] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
   const [trigger, setTrigger] = useState(false);
   useEffect(() => {
     const fetchCommentsCounts = async () => {
       try {
-        const response = await fetch(`/api/community/comment/${postId}`);
+        const response = await fetch(`/api/community/comment/${post.id}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -27,7 +38,7 @@ const CommentHeader = ({ postId }: { postId: string }) => {
       }
     };
     fetchCommentsCounts();
-  }, [postId, trigger]);
+  }, [post.id, trigger]);
   const handleComment = () => {
     setIsOpenTextarea((prev) => !prev);
   };
@@ -47,12 +58,17 @@ const CommentHeader = ({ postId }: { postId: string }) => {
         <CommentCreateTextarea
           isOpenTextarea={isOpenTextarea}
           setIsOpenTextarea={setIsOpenTextarea}
-          postId={postId}
+          postId={post.id}
           setTrigger={setTrigger}
         />
       </TextareaWrapper>
 
-      <Comment postId={postId} trigger={trigger} setTrigger={setTrigger} />
+      <Comment
+        postId={post.id}
+        trigger={trigger}
+        setTrigger={setTrigger}
+        postUserId={post.userId}
+      />
     </CommentSection>
   );
 };
