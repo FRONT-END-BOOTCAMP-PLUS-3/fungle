@@ -137,6 +137,7 @@ model NovelComment {
   novelId          Int
   content          String
   createdAt        DateTime           @default(now())
+  parentId              Int?
   novelEpisode     NovelEpisode       @relation(fields: [novelEpisodeId], references: [id])
   novel            Novel              @relation("NovelComments", fields: [novelId], references: [id], onDelete: Cascade)
   user             User               @relation("UserNovelComments", fields: [userId], references: [id], onDelete: Cascade)

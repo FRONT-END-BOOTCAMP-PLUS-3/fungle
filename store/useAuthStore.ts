@@ -11,7 +11,7 @@ interface User {
 interface AuthState {
   user: User | null;
   isLoggedIn: boolean;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
   refreshAuth: () => Promise<void>;
 }
 
@@ -20,7 +20,7 @@ const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       isLoggedIn: false,
-      setUser: (user: User) => set({ user, isLoggedIn: !!user }),
+      setUser: (user: User | null) => set({ user, isLoggedIn: !!user }),
       refreshAuth: async () => {
         try {
           const response = await fetch("/api/auth/verify", {});
@@ -36,7 +36,6 @@ const useAuthStore = create<AuthState>()(
           console.error("인증 확인 실패:", error);
           set({ user: null, isLoggedIn: false });
         }
-        // 로그아웃 로직 추가 예정
       },
     }),
     {
