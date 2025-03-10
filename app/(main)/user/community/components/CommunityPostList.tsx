@@ -18,7 +18,7 @@ import {
   EmptyStateContainer,
 } from "./CommunityPostList.styled";
 import { realTimeView } from "../utils/realTimeView";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommunityPostStats from "./CommunityPostStats";
 import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community/dto/PostWithCountAndRecruitmentDto";
 import CommunityPagination from "./CommunityPagination";
@@ -38,6 +38,7 @@ const CommunityPostList = ({
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const listRef = useRef<HTMLUListElement | null>(null);
 
   const hadleChangePage = (newPage: number) => {
     setSearchParams((prev) => ({ ...prev, page: newPage }));
@@ -93,6 +94,7 @@ const CommunityPostList = ({
 
         setTotalPages(data.totalPages);
         setIsLoading(false);
+        listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       } catch (error: unknown) {
         const errorMessage =
           error instanceof Error ? error.message : "Unknow Error";
@@ -126,7 +128,7 @@ const CommunityPostList = ({
   }
 
   return (
-    <PostListContainer>
+    <PostListContainer ref={listRef}>
       {posts.map((post) => (
         <PostListWrapper key={post.id}>
           <Link href={`/user/community/${post.id}`}>
