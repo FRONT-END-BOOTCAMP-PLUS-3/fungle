@@ -1,6 +1,7 @@
 import { prisma } from "@/infrastructure/config/prisma";
 import { NovelEpisode } from "@prisma/client";
 import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
+import { NovelEpisodeWithUserInfo } from "@/application/usecases/novel/dto/NovelEpisodeWithUserInfo";
 
 export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
   async getEpisodeById(episodeId: number): Promise<NovelEpisode | null> {
@@ -54,15 +55,53 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
         episode,
         title,
         content,
-        isFinalEpisode
+        isFinalEpisode,
       },
     });
   }
   async getTotalViewsByNovelId(novelId: number): Promise<number> {
     const result = await prisma.novelEpisode.aggregate({
       where: { novelId },
-      _sum: { view: true }
+      _sum: { view: true },
     });
     return result._sum.view || 0;
+  }
+
+  async getNovelEpisodeWithUserInfo(): Promise<NovelEpisodeWithUserInfo[]> {
+    return await prisma.novelEpisode
+      .findMany({
+        select: {
+          title: true,
+          status: true,
+          content: true,
+          novel: {
+            select: {
+              id: true,
+              title: true,
+              user: {
+                select: {
+                  id: true,
+                  nickname: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          novel: {
+            createdAt: "desc",
+          },
+        },
+      })
+      .then((episodes) =>
+        episodes.map((episode) => ({
+          userId: episode.novel.user.id,
+          userNickname: episode.novel.user.nickname,
+          novelTitle: episode.novel.title,
+          episodeTitle: episode.title,
+          episodeContent: episode.content,
+          status: episode.status,
+        }))
+      );
   }
 }

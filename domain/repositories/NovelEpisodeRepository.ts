@@ -1,3 +1,4 @@
+import { NovelEpisodeWithUserInfo } from "@/application/usecases/novel/dto/NovelEpisodeWithUserInfo";
 import { NovelEpisode } from "@prisma/client";
 
 export interface NovelEpisodeRepository {
@@ -14,4 +15,5 @@ export interface NovelEpisodeRepository {
   ): Promise<NovelEpisode>;
   increaseViewCount(episodeId: number): Promise<void>;
   getTotalViewsByNovelId(novelId: number): Promise<number>;
+  getNovelEpisodeWithUserInfo(): Promise<NovelEpisodeWithUserInfo[]>;
 }
