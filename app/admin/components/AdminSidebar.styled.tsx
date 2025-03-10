@@ -6,13 +6,18 @@ interface MenuItemProps {
 }
 
 export const SidebarContainer = styled.div`
-  width: 22.5rem;
+  width: 15rem;
   height: 100vh;
-  background-color: var(--gray-300);
+  background-color: var(--gray-100);
   color: var(--black-color);
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 0;
+  gap: 1rem;
+
+  img {
+    padding-left: 0.5rem;
+  }
 `;
 
 export const MenuItem = styled.li<MenuItemProps>`
@@ -21,7 +26,9 @@ export const MenuItem = styled.li<MenuItemProps>`
     props.$isSelected ? "var(--primary-color)" : "transparent"};
   color: ${(props) =>
     props.$isSelected ? "var(--white-color)" : "var(--black-color)"};
-  border-radius: 0.625rem;
+  border-radius: 0 0.625rem 0.625rem 0;
+  list-style-type: none;
+  font-weight: ${(props) => (props.$isSelected ? 700 : 500)};
 
   &:hover {
     background-color: ${(props) =>

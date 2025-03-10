@@ -1,7 +1,6 @@
 "use client";
 
 import AdminSidebar from "./components/AdminSidebar";
-import { AdminLayoutContainer } from "./layout.styled";
 import "../globals.css";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
@@ -14,10 +13,10 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body>
-        <AdminLayoutContainer>
+        <div className="admin-container">
           <AdminSidebar />
-          {children}
-        </AdminLayoutContainer>
+          <main>{children}</main>
+        </div>
       </body>
     </html>
   );
