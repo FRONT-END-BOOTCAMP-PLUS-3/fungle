@@ -1,14 +1,15 @@
 import { DfPostDeleteUsecase } from "@/application/usecases/community/DfPostDeleteUsecase";
+import { DfPostDetailIncreaseViewCountUsecase } from "@/application/usecases/community/DfPostDetailIncreaseViewCountUsecase";
 import { DfPostDetailUsecase } from "@/application/usecases/community/DfPostDetailUsecase";
 import { userDi } from "@/infrastructure/config/userDi";
 
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
-import { cookies } from "next/headers";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
-  requets: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   const { id } = await params;
@@ -19,6 +20,10 @@ export const GET = async (
     const communityPostRepository = new PrCommunityPostRepository();
     const userRepository = new PrUserRepository();
 
+    const postDetailIncreaseViewUsecase =
+      new DfPostDetailIncreaseViewCountUsecase(communityPostRepository);
+
+    await postDetailIncreaseViewUsecase.execute(id);
     const postDetailUsecase = new DfPostDetailUsecase(
       communityPostRepository,
       userRepository
@@ -42,7 +47,7 @@ export const GET = async (
 };
 
 export const DELETE = async (
-  requets: NextRequest,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
   try {
