@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
@@ -15,21 +14,19 @@ import {
 } from "./StartFunding.styled";
 import Button from "@/components/button/Button";
 
-export default function CreateFundingPage(): React.ReactElement {
+const CreateFundingPage: React.FC = (): React.ReactElement => {
   const { novelId } = useParams();
   const router = useRouter();
   const [fundingIntro, setFundingIntro] = useState("");
 
-  function handleStart(): void {
+  const handleStart = (): void => {
     alert(
       `목표 금액: 50,000원\n펀딩 소개: ${fundingIntro}\nnovelId: ${novelId}`
     );
     router.push("/");
-  }
+  };
 
-  function handleCancel(): void {
-    router.back();
-  }
+  const handleCancel = (): void => router.back();
 
   return (
     <Container>
@@ -64,7 +61,6 @@ export default function CreateFundingPage(): React.ReactElement {
       />
 
       <ButtonRow>
-        {/* 펀딩 시작 버튼 */}
         <Button
           buttonSize="big"
           fontSize="medium"
@@ -73,7 +69,6 @@ export default function CreateFundingPage(): React.ReactElement {
         >
           펀딩 시작
         </Button>
-        {/* 취소 버튼 */}
         <Button
           buttonSize="big"
           fontSize="medium"
@@ -85,4 +80,6 @@ export default function CreateFundingPage(): React.ReactElement {
       </ButtonRow>
     </Container>
   );
-}
+};
+
+export default CreateFundingPage;
