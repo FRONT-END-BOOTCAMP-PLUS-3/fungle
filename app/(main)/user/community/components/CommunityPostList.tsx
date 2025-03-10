@@ -42,6 +42,7 @@ const CommunityPostList = ({
 
   const hadleChangePage = (newPage: number) => {
     setSearchParams((prev) => ({ ...prev, page: newPage }));
+    listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   useEffect(() => {
@@ -94,7 +95,6 @@ const CommunityPostList = ({
 
         setTotalPages(data.totalPages);
         setIsLoading(false);
-        listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       } catch (error: unknown) {
         const errorMessage =
           error instanceof Error ? error.message : "Unknow Error";
