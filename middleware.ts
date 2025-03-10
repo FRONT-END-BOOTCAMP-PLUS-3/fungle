@@ -24,7 +24,7 @@ const middleware = (req: NextRequest) => {
   if (!accessToken && currentPath.startsWith("/user")) {
     const newPath = currentPath.replace(/^\/user/, "");
 
-    if (newPath === "") {
+    if (newPath === "" || newPath === "/funding") {
       return NextResponse.redirect(new URL("/login", req.url));
     }
     return NextResponse.redirect(new URL(newPath, req.url));
