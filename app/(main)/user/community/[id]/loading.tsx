@@ -4,10 +4,10 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 const Loading = () => {
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "1.25rem" }}>
       <Skeleton height={30} width={200} />
 
-      <Skeleton height={20} width={150} style={{ marginRight: "10px" }} />
+      <Skeleton height={20} width={150} style={{ marginRight: "0.625rem" }} />
       <Skeleton height={20} width={100} />
 
       <br />
@@ -22,7 +22,7 @@ const Loading = () => {
 
       <div style={{ display: "flex", alignItems: "center" }}>
         <Skeleton circle height={40} width={40} />
-        <div style={{ marginLeft: "10px" }}>
+        <div style={{ marginLeft: "0.625rem" }}>
           <Skeleton height={15} width={100} />
           <Skeleton height={15} width={150} />
         </div>
