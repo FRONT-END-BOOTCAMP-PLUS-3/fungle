@@ -6,10 +6,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
-import { BannerWrapper, StyledImage } from "@/app/user/novel/component/BannerCorousel.styled";
+import {
+  BannerWrapper,
+  StyledImage,
+} from "@/app/(main)/user/novel/component/BannerCorousel.styled";
 
 interface Banner {
-  id: number; 
+  id: number;
   bannerImage: string;
 }
 
@@ -48,7 +51,10 @@ const BannerCarousel = () => {
         modules={[Autoplay]}
       >
         {banners.map((banner) => (
-          <SwiperSlide key={banner.id} onClick={() => router.push(`/user/novel/${banner.id}`)}>
+          <SwiperSlide
+            key={banner.id}
+            onClick={() => router.push(`/user/novel/${banner.id}`)}
+          >
             <StyledImage src={banner.bannerImage} alt={`배너 ${banner.id}`} />
           </SwiperSlide>
         ))}

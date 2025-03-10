@@ -2,21 +2,28 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { 
-  DaysContainer, Day, GridContainer, BookCard, Thumbnail, Content, Title, Info, 
-  StyledImage
-} from "@/app/user/novel/component/SerialDayBook.styled";
+import {
+  DaysContainer,
+  Day,
+  GridContainer,
+  BookCard,
+  Thumbnail,
+  Content,
+  Title,
+  Info,
+  StyledImage,
+} from "@/app/(main)/user/novel/component/SerialDayBook.styled";
 import ProgressBar from "@/components/progressbar/ProgressBar";
 import { SerialDayNovelDto } from "@/application/usecases/novel/dto/SerialDayNovel";
 
 const dayMapping: { [key: string]: string } = {
-  "월": "monday",
-  "화": "tuesday",
-  "수": "wednesday",
-  "목": "thursday",
-  "금": "friday",
-  "토": "saturday",
-  "일": "sunday",
+  월: "monday",
+  화: "tuesday",
+  수: "wednesday",
+  목: "thursday",
+  금: "friday",
+  토: "saturday",
+  일: "sunday",
 };
 
 interface SerialDayBookProps {
@@ -24,7 +31,10 @@ interface SerialDayBookProps {
   setSelectedDay: (day: string) => void;
 }
 
-const SerialDayBook: React.FC<SerialDayBookProps> = ({ selectedDay, setSelectedDay }) => {
+const SerialDayBook: React.FC<SerialDayBookProps> = ({
+  selectedDay,
+  setSelectedDay,
+}) => {
   const router = useRouter();
   const [books, setBooks] = useState<SerialDayNovelDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,7 +42,7 @@ const SerialDayBook: React.FC<SerialDayBookProps> = ({ selectedDay, setSelectedD
   useEffect(() => {
     const fetchNovelsByDay = async () => {
       try {
-        const dayKey = dayMapping[selectedDay]; 
+        const dayKey = dayMapping[selectedDay];
         if (!dayKey) return;
 
         setLoading(true);
@@ -55,24 +65,31 @@ const SerialDayBook: React.FC<SerialDayBookProps> = ({ selectedDay, setSelectedD
     <>
       <DaysContainer>
         {Object.keys(dayMapping).map((day) => (
-          <Day key={day} $active={selectedDay === day} onClick={() => setSelectedDay(day)}>
+          <Day
+            key={day}
+            $active={selectedDay === day}
+            onClick={() => setSelectedDay(day)}
+          >
             {day}
           </Day>
         ))}
       </DaysContainer>
 
       {loading ? (
-        <p>불러오는 중...</p> 
+        <p>불러오는 중...</p>
       ) : books.length > 0 ? (
         <GridContainer>
           {books.map((book) => (
-            <BookCard key={book.id} onClick={() => router.push(`/user/novel/${book.id}`)}> 
+            <BookCard
+              key={book.id}
+              onClick={() => router.push(`/user/novel/${book.id}`)}
+            >
               <Thumbnail>
                 <StyledImage
-                  src={book.image || "/image/book.svg"} 
+                  src={book.image || "/image/book.svg"}
                   alt="소설 썸네일"
-                  width={120} 
-                  height={160} 
+                  width={120}
+                  height={160}
                 />
               </Thumbnail>
               <Content>

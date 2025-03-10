@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import BannerCarousel from "@/app/user/novel/component/BannerCarousel";
-import MyBook from "@/app/user/novel/component/MyBook";
-import { Container, SectionTitle } from "@/app/user/novel/NovelPage.styled";
-import SearchBook from "@/app/user/novel/component/SearchBook";
-import SerialDayBook from "@/app/user/novel/component/SerialDayBook";
-import Top10List from "@/app/user/novel/component/Top10";
+import BannerCarousel from "@/app/(main)/user/novel/component/BannerCarousel";
+import MyBook from "@/app/(main)/user/novel/component/MyBook";
+import {
+  Container,
+  SectionTitle,
+} from "@/app/(main)/user/novel/NovelPage.styled";
+import SearchBook from "@/app/(main)/user/novel/component/SearchBook";
+import SerialDayBook from "@/app/(main)/user/novel/component/SerialDayBook";
+import Top10List from "@/app/(main)/user/novel/component/Top10";
 import FloatingButton from "./component/FloatingButton";
-import SearchResults from "@/app/user/novel/component/SearchResults"; 
+import SearchResults from "@/app/(main)/user/novel/component/SearchResults";
 import { SearchNovelDTO } from "@/application/usecases/novel/dto/SearchNovel";
 
 const Page = () => {
@@ -33,21 +36,24 @@ const Page = () => {
         </>
       )}
 
-      <SearchBook 
-        selectedOption={selectedOption} 
-        setSelectedOption={setSelectedOption} 
-        searchQuery={searchQuery} 
-        setSearchQuery={setSearchQuery} 
-        setSearchResults={setSearchResults} 
-        setIsSearching={setIsSearching} 
+      <SearchBook
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setSearchResults={setSearchResults}
+        setIsSearching={setIsSearching}
       />
 
       {isSearching ? (
-        <SearchResults searchResults={searchResults} /> 
+        <SearchResults searchResults={searchResults} />
       ) : (
         <>
           <SectionTitle>요일별 연재</SectionTitle>
-          <SerialDayBook selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
+          <SerialDayBook
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+          />
 
           <SectionTitle>Top 10</SectionTitle>
           <Top10List />

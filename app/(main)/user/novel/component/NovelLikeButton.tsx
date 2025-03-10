@@ -6,7 +6,7 @@ import {
   LikeContainer,
   LikeButtonStyled,
   LikeCount,
-} from "@/app/user/novel/component/NovelLikeButton.styled";
+} from "@/app/(main)/user/novel/component/NovelLikeButton.styled";
 
 interface LikeButtonProps {
   novelId: number;

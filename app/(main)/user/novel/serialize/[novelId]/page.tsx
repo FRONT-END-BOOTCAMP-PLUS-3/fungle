@@ -7,14 +7,21 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useModalStore } from "@/store/useModalStore";
 import useAuthStore from "@/store/useAuthStore";
-import { Container, InputContainer, ButtonContainer, CheckboxContainer } from "@/app/user/novel/serialize/SerializePage.styled";
+import {
+  Container,
+  InputContainer,
+  ButtonContainer,
+  CheckboxContainer,
+} from "@/app/(main)/user/novel/serialize/SerializePage.styled";
 import NovelCreateCompleted from "../../create/component/NovelCreateCompleted";
-import ConfirmationModal from "@/app/user/novel/create/component/ConfirmationModal";
+import ConfirmationModal from "@/app/(main)/user/novel/create/component/ConfirmationModal";
 
 const Page = () => {
   const router = useRouter();
   const params = useParams();
-  const novelId = params?.novelId ? parseInt(params.novelId as string, 10) : NaN;
+  const novelId = params?.novelId
+    ? parseInt(params.novelId as string, 10)
+    : NaN;
   const { user } = useAuthStore();
 
   const [title, setTitle] = useState("");
@@ -58,10 +65,14 @@ const Page = () => {
   const fetchEpisodeNumber = async () => {
     try {
       const response = await fetch(`/api/novel/${novelId}/episode`);
-      if (!response.ok) throw new Error("에피소드 정보를 불러오는 중 오류가 발생했습니다.");
+      if (!response.ok)
+        throw new Error("에피소드 정보를 불러오는 중 오류가 발생했습니다.");
 
       const data = await response.json();
-      const lastEpisode = data.episodes.length > 0 ? data.episodes[data.episodes.length - 1] : null;
+      const lastEpisode =
+        data.episodes.length > 0
+          ? data.episodes[data.episodes.length - 1]
+          : null;
       setEpisodeNumber(lastEpisode ? lastEpisode.episode + 1 : 1);
     } catch (error) {
       console.error("Error fetching episode number:", error);
@@ -147,7 +158,11 @@ const Page = () => {
 
   return (
     <Container>
-      <ConfirmationModal isOpen={isOpen} onClose={handleModalCancel} onConfirm={handleModalConfirm} />
+      <ConfirmationModal
+        isOpen={isOpen}
+        onClose={handleModalCancel}
+        onConfirm={handleModalConfirm}
+      />
       {isConfirmed && (
         <>
           <InputContainer>
@@ -176,10 +191,20 @@ const Page = () => {
             </label>
           </CheckboxContainer>
           <ButtonContainer>
-            <Button fontSize="medium" buttonSize="medium" backgroudColor="white" onClick={handleCancel}>
+            <Button
+              fontSize="medium"
+              buttonSize="medium"
+              backgroudColor="white"
+              onClick={handleCancel}
+            >
               취소
             </Button>
-            <Button fontSize="medium" buttonSize="medium" backgroudColor="primary" onClick={handleSubmit}>
+            <Button
+              fontSize="medium"
+              buttonSize="medium"
+              backgroudColor="primary"
+              onClick={handleSubmit}
+            >
               게시
             </Button>
           </ButtonContainer>

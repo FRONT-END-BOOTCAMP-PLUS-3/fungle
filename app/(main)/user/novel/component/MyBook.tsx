@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { MyBookContainer, BookCard, Thumbnail, Status, Title, Info , StyledImage } from "@/app/user/novel/component/MyBook.styled";
+import {
+  MyBookContainer,
+  BookCard,
+  Thumbnail,
+  Status,
+  Title,
+  Info,
+  StyledImage,
+} from "@/app/(main)/user/novel/component/MyBook.styled";
 import ProgressBar from "@/components/progressbar/ProgressBar";
 import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
 import EmptyBookList from "./EmptyBookList";
@@ -16,18 +24,20 @@ const MyBook = () => {
       try {
         const response = await fetch("/api/user/novel");
         if (!response.ok) throw new Error("Failed to fetch novels");
-    
+
         const data = await response.json();
-        const novels = data.novels ?? []; 
-    
-        const formattedBooks: NovelsByUserIdDto[] = novels.map((novel: any) => ({
-          id: novel.id,
-          title: novel.title,
-          image: novel.image || "/image/book.svg",
-          createdAt: new Date(novel.createdAt),
-          serialStatus: novel.serialStatus,
-        }));
-    
+        const novels = data.novels ?? [];
+
+        const formattedBooks: NovelsByUserIdDto[] = novels.map(
+          (novel: any) => ({
+            id: novel.id,
+            title: novel.title,
+            image: novel.image || "/image/book.svg",
+            createdAt: new Date(novel.createdAt),
+            serialStatus: novel.serialStatus,
+          })
+        );
+
         setBooks(formattedBooks);
       } catch (error) {
         throw new Error("서버 에러");
@@ -55,17 +65,27 @@ const MyBook = () => {
       <MyBookContainer>
         {books.length > 0 ? (
           books.map((book) => (
-            <BookCard key={book.id} onClick={() => router.push(`/user/novel/${book.id}`)}>
+            <BookCard
+              key={book.id}
+              onClick={() => router.push(`/user/novel/${book.id}`)}
+            >
               <Thumbnail>
-                <StyledImage src={book.image || "/image/book.svg"} alt="소설 썸네일" width={120} height={160} />
-                <Status $status={book.serialStatus}>{getStatusLabel(book.serialStatus)}</Status>
+                <StyledImage
+                  src={book.image || "/image/book.svg"}
+                  alt="소설 썸네일"
+                  width={120}
+                  height={160}
+                />
+                <Status $status={book.serialStatus}>
+                  {getStatusLabel(book.serialStatus)}
+                </Status>
               </Thumbnail>
               <Title>{book.title}</Title>
               <Info>
                 <p>1단계 ⭐</p>
-                <p>펀딩금액 20,000 </p> 
+                <p>펀딩금액 20,000 </p>
               </Info>
-              <ProgressBar progress={80} /> 
+              <ProgressBar progress={80} />
             </BookCard>
           ))
         ) : (
@@ -74,6 +94,6 @@ const MyBook = () => {
       </MyBookContainer>
     </div>
   );
-};    
+};
 
 export default MyBook;

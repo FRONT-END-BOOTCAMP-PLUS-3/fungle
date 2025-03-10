@@ -1,9 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
-import { novelDi } from "@/infrastructure/config/novelDi"; 
-import { Main, GradientWrapper, NovelHeader, StatusSection, Badge, UploadInfo, AuthorSection, EpisodeItem } from "@/app/user/novel/[novelId]/NovelIdPage.styled";
+import { novelDi } from "@/infrastructure/config/novelDi";
+import {
+  AuthorSection,
+  Badge,
+  EpisodeItem,
+  GradientWrapper,
+  Main,
+  NovelHeader,
+  StatusSection,
+  UploadInfo,
+} from "@/app/(main)/user/novel/[novelId]/NovelIdPage.styled";
 
-const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: string }> }) => {
+const Page = async ({
+  params: promisedParams,
+}: {
+  params: Promise<{ novelId?: string }>;
+}) => {
   const params = await promisedParams;
   const novelId = params.novelId ? parseInt(params.novelId, 10) : NaN;
 
@@ -24,15 +37,16 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
         </StatusSection>
 
         <NovelHeader>
-          <Image className="novel-image"
-            src={novel.image || "/image/book.svg"} 
-            alt={novel.title} 
-            width={196} 
-            height={280} 
+          <Image
+            className="novel-image"
+            src={novel.image || "/image/book.svg"}
+            alt={novel.title}
+            width={196}
+            height={280}
           />
           <div className="info">
             <h1>{novel.title}</h1>
-            
+
             <div className="categories">
               {novel.genres.map((genre) => (
                 <span key={genre}>{genre}</span>
@@ -41,17 +55,32 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
 
             <UploadInfo>
               <div>
-                <Image src="/icon/episode.svg" alt="총 화수" width={30} height={30} />
+                <Image
+                  src="/icon/episode.svg"
+                  alt="총 화수"
+                  width={30}
+                  height={30}
+                />
                 {episodeCount}화
               </div>
 
               <div>
-                <Image src="/icon/upload.svg" alt="업로드 요일" width={30} height={20} />
+                <Image
+                  src="/icon/upload.svg"
+                  alt="업로드 요일"
+                  width={30}
+                  height={20}
+                />
                 {novel.serialDay}
               </div>
 
               <div>
-                <Image src="/icon/heart.svg" alt="좋아요" width={30} height={30} />
+                <Image
+                  src="/icon/heart.svg"
+                  alt="좋아요"
+                  width={30}
+                  height={30}
+                />
                 {novel.likeCount}
               </div>
             </UploadInfo>
@@ -61,16 +90,18 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
       </GradientWrapper>
 
       <AuthorSection>
-        <Image 
-          src={novel.profile || "/image/profile.svg"} 
-          alt={novel.author} 
-          width={80} 
-          height={80} 
-          className="author-image" 
+        <Image
+          src={novel.profile || "/image/profile.svg"}
+          alt={novel.author}
+          width={80}
+          height={80}
+          className="author-image"
         />
         <div className="author-info">
           <span className="author-name">{novel.author}</span>
-          <p className="author-introduce">{novel.userIntroduce ?? "소개 없음"}</p>
+          <p className="author-introduce">
+            {novel.userIntroduce ?? "소개 없음"}
+          </p>
         </div>
       </AuthorSection>
 
@@ -93,7 +124,9 @@ const Page = async ({ params: promisedParams }: { params: Promise<{ novelId?: st
               </Link>
               <div className="episode-info">
                 <Link href={`/user/novel/${novelId}/${episode.id}`} passHref>
-                  <p className="episode-title">{index + 1}화 {episode.title}</p>
+                  <p className="episode-title">
+                    {index + 1}화 {episode.title}
+                  </p>
                 </Link>
                 <p className="episode-date">{date}</p>
               </div>

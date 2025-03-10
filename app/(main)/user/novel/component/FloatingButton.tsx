@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FabContainer, FabButton, FabMenu, FabMenuItem } from "@/app/user/novel/component/FloatingButton.styled";
+import {
+  FabContainer,
+  FabButton,
+  FabMenu,
+  FabMenuItem,
+} from "@/app/(main)/user/novel/component/FloatingButton.styled";
 import Image from "next/image";
 
 const FloatingButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter(); 
+  const router = useRouter();
 
   return (
     <FabContainer>
@@ -22,11 +27,11 @@ const FloatingButton = () => {
         </FabMenu>
       )}
       <FabButton onClick={() => setIsOpen(!isOpen)}>
-        <Image 
-          src={isOpen ? "/icon/floating_close.svg" : "/icon/write.svg"} 
-          alt="플로팅 버튼" 
-          width={48} 
-          height={48} 
+        <Image
+          src={isOpen ? "/icon/floating_close.svg" : "/icon/write.svg"}
+          alt="플로팅 버튼"
+          width={48}
+          height={48}
         />
       </FabButton>
     </FabContainer>

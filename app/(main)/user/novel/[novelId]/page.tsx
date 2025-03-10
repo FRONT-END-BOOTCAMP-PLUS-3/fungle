@@ -4,8 +4,17 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { NovelDto } from "@/application/usecases/novel/dto/Novel"; 
-import { Main, GradientWrapper, NovelHeader, StatusSection, Badge, UploadInfo, AuthorSection, EpisodeItem } from "@/app/user/novel/[novelId]/NovelIdPage.styled";
+import { NovelDto } from "@/application/usecases/novel/dto/Novel";
+import {
+  Main,
+  GradientWrapper,
+  NovelHeader,
+  StatusSection,
+  Badge,
+  UploadInfo,
+  AuthorSection,
+  EpisodeItem,
+} from "@/app/(main)/user/novel/[novelId]/NovelIdPage.styled";
 import { GENRES } from "@/constants/GENRES";
 import { SERIAL_STATUS } from "@/constants/STATUS";
 import { SERIAL_DAY } from "@/constants/SERIAL_DAY";
@@ -13,9 +22,11 @@ import LikeButton from "../component/NovelLikeButton";
 
 const Page = () => {
   const params = useParams();
-  const novelId = params?.novelId ? parseInt(params.novelId as string, 10) : NaN;
+  const novelId = params?.novelId
+    ? parseInt(params.novelId as string, 10)
+    : NaN;
 
-  const [novel, setNovel] = useState<NovelDto | null>(null);  
+  const [novel, setNovel] = useState<NovelDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -45,25 +56,26 @@ const Page = () => {
             .replace(/\. /g, ".")
             .replace(/\.$/, ""),
         }));
-        
 
         const serialStatusLabel =
-        SERIAL_STATUS.find((status) => status.value === data.serialStatus)?.label || data.serialStatus;
+          SERIAL_STATUS.find((status) => status.value === data.serialStatus)
+            ?.label || data.serialStatus;
 
-      const serialDayLabel =
-        SERIAL_DAY.find((day) => day.value === data.serialDay)?.label || data.serialDay;
+        const serialDayLabel =
+          SERIAL_DAY.find((day) => day.value === data.serialDay)?.label ||
+          data.serialDay;
 
-      const genreLabels = data.genres.map(
-        (genre) => GENRES.find((g) => g.value === genre)?.label || genre
-      );
+        const genreLabels = data.genres.map(
+          (genre) => GENRES.find((g) => g.value === genre)?.label || genre
+        );
 
-      setNovel({
-        ...data,
-        serialStatus: serialStatusLabel,
-        serialDay: serialDayLabel,
-        genres: genreLabels,
-        episodes: formattedEpisodes,
-      });
+        setNovel({
+          ...data,
+          serialStatus: serialStatusLabel,
+          serialDay: serialDayLabel,
+          genres: genreLabels,
+          episodes: formattedEpisodes,
+        });
       } catch (error) {
         console.error("Error fetching novel:", error);
         setError("소설 정보를 불러오는 중 오류가 발생했습니다.");
@@ -88,10 +100,11 @@ const Page = () => {
         </StatusSection>
 
         <NovelHeader>
-          <Image className="novel-image" 
-            src={novel.image || "/image/book.svg"} 
-            alt={novel.title} 
-            width={196} 
+          <Image
+            className="novel-image"
+            src={novel.image || "/image/book.svg"}
+            alt={novel.title}
+            width={196}
             height={280}
           />
           <div className="info">
@@ -105,17 +118,30 @@ const Page = () => {
 
             <UploadInfo>
               <div>
-                <Image src="/icon/episode.svg" alt="총 화수" width={30} height={30} />
+                <Image
+                  src="/icon/episode.svg"
+                  alt="총 화수"
+                  width={30}
+                  height={30}
+                />
                 {novel.episodes.length}화
               </div>
 
               <div>
-                <Image src="/icon/upload.svg" alt="업로드 요일" width={30} height={20} />
+                <Image
+                  src="/icon/upload.svg"
+                  alt="업로드 요일"
+                  width={30}
+                  height={20}
+                />
                 {novel.serialDay}
               </div>
 
               <div>
-                <LikeButton novelId={novel.id} initialLikeCount={novel.likeCount} />
+                <LikeButton
+                  novelId={novel.id}
+                  initialLikeCount={novel.likeCount}
+                />
               </div>
             </UploadInfo>
             <p className="body1">{novel.novelIntroduce}</p>
@@ -124,16 +150,18 @@ const Page = () => {
       </GradientWrapper>
 
       <AuthorSection>
-        <Image 
-          src={novel.profile || "/image/profile.svg"} 
-          alt={novel.author} 
-          width={80} 
-          height={80} 
-          className="author-image" 
+        <Image
+          src={novel.profile || "/image/profile.svg"}
+          alt={novel.author}
+          width={80}
+          height={80}
+          className="author-image"
         />
         <div className="author-info">
           <span className="author-name">{novel.author}</span>
-          <p className="author-introduce">{novel.userIntroduce ?? "소개 없음"}</p>
+          <p className="author-introduce">
+            {novel.userIntroduce ?? "소개 없음"}
+          </p>
         </div>
       </AuthorSection>
 
@@ -152,7 +180,9 @@ const Page = () => {
               </Link>
               <div className="episode-info">
                 <Link href={`/user/novel/${novel.id}/${episode.id}`} passHref>
-                  <p className="episode-title">{index + 1}화 {episode.title}</p>
+                  <p className="episode-title">
+                    {index + 1}화 {episode.title}
+                  </p>
                 </Link>
                 <p className="episode-date">{episode.createdAt}</p>
               </div>

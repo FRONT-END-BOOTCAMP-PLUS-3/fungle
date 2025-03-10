@@ -1,13 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ListContainer, ListItem, Rank, Thumbnail, Content, Title, Author, Tags, StyledImage } from "@/app/user/novel/component/Top10.styled";
+import {
+  ListContainer,
+  ListItem,
+  Rank,
+  Thumbnail,
+  Content,
+  Title,
+  Author,
+  Tags,
+  StyledImage,
+} from "@/app/(main)/user/novel/component/Top10.styled";
 import { mapGenresToKorean } from "@/constants/GENRES";
-import { TopListDTO } from "@/application/usecases/novel/dto/TopList"; 
+import { TopListDTO } from "@/application/usecases/novel/dto/TopList";
 import { useRouter } from "next/navigation";
 
 const Top10List = () => {
-  const [topNovels, setTopNovels] = useState<TopListDTO[]>([]); 
+  const [topNovels, setTopNovels] = useState<TopListDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -18,7 +28,7 @@ const Top10List = () => {
         if (!response.ok) throw new Error("Failed to fetch novels top 10");
         const data: TopListDTO[] = await response.json();
 
-        const convertedData = data.map(novel => ({
+        const convertedData = data.map((novel) => ({
           ...novel,
           tags: mapGenresToKorean(novel.tags),
         }));
@@ -41,7 +51,11 @@ const Top10List = () => {
   return (
     <ListContainer>
       {topNovels.map((novel, index, array) => (
-        <ListItem key={novel.id} $isLast={index === array.length - 1} onClick={() => router.push(`/user/novel/${novel.id}`)}>
+        <ListItem
+          key={novel.id}
+          $isLast={index === array.length - 1}
+          onClick={() => router.push(`/user/novel/${novel.id}`)}
+        >
           <Rank>{index + 1}</Rank>
           <Thumbnail>
             <StyledImage

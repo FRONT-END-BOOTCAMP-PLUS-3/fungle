@@ -222,3 +222,10 @@ td {
     width: 23.4375rem;
   }
 }
+
+.admin-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  background-color: var(--white-color);
+}

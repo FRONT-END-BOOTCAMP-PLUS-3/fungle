@@ -1,5 +1,5 @@
 import Header from "@/components/header/Header";
-import "./globals.css";
+import "../globals.css";
 import AuthInitializer from "@/components/authInitializer/AuthInitializer";
 
 export const metadata = {
