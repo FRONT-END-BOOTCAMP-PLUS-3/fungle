@@ -15,9 +15,9 @@ import {
 import { formatDate } from "@/utils/date/formatDate";
 import Button from "../button/Button";
 import { CommunityComment } from "@prisma/client";
-import MoreOptionsMenu from "@/app/user/community/components/MoreOptionMenu";
+import MoreOptionsMenu from "@/app/(main)/user/community/components/MoreOptionMenu";
 import useAuthStore from "@/store/useAuthStore";
-import CommunityCommentEdit from "@/app/user/community/components/CommunityCommentEdit";
+import CommunityCommentEdit from "@/app/(main)/user/community/components/CommunityCommentEdit";
 
 type CommentsWithNickname = CommunityComment & {
   userNickname: string;

@@ -19,8 +19,8 @@ import { useEffect, useState } from "react";
 import { formatDate } from "@/utils/date/formatDate";
 import { CommunityComment } from "@prisma/client";
 import useAuthStore from "@/store/useAuthStore";
-import CommunityCommentEdit from "@/app/user/community/components/CommunityCommentEdit";
-import MoreOptionsMenu from "@/app/user/community/components/MoreOptionMenu";
+import CommunityCommentEdit from "@/app/(main)/user/community/components/CommunityCommentEdit";
+import MoreOptionsMenu from "@/app/(main)/user/community/components/MoreOptionMenu";
 import ReplyComment from "./ReplyComment";
 
 type CommentsWithNickname = CommunityComment & {
