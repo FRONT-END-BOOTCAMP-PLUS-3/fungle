@@ -1,20 +1,17 @@
 "use client";
-
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   CloseButton,
+  DesContainer,
   Description,
-  DetailAmount,
   Divider,
   FundingAmount,
   ModalContainer,
   ModalOverlay,
   PayButtonBox,
   StyledInput,
-  Title,
 } from "./FundingModal.styled";
-import { AmountContainer } from "../Funding.styled";
 import Button from "@/components/button/Button";
 
 interface FundingModalProps {
@@ -22,40 +19,36 @@ interface FundingModalProps {
   onClose: () => void;
 }
 
-function FundingModal(props: FundingModalProps): React.ReactElement | null {
+const FundingModal: React.FC<FundingModalProps> = (props) => {
   const { isOpen, onClose } = props;
   const router = useRouter();
   const [additionalAmount, setAdditionalAmount] = useState("");
 
   if (!isOpen) return null;
 
-  function handleClose(): void {
-    onClose();
-  }
+  const handleClose = () => onClose();
 
-  function handlePayment(): void {
-    // 실제 결제 로직(예: API 호출 등)을 여기에 추가
+  const handlePayment = () => {
     alert(`기본 10,000원 + 추가 ${additionalAmount}원 결제 진행`);
     onClose();
-    router.push("/"); // 결제 후 이동할 페이지 (예: 메인)
-  }
+    router.push("/");
+  };
 
   return (
     <ModalOverlay>
       <ModalContainer>
         <CloseButton onClick={handleClose}>✕</CloseButton>
+        <h4>펀딩 진행하기</h4>
 
-        <Title>펀딩 진행하기</Title>
-
-        <AmountContainer>
+        <DesContainer>
           <FundingAmount>10,000원</FundingAmount>
           <Description>(기본 펀딩 금액)</Description>
-        </AmountContainer>
+        </DesContainer>
 
-        <AmountContainer>
-          <DetailAmount>추가 금액 입력</DetailAmount>
+        <DesContainer>
+          <p>추가 금액 입력</p>
           <Description>(생략 가능)</Description>
-        </AmountContainer>
+        </DesContainer>
 
         <StyledInput
           type="number"
@@ -74,6 +67,6 @@ function FundingModal(props: FundingModalProps): React.ReactElement | null {
       </ModalContainer>
     </ModalOverlay>
   );
-}
+};
 
 export default FundingModal;
