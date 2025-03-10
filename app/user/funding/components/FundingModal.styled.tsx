@@ -41,18 +41,6 @@ export const Description = styled.p`
   color: var(--gray-500);
 `;
 
-export const StyledInput = styled.input`
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 0.06rem solid #ccc;
-  border-radius: 0.6rem;
-  &:focus {
-    outline: none;
-    border-color: var(--primary-color);
-  }
-`;
-
 export const Divider = styled.div`
   background-color: var(--gray-100);
   margin: 0.8rem 0;

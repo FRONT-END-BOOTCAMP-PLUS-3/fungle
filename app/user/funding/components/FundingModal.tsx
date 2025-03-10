@@ -10,9 +10,9 @@ import {
   ModalContainer,
   ModalOverlay,
   PayButtonBox,
-  StyledInput,
 } from "./FundingModal.styled";
 import Button from "@/components/button/Button";
+import Input from "@/components/input/Input";
 
 interface FundingModalProps {
   isOpen: boolean;
@@ -50,11 +50,13 @@ const FundingModal: React.FC<FundingModalProps> = (props) => {
           <Description>(생략 가능)</Description>
         </DesContainer>
 
-        <StyledInput
-          type="number"
+        <Input
+          label="추가 금액 입력"
           placeholder="금액을 입력해주세요."
+          type="number"
           value={additionalAmount}
           onChange={(e) => setAdditionalAmount(e.target.value)}
+          hideLabel
         />
 
         <Divider />
