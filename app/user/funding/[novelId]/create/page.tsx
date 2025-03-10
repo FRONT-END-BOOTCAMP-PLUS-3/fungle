@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
@@ -10,22 +11,18 @@ import {
   Label,
   TextArea,
   ButtonRow,
-  StyledButton,
   Amount,
 } from "./StartFunding.styled";
+import Button from "@/components/button/Button";
 
 export default function CreateFundingPage(): React.ReactElement {
   const { novelId } = useParams();
   const router = useRouter();
   const [fundingIntro, setFundingIntro] = useState("");
 
-  // 고정된 목표 금액 (화면에 "50,000원" 표시)
-  const displayedAmount = "50,000원";
-
   function handleStart(): void {
-    // 알림창에는 "50,000원" 그대로 표시
     alert(
-      `목표 금액: ${displayedAmount}\n펀딩 소개: ${fundingIntro}\nnovelId: ${novelId}`
+      `목표 금액: 50,000원\n펀딩 소개: ${fundingIntro}\nnovelId: ${novelId}`
     );
     router.push("/");
   }
@@ -51,11 +48,13 @@ export default function CreateFundingPage(): React.ReactElement {
         소설 <strong>{"{novel.title}"}</strong>의 마지막화가 승인
         처리되었습니다.
         <br />
-        완결을 축하드립니다! 이제 크라우드 펀딩을 여실 수 있습니다.
+        완결을 축하드립니다!
+        <br />
+        이제 크라우드 펀딩을 여실 수 있습니다.
       </SubTitle>
 
       <Label>목표 금액</Label>
-      <Amount>{displayedAmount}</Amount>
+      <Amount>50,000원</Amount>
 
       <Label>펀딩 소개</Label>
       <TextArea
@@ -65,10 +64,24 @@ export default function CreateFundingPage(): React.ReactElement {
       />
 
       <ButtonRow>
-        <StyledButton onClick={handleStart}>펀딩 시작</StyledButton>
-        <StyledButton $secondary onClick={handleCancel}>
+        {/* 펀딩 시작 버튼 */}
+        <Button
+          buttonSize="big"
+          fontSize="medium"
+          backgroudColor="primary"
+          onClick={handleStart}
+        >
+          펀딩 시작
+        </Button>
+        {/* 취소 버튼 */}
+        <Button
+          buttonSize="big"
+          fontSize="medium"
+          backgroudColor="white"
+          onClick={handleCancel}
+        >
           취소
-        </StyledButton>
+        </Button>
       </ButtonRow>
     </Container>
   );
