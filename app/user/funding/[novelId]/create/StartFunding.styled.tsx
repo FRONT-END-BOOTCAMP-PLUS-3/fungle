@@ -46,7 +46,7 @@ export const Input = styled.input`
   border-radius: 0.375rem;
   &:focus {
     outline: none;
-    border-color: #0f62fe;
+    border-color: var(--primary-color);
   }
 `;
 
