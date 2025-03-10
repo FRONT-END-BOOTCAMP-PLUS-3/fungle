@@ -1,11 +1,11 @@
 import { CommunityCommentRepository } from "@/domain/repositories/CommunityCommentRepository";
 
 export class DfCommentCountUsecase {
-  constructor(private commnetRepository: CommunityCommentRepository) {}
+  constructor(private commentRepository: CommunityCommentRepository) {}
 
   async execute(id: string): Promise<number> {
     try {
-      const count = await this.commnetRepository.commentCount(id);
+      const count = await this.commentRepository.commentCount(id);
       return count;
     } catch (error: unknown) {
       if (error instanceof Error) {

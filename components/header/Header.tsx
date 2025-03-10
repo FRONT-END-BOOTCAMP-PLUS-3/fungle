@@ -12,21 +12,16 @@ import {
   UserIcon,
   LogoutButton,
 } from "./Header.styled";
+import useAuthStore from "@/store/useAuthStore";
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // ✅ 사이드바 상태 추가
+  const { setUser } = useAuthStore();
 
   const pathname = usePathname();
   const router = useRouter();
   const hideHeader =
     pathname === "/login" || pathname === "/signup" || pathname === "/";
-
-  useEffect(() => {
-    if (pathname === "/user") {
-      setIsLoggedIn(true);
-    }
-  }, [pathname]);
 
   const goToMyPage = () => {
     if (!pathname.endsWith("/user")) {
@@ -36,7 +31,8 @@ const Header = () => {
 
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
-    setIsLoggedIn(false);
+    setUser(null);
+    useAuthStore.setState({ isLoggedIn: false });
     router.push("/");
   };
 
@@ -68,7 +64,7 @@ const Header = () => {
               />
             </LogoContainer>
 
-            {isLoggedIn || pathname === "/user" ? (
+            {pathname === "/user" ? (
               <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
             ) : (
               <UserIcon onClick={goToMyPage}>

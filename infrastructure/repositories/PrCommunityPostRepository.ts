@@ -18,7 +18,13 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
     recruitment?: string;
   }): Promise<PostWithRelations[]> {
     const whereClause: Prisma.CommunityPostWhereInput = {};
-
+    const recruitmentMap: Record<string, string> = {
+      디자이너: "designer",
+      작가: "writer",
+      편집자: "editor",
+      기획자: "planner",
+    };
+    console.log("infra ", params.recruitment);
     if (params.filter !== "all") {
       whereClause.status = params.filter;
     }
@@ -40,11 +46,12 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
       }
     }
 
-    if (params.recruitment?.trim() !== "") {
+    if (params.recruitment) {
+      const recruitmentEng = recruitmentMap[params.recruitment];
       whereClause.PostRecruitments = {
         some: {
           RecruitmentCategory: {
-            name: { contains: params.recruitment, mode: "insensitive" },
+            name: { contains: recruitmentEng, mode: "insensitive" },
           },
         },
       };
