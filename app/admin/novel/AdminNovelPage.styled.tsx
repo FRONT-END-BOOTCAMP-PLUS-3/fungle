@@ -5,9 +5,14 @@ import { styled } from "styled-components";
 export const AdminHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
-  background-color: var(--primary-color);
   width: 500px;
+  padding: 1rem 0;
+`;
+
+export const AdminMain = styled.main`
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
 `;
 
 export const Table = styled.table`
@@ -22,5 +27,13 @@ export const Table = styled.table`
 
   th {
     color: var(--white-color);
+    text-align: center;
+    padding: 1rem;
+  }
+
+  td {
+    text-align: center;
+    font-size: var(--font-size-base);
+    padding: 1rem;
   }
 `;

@@ -1,5 +1,3 @@
-"use client";
-
 import AdminSidebar from "./components/AdminSidebar";
 import "../globals.css";
 
