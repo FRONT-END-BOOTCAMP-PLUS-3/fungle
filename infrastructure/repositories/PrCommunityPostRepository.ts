@@ -319,4 +319,33 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
   async getPostCountByUserId(userId: string): Promise<number> {
     return await prisma.communityPost.count({ where: { userId: userId } });
   }
+
+  async increaseViewCount(id: string): Promise<void> {
+    const postId = Number(id);
+    try {
+      const existingPost = await prisma.communityPost.findUnique({
+        where: { id: postId },
+        select: { id: true },
+      });
+
+      if (!existingPost) {
+        throw new Error("해당 게시글을 찾을 수 없습니다.");
+      }
+
+      await prisma.communityPost.update({
+        where: { id: postId },
+        data: {
+          view: {
+            increment: 1,
+          },
+        },
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+
+      throw new Error("조회수 증가 중 문제가 발생했습니다.");
+    }
+  }
 }

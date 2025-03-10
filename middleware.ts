@@ -21,9 +21,13 @@ const middleware = (req: NextRequest) => {
     return NextResponse.redirect(new URL(authRoutes[currentPath], req.url));
   }
 
-  // 토큰이 없을 경우 로그인 페이지로 리다이렉트
   if (!accessToken && currentPath.startsWith("/user")) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    const newPath = currentPath.replace(/^\/user/, "");
+
+    if (newPath === "") {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+    return NextResponse.redirect(new URL(newPath, req.url));
   }
 
   return NextResponse.next();

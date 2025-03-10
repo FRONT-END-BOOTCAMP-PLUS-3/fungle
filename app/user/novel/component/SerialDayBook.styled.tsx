@@ -63,7 +63,7 @@ export const Thumbnail = styled.div`
 export const StyledImage = styled(Image)`
   width: 100%;  
   object-fit: cover;
-  min-height: 14.25rem;
+  height: 14.25rem;
 `;
 
 export const Content = styled.div`
@@ -73,8 +73,13 @@ export const Content = styled.div`
 export const Title = styled.p`
   text-align: center;
   font-weight: bold;
-  font-size: 1rem;
+  height: 4rem;
   width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Info = styled.div`

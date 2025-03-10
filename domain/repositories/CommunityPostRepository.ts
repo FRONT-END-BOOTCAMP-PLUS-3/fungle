@@ -72,4 +72,5 @@ export interface CommunityPostRepository {
   getPostByUserId(userId: string): Promise<PostWithRelations[]>;
   updatePostStatus(userId: string, postId: number): Promise<void>;
   getPostCountByUserId(userId: string): Promise<number>;
+  increaseViewCount(id: string): Promise<void>;
 }

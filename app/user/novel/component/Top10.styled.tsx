@@ -17,6 +17,7 @@ export const ListItem = styled.div<ListItemProps>`
   padding: 0.9375rem;
   border-bottom: ${({ $isLast }) => ($isLast ? "none" : "0.0625rem solid var(--gray-500)")};
   gap: 0.9375rem;
+  cursor: pointer;
 `;
 
 export const Rank = styled.span`
@@ -35,7 +36,7 @@ export const Thumbnail = styled.div`
 export const StyledImage = styled(Image)`
   width: 100%;  
   object-fit: cover;
-  min-height: 5.375rem;
+  height: 5.375rem;
 
 `;
 

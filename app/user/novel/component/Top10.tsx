@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { ListContainer, ListItem, Rank, Thumbnail, Content, Title, Author, Tags, StyledImage } from "@/app/user/novel/component/Top10.styled";
 import { mapGenresToKorean } from "@/constants/GENRES";
 import { TopListDTO } from "@/application/usecases/novel/dto/TopList"; 
+import { useRouter } from "next/navigation";
 
 const Top10List = () => {
   const [topNovels, setTopNovels] = useState<TopListDTO[]>([]); 
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchTopNovels = async () => {
@@ -39,7 +41,7 @@ const Top10List = () => {
   return (
     <ListContainer>
       {topNovels.map((novel, index, array) => (
-        <ListItem key={novel.id} $isLast={index === array.length - 1}>
+        <ListItem key={novel.id} $isLast={index === array.length - 1} onClick={() => router.push(`/user/novel/${novel.id}`)}>
           <Rank>{index + 1}</Rank>
           <Thumbnail>
             <StyledImage
