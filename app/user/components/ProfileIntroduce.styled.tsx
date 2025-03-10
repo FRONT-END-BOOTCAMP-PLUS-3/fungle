@@ -24,6 +24,7 @@ export const ModalContentContainer = styled.div`
   flex-direction: column;
   gap: 0.625rem;
   width: 100%;
+  text-align: center;
 `;
 
 export const ButtonWrapper = styled.div`

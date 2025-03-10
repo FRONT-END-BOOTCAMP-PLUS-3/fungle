@@ -2,15 +2,20 @@ import Button from "@/components/button/Button";
 import {
   ErrorMessage,
   InputBox,
+  MoreOptionsButtonWrapper,
   NicknameBox,
   NicknameContainer,
   ProfileContainer,
   ProfileSection,
+  ProfileWrapper,
 } from "./ProfileView.styled";
 import Image from "next/image";
 import useAuthStore from "@/store/useAuthStore";
 import { useEffect, useState } from "react";
 import Input from "@/components/input/Input";
+import ProfileMoreOptions from "./ProfileMoreOptions";
+import { UserDeletionModal } from "./UserDeletionModal";
+import { useRouter } from "next/navigation";
 
 const ProfileView = () => {
   const { user, setUser } = useAuthStore();
@@ -19,6 +24,8 @@ const ProfileView = () => {
   const [nicknameInput, setNicknameInput] = useState<string>("");
   const [nicknameError, setNicknameError] = useState<string>("");
   const [previewImage, setPreviewImage] = useState<string>(profileImage);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (user?.nickname) {
@@ -146,23 +153,49 @@ const ProfileView = () => {
     }
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      const response = await fetch("/api/user/delete", { method: "DELETE" });
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "회원 탈퇴에 실패했습니다.");
+        return;
+      }
+
+      alert(data.message);
+      setUser(null);
+      useAuthStore.setState({ isLoggedIn: false });
+      router.replace("/");
+    } catch (error: unknown) {
+      alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
+
   return (
     <ProfileSection>
-      <ProfileContainer>
-        <Image
-          src={previewImage}
-          alt="프로필 이미지"
-          fill
-          style={{ objectFit: "cover" }}
-        />
-        <label htmlFor="image-upload" />
-        <input
-          id="image-upload"
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-      </ProfileContainer>
+      <ProfileWrapper>
+        <MoreOptionsButtonWrapper>
+          <ProfileMoreOptions
+            onDeleteClick={() => setIsDeleteModalOpen(true)}
+          />
+        </MoreOptionsButtonWrapper>
+        <ProfileContainer>
+          <Image
+            src={previewImage}
+            alt="프로필 이미지"
+            fill
+            style={{ objectFit: "cover" }}
+          />
+          <label htmlFor="image-upload" />
+          <input
+            id="image-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </ProfileContainer>
+      </ProfileWrapper>
       <NicknameContainer>
         <NicknameBox>
           {isEditing ? (
@@ -184,6 +217,13 @@ const ProfileView = () => {
         </NicknameBox>
         <ErrorMessage>{nicknameError}</ErrorMessage>
       </NicknameContainer>
+      {isDeleteModalOpen && (
+        <UserDeletionModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleDeleteUser}
+        />
+      )}
     </ProfileSection>
   );
 };
