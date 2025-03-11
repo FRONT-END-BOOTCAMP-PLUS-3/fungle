@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SignupContainer = styled.div`
+export const SignupContainer = styled.div`q
   max-width: 100%;
   min-height: 100vh;
   padding: 2rem 1.25rem;
@@ -24,8 +24,6 @@ export const SignupForm = styled.form`
   max-width: 100%;
   gap: 1.6rem;
 `;
-
-export const Label = styled.label``;
 
 export const InputGroupWrapper = styled.div`
   width: 100%;
