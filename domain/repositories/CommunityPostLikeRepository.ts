@@ -1,4 +1,4 @@
-import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community/dto/LikedCommuityPostDto";
+import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community/dto/PostWithCountAndRecruitmentDto";
 
 export interface CommunityPostLikeRepository {
   toggleLike(

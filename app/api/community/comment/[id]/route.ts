@@ -4,13 +4,18 @@ import { DfCommentDeleteUseccase } from "@/application/usecases/comment/DfCommen
 import { DfCommentUpdateUsecase } from "@/application/usecases/comment/DfCommentUpdateUsecase";
 import { userDi } from "@/infrastructure/config/userDi";
 import { PrCommunityCommentRepository } from "@/infrastructure/repositories/PrCommunityCommentRepository";
+import { getParamsFromRequest } from "@/utils/params/requestParams";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  const { id: postId } = await params;
+export const GET = async (request: NextRequest) => {
+  const { id: postId } = getParamsFromRequest(request, ["episodeId"]);
+
+  if (!postId) {
+    return NextResponse.json(
+      { error: "요청에 post id를 포함해야 합니다." },
+      { status: 400 }
+    );
+  }
 
   try {
     const communityCommentRepository = new PrCommunityCommentRepository();
@@ -32,13 +37,17 @@ export const GET = async (
   }
 };
 
-export const POST = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  const { id } = await params;
+export const POST = async (request: NextRequest) => {
+  const { id } = getParamsFromRequest(request, ["id"]);
   const body = await request.json();
   const { comment, parentId } = body;
+
+  if (!id) {
+    return NextResponse.json(
+      { error: "요청에 id를 포함해야 합니다." },
+      { status: 400 }
+    );
+  }
 
   try {
     const userId = await userDi.getUserIdUsecase.execute();
@@ -72,13 +81,17 @@ export const POST = async (
   }
 };
 
-export const PATCH = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  const { id } = await params;
+export const PATCH = async (request: NextRequest) => {
+  const { id } = getParamsFromRequest(request, ["id"]);
   const body = await request.json();
   const { comment } = body;
+
+  if (!id) {
+    return NextResponse.json(
+      { error: "요청에 id를 포함해야 합니다." },
+      { status: 400 }
+    );
+  }
 
   try {
     const userId = await userDi.getUserIdUsecase.execute();
@@ -108,12 +121,15 @@ export const PATCH = async (
   }
 };
 
-export const DELETE = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  const { id } = await params;
+export const DELETE = async (request: NextRequest) => {
+  const { id } = getParamsFromRequest(request, ["id"]);
 
+  if (!id) {
+    return NextResponse.json(
+      { error: "요청에 id를 포함해야 합니다." },
+      { status: 400 }
+    );
+  }
   try {
     const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {

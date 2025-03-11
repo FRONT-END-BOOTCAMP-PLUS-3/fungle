@@ -22,12 +22,7 @@ const middleware = (req: NextRequest) => {
   }
 
   if (!accessToken && currentPath.startsWith("/user")) {
-    const newPath = currentPath.replace(/^\/user/, "");
-
-    if (newPath === "" || newPath === "/funding") {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
-    return NextResponse.redirect(new URL(newPath, req.url));
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   return NextResponse.next();
@@ -37,5 +32,5 @@ export default middleware;
 
 // 실행될 경로 설정
 export const config = {
-  matcher: ["/login", "/novel", "/community", "/user/:path*"],
+  matcher: ["/login", "/user/:path*"],
 };
