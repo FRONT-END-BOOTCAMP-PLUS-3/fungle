@@ -1,4 +1,5 @@
 export interface NovelEpisodeWithUserInfo {
+  episodeId: number;
   userId: string;
   userNickname: string;
   novelTitle: string;

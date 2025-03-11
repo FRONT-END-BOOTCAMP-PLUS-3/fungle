@@ -14,6 +14,7 @@ import { EPISODE_STATUS } from "@/constants/EPISODE_STATUS";
 import { useModalStore } from "@/store/useModalStore";
 import Button from "@/components/button/Button";
 import Modal from "@/components/modal/Modal";
+import RejectionButton from "./components/RejectionButton";
 
 interface EpisodeWithUserInfo extends NovelEpisodeWithUserInfo {
   statusLabel: string;
@@ -121,9 +122,7 @@ const Page = () => {
               </p>
             </div>
             <ButtonWrapper>
-              <Button buttonSize="big" backgroudColor="white" onClick={onClose}>
-                취소
-              </Button>
+              <RejectionButton episodeId={selectedEpisode.episodeId} />
               <Button buttonSize="big" backgroudColor="primary">
                 검토 완료
               </Button>

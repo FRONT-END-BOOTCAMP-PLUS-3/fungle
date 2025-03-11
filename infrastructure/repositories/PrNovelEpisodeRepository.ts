@@ -71,6 +71,7 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
     return await prisma.novelEpisode
       .findMany({
         select: {
+          id: true,
           title: true,
           status: true,
           content: true,
@@ -89,13 +90,12 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
           },
         },
         orderBy: {
-          novel: {
-            createdAt: "desc",
-          },
+          createdAt: "desc",
         },
       })
       .then((episodes) =>
         episodes.map((episode) => ({
+          episodeId: episode.id,
           userId: episode.novel.user.id,
           userNickname: episode.novel.user.nickname,
           novelTitle: episode.novel.title,
@@ -105,5 +105,9 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
           createdAt: episode.createdAt,
         }))
       );
+  }
+
+  async deleteEpisode(episodeId: number): Promise<void> {
+    await prisma.novelEpisode.delete({ where: { id: episodeId } });
   }
 }

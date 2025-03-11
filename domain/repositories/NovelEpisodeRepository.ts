@@ -16,4 +16,5 @@ export interface NovelEpisodeRepository {
   increaseViewCount(episodeId: number): Promise<void>;
   getTotalViewsByNovelId(novelId: number): Promise<number>;
   getNovelEpisodeWithUserInfo(): Promise<NovelEpisodeWithUserInfo[]>;
+  deleteEpisode(episodeId: number): Promise<void>;
 }
