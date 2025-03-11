@@ -69,7 +69,11 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
         profileImage: data.profileImage,
       },
     };
-  } catch (error) {
-    return { message: "서버 오류가 발생했습니다.", isLoggedIn: false };
+  } catch (error: unknown) {
+    return {
+      message: "서버 오류가 발생했습니다.",
+      error: error instanceof Error ? error.message : "알 수 없는 오류",
+      isLoggedIn: false,
+    };
   }
 };

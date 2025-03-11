@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { PostAndLikedListWrapper } from "./PostAndLikedListWrapper.styled";
+import {
+  ErrorMessage,
+  PostAndLikedListWrapper,
+} from "./PostAndLikedListWrapper.styled";
 import {
   PostBox,
   PostContent,
@@ -33,12 +36,23 @@ const LikedPostList = () => {
           method: "GET",
         });
 
-        if (!response.ok) throw new Error("게시글을 불러오는 데 실패했습니다.");
-
         const data = await response.json();
-        setPosts(data.likedPosts);
-      } catch (error) {
-        setError("게시글을 불러오는 중 오류가 발생했습니다.");
+
+        if (!response.ok) {
+          setError(data.error);
+        } else {
+          if (!data.likedPosts || data.likedPosts.length === 0) {
+            setError("좋아요를 누른 게시글이 없습니다.");
+          } else {
+            setPosts(data.likedPosts);
+          }
+        }
+      } catch (error: unknown) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "게시글을 불러오는 중 오류가 발생했습니다."
+        );
       }
     };
 
@@ -47,6 +61,7 @@ const LikedPostList = () => {
 
   return (
     <>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       {posts.map((post) => (
         <PostAndLikedListWrapper key={post.id}>
           <Link href={`/user/community/${post.id}`}>

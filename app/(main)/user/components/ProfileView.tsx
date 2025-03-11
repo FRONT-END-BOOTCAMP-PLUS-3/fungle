@@ -67,11 +67,10 @@ const ProfileView = () => {
       setIsEditing(false);
 
       return data.nickname;
-    } catch (error) {
+    } catch (error: unknown) {
       // 실패 시 null 반환
       if (error instanceof Error) {
         setNicknameError(error.message);
-        console.log(nicknameError);
         return null;
       } else {
         alert("알 수 없는 오류가 발생했습니다.");
@@ -144,12 +143,12 @@ const ProfileView = () => {
       setUser({ ...user, profileImage: data.profileImage });
 
       alert("프로필 이미지가 성공적으로 변경되었습니다!");
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert("알 수 없는 오류가 발생했습니다.");
-      }
+    } catch (error: unknown) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다."
+      );
     }
   };
 
@@ -168,7 +167,11 @@ const ProfileView = () => {
       useAuthStore.setState({ isLoggedIn: false });
       router.replace("/");
     } catch (error: unknown) {
-      alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+      alert(
+        error instanceof Error
+          ? error.message
+          : "서버 오류가 발생했습니다. 다시 시도해주세요."
+      );
     }
   };
 

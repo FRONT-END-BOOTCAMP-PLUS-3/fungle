@@ -5,15 +5,14 @@ import { UserRepository } from "@/domain/repositories/UserRepository";
 import { PrAuthRepository } from "@/infrastructure/repositories/PrAuthRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const cookieStore = await cookies();
-  let accessToken = cookieStore.get("accessToken")?.value;
+  const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
   if (!refreshToken) {
-    console.error(refreshToken);
     return NextResponse.json({ user: null }, { status: 401 });
   }
 

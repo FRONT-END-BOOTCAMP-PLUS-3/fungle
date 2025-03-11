@@ -10,8 +10,8 @@ export const PATCH = async (req: NextRequest) => {
     const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {
       return NextResponse.json(
-        { message: "사용자를 찾을 수 없습니다." },
-        { status: 400 }
+        { message: "로그인 되어 있지 않습니다." },
+        { status: 401 }
       );
     }
 
@@ -31,10 +31,14 @@ export const PATCH = async (req: NextRequest) => {
       { message: "프로필 사진이 성공적으로 수정되었습니다!" },
       { status: 200 }
     );
-  } catch (error) {
-    console.error("프로필 사진 수정 오류: ", error);
+  } catch (error: unknown) {
     return NextResponse.json(
-      { error: "서버에 오류가 발생했습니다." },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "서버에 오류가 발생했습니다.",
+      },
       { status: 500 }
     );
   }

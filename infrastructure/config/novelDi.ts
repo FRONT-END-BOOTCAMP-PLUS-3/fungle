@@ -3,7 +3,10 @@ import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository
 import { PrNovelGenreRepository } from "@/infrastructure/repositories/PrNovelGenreRepository";
 import { PrNovelLikeRepository } from "@/infrastructure/repositories/PrNovelLikeRepository";
 import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelEpisodeRepository";
-import { PrGenreRepository } from "../repositories/PrGenreRepository";
+import { PrGenreRepository } from "@/infrastructure/repositories/PrGenreRepository";
+import { PrNovelCommentRepository } from "@/infrastructure/repositories/PrNovelCommentRepository";
+import { PrNovelCommentLikeRepository } from "@/infrastructure/repositories/PrNovelCommentLikeRepository";
+
 import { DfNovelByIdUseCase } from "@/application/usecases/novel/DfNovelUsecase";
 import { DfEpisodesByNovelIdUsecase } from "@/application/usecases/novel/DfEpisodesByNovelIdUsecase";
 import { DfCreateNovelUsecase } from "@/application/usecases/novel/DfCreateNovelUsecase";
@@ -15,6 +18,13 @@ import { DfBannerNovelsUsecase } from "@/application/usecases/novel/DfBannerNove
 import { DfEpisodeByIdUsecase } from "@/application/usecases/novel/DfEpisodeByIdUsecase";
 import { DfTopNovelsUsecase } from "@/application/usecases/novel/DfTopNovelsUsecase";
 import { DfSearchNovelsUsecase } from "@/application/usecases/novel/DfSearchNovelsUsecase";
+
+import { DfNovelCommentCountUsecase } from "@/application/usecases/novel/comments/DfNovelCommentCountUsecase";
+import { DfNovelCommentCreateUsecase } from "@/application/usecases/novel/comments/DfNovelCommentCreateUsecase";
+import { DfNovelCommentDeleteUsecase } from "@/application/usecases/novel/comments/DfNovelCommentDeleteUsecase";
+import { DfNovelCommentUpdateUsecase } from "@/application/usecases/novel/comments/DfNovelCommentUpdateUsecase";
+import { DfNovelToggleCommentUsecase } from "@/application/usecases/novel/comments/DfNovelToggleCommentUsecase";
+import { DfgetNovelCommentUsecase } from "@/application/usecases/novel/comments/DfNovelgetCommentUsecase";
 
 export const novelDi = {
   novelRepository: new PrNovelRepository(),
@@ -75,4 +85,23 @@ export const novelDi = {
     new PrNovelGenreRepository(),
     new PrUserRepository()
   ),
+  getCommentsUsecase: new DfgetNovelCommentUsecase(  
+    new PrNovelCommentRepository()
+  ),
+  getCommentCountUsecase: new DfNovelCommentCountUsecase(
+    new PrNovelCommentRepository()
+  ),
+  createCommentUsecase: new DfNovelCommentCreateUsecase(
+    new PrNovelCommentRepository()
+  ),
+  updateCommentUsecase: new DfNovelCommentUpdateUsecase(
+    new PrNovelCommentRepository()
+  ),
+  deleteCommentUsecase: new DfNovelCommentDeleteUsecase(
+    new PrNovelCommentRepository()
+  ),
+  toggleCommentLikeUsecase: new DfNovelToggleCommentUsecase(
+    new PrNovelCommentLikeRepository()
+  ),
+
 };

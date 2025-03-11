@@ -13,12 +13,14 @@ import Button from "@/components/button/Button";
 import { NovelEpisodesByUserIdDto } from "@/application/usecases/novel/dto/NovelEpisodesByUserId";
 import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
 import StatusUpdateButton from "./StatusUpdateButton";
+import { ErrorMessage } from "./PostAndLikedListWrapper.styled";
 
 const ProfileNovelList = () => {
   const [isOpenMap, setIsOpenMap] = useState<{ [key: string]: boolean }>({});
   const [novels, setNovels] = useState<
     (NovelsByUserIdDto & { episodes: NovelEpisodesByUserIdDto[] })[]
   >([]);
+  const [error, setError] = useState<string>("");
 
   const episodeListRefs = useRef<{ [key: number]: HTMLUListElement | null }>(
     {}
@@ -26,21 +28,33 @@ const ProfileNovelList = () => {
 
   useEffect(() => {
     const fetchNovelData = async () => {
-      const response = await fetch("/api/user/novel", {
-        method: "GET",
-      });
+      try {
+        const response = await fetch("/api/user/novel", {
+          method: "GET",
+        });
 
-      const data = await response.json();
-      const formattedData = data.novels.map((novel: NovelsByUserIdDto) => ({
-        ...novel,
-        createdAt: new Date(novel.createdAt).toLocaleDateString("ko-KR", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        }),
-      }));
+        const data = await response.json();
 
-      setNovels(formattedData);
+        if (!response.ok) {
+          setError(data.error);
+        }
+        const formattedData = data.novels.map((novel: NovelsByUserIdDto) => ({
+          ...novel,
+          createdAt: new Date(novel.createdAt).toLocaleDateString("ko-KR", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+          }),
+        }));
+
+        setNovels(formattedData);
+      } catch (error: unknown) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "내가 작성한 소설 목록을 가져오는 중 오류가 발생했습니다."
+        );
+      }
     };
 
     fetchNovelData();
@@ -90,10 +104,10 @@ const ProfileNovelList = () => {
       setNovels((prevNovels) =>
         prevNovels.filter((novel) => novel.id !== novelId)
       );
-    } catch (error) {
-      if (error instanceof Error) {
-        alert("소설 삭제에 실패했습니다.");
-      }
+    } catch (error: unknown) {
+      alert(
+        error instanceof Error ? error.message : "소설 삭제에 실패했습니다."
+      );
     }
   };
 
@@ -119,16 +133,18 @@ const ProfileNovelList = () => {
       );
       return true;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert("연재 상태 변경에 실패했습니다.");
-        return false;
-      }
+      alert(
+        error instanceof Error
+          ? error.message
+          : "연재 상태 변경에 실패했습니다."
+      );
     }
     return false;
   };
 
   return (
     <div>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       {novels.map((novel) => (
         <div key={novel.id}>
           <ProfileNovelItem key={novel.id}>

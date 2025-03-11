@@ -32,8 +32,9 @@ export async function POST(req: NextRequest) {
 
     await verificationRepository.deleteVerificationCode(email);
     return NextResponse.json({ message: "인증 성공!" }, { status: 200 });
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: "서버 오류 발생" }, { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "서버 오류 발생";
+    return NextResponse.json({ message: errorMessage }, { status: 500 });
   }
 }

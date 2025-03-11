@@ -25,7 +25,6 @@ export class SendEmailUseCase implements ISendEmailUseCase {
     if (!email) throw new Error("이메일을 입력해야 합니다.");
 
     const verificationCode = this.generateVerificationCodeUseCase.execute();
-    console.log(`🔹 생성된 인증 코드: ${verificationCode}`);
 
     await this.verificationRepository.saveVerificationCode(
       email,

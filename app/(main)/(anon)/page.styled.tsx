@@ -8,7 +8,3 @@ export const Container = styled.div`
   gap: 5rem;
   height: 100vh;
 `;
-
-export const Logo = styled.img`
-  width: 8rem;
-`;

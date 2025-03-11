@@ -3,19 +3,37 @@ import { ProfileNovelItem } from "./ProfileNovelList.styled";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { LikedNovelDto } from "@/application/usecases/novel/dto/LikedNovel";
+import { ErrorMessage } from "./PostAndLikedListWrapper.styled";
 
 const LikedNovelList = () => {
   const [novels, setNovels] = useState<LikedNovelDto[]>([]);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const fetchNovelData = async () => {
-      const response = await fetch("/api/user/novel/liked", {
-        method: "GET",
-      });
+      try {
+        const response = await fetch("/api/user/novel/liked", {
+          method: "GET",
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      setNovels(data.novels);
+        if (!response.ok) {
+          setError(data.error);
+        } else {
+          if (!data.novels || data.novels.length === 0) {
+            setError("좋아요를 누른 소설이 없습니다.");
+          } else {
+            setNovels(data.novels);
+          }
+        }
+      } catch (error: unknown) {
+        setError(
+          error instanceof Error
+            ? error.message
+            : "좋아요 누른 소설 목록을 조회하는 중 오류가 발생했습니다."
+        );
+      }
     };
 
     fetchNovelData();
@@ -23,6 +41,7 @@ const LikedNovelList = () => {
 
   return (
     <div>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       {novels.map((novel) => (
         <div key={novel.id}>
           <ProfileNovelItem>

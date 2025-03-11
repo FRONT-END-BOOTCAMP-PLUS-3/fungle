@@ -63,9 +63,11 @@ const SearchBook = ({
       setSearchResults(data.novels);
       setIsSearching(true);
       setIsSearchingNow(true);
-    } catch (error) {
-      throw new Error("서버 에러");
-    }
+    } catch (error:unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to parse JSON response: ${error.message}`);
+      }
+    } 
   };
 
   const handleClearSearch = () => {
