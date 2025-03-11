@@ -19,12 +19,8 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { isLoggedIn, setUser, refreshAuth } = useAuthStore(); 
+  const { isLoggedIn, setUser } = useAuthStore(); 
   const [hoveredItem, setHoveredItem] = useState<string>("");
-
-  useEffect(() => {
-    refreshAuth();
-  }, []);
 
   if (!$isOpen) return null;
 
@@ -44,6 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
       }
 
       setUser(null); 
+      useAuthStore.setState({ isLoggedIn: false });
       router.push("/");
     } catch (error) {
       throw new Error("서버 에러 : 로그아웃 실패");
