@@ -3,7 +3,6 @@ import { styled } from "styled-components";
 export const AdminHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 500px;
   padding: 1rem 0;
 `;
 
