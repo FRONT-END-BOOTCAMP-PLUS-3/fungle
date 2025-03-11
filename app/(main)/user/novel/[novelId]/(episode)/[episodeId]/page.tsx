@@ -6,6 +6,7 @@ import { Main, EpisodeTitle, AuthorInfo, ProfileImage, AuthorDetails, AuthorMeta
 import NovelCompleted from "@/components/novelcompleted/NovelCompleted";
 import { NovelDto } from "@/application/usecases/novel/dto/Novel";
 import { NovelEpisodeDto } from "@/application/usecases/novel/dto/NovelEpisode";
+import NovelCommentHeader from "@/app/(main)/user/novel/component/comments/NovelCommentHeader";
 
 
 const Page = () => {
@@ -66,6 +67,8 @@ const Page = () => {
     fetchEpisode();
   }, [novelId, episodeId]);
 
+  console.log("📌 Page.tsx에서 episode 값:", episode);
+
   const formatDate = (isoString: string) => {
     return new Date(isoString).toLocaleDateString("ko-KR", {
       year: "numeric",
@@ -81,21 +84,6 @@ const Page = () => {
   if (!novel ) return <p>소설을 찾을 수 없습니다.</p>;
   if (!episode ) return <p>에피소드를 찾을 수 없습니다.</p>
 
-  // 댓글 BE 후 삭제 예정 (임시 데이터)
-  const post = {
-    id: 1,
-    title: `${episode.episode}화 ${episode.title}`,
-    status: "published",
-    genre: "romance",
-    author: "임시 작가",
-    content: episode.content,
-    time: episode.createdAt,
-    likes: 1700,
-    views: 120,
-    commentCount: 123,
-    createdAt: episode.createdAt,
-    postId : "1"
-  };
 
   return (
     <Main>
@@ -119,10 +107,7 @@ const Page = () => {
 
       {isCompleted && isLastEpisode && <NovelCompleted title={novel.title} />}
 
-      {/* <CommentCreate post={post} />
-      <CommentWrapper>
-         <Comment postId={post.postId} />
-      </CommentWrapper>  */}
+      <NovelCommentHeader episode = {episode}/>
     </Main>
   );
 };
