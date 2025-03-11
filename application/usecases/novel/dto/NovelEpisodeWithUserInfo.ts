@@ -4,5 +4,6 @@ export interface NovelEpisodeWithUserInfo {
   novelTitle: string;
   episodeTitle: string;
   episodeContent: string;
+  createdAt: Date;
   status: string;
 }

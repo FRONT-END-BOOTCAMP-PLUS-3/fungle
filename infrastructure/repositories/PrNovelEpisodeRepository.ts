@@ -74,6 +74,7 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
           title: true,
           status: true,
           content: true,
+          createdAt: true,
           novel: {
             select: {
               id: true,
@@ -101,6 +102,7 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
           episodeTitle: episode.title,
           episodeContent: episode.content,
           status: episode.status,
+          createdAt: episode.createdAt,
         }))
       );
   }
