@@ -5,7 +5,9 @@ export const GET = async () => {
   try {
     const banners = await novelDi.getBannerNovelsUsecase.execute();
     return NextResponse.json({ banners }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error: "서버 내부 오류" }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
   }
 };
