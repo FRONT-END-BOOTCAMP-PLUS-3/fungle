@@ -112,11 +112,25 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
   }
 
   async updateNovelEpisodeStatus(episodeId: number): Promise<void> {
-    await prisma.novelEpisode.update({
+    const episode = await prisma.novelEpisode.findUnique({
       where: { id: episodeId },
-      data: {
-        status: "approved",
-      },
+      select: { isFinalEpisode: true, novelId: true },
     });
+
+    if (!episode) {
+      throw new Error("에피소드를 찾지 못했습니다.");
+    }
+
+    if (episode.isFinalEpisode) {
+      await prisma.novel.update({
+        where: { id: episode.novelId },
+        data: { serialStatus: "completed" },
+      });
+
+      await prisma.novelEpisode.update({
+        where: { id: episodeId },
+        data: { status: "approved" },
+      });
+    }
   }
 }
