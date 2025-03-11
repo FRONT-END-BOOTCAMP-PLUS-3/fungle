@@ -2,12 +2,9 @@
 
 import { useEffect, useState } from "react";
 import {
-  AdminHeader,
-  AdminMain,
   ButtonWrapper,
   ModalContentWrapper,
   StatusText,
-  Table,
 } from "./AdminNovelPage.styled";
 import { NovelEpisodeWithUserInfo } from "@/application/usecases/novel/dto/NovelEpisodeWithUserInfo";
 import { EPISODE_STATUS } from "@/constants/EPISODE_STATUS";
@@ -18,6 +15,7 @@ import RejectionButton from "./components/RejectionButton";
 import { useAdminNovelStore } from "@/store/useAdminNovelStore";
 import { EpisodeWithUserInfo } from "@/application/usecases/novel/dto/EpisodeWithUserInfo";
 import ApproveButton from "./components/ApproveButton";
+import { AdminHeader, AdminMain, Table } from "../AdminPage.styled";
 
 const Page = () => {
   const { episodes, setEpisodes } = useAdminNovelStore();
