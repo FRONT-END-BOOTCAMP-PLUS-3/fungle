@@ -8,8 +8,8 @@ import {
   ReplyCommentAuthor,
   ReplyCommentCreated,
   ReplyCommentWrapper,
-  ReplyAuthor, 
-  Autor, 
+  ReplyAuthor,
+  Author,
   ReplyContainer,
 } from "@/components/comment/ReplyComment.styled";
 import { formatDate } from "@/utils/date/formatDate";
@@ -45,19 +45,20 @@ const NovelReplyComment = ({
   const [showTextarea, setShowTextarea] = useState<boolean>(false);
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [episodeAuthorId, setEpisodeAuthorId] = useState<string | null>(null); 
+  const [episodeAuthorId, setEpisodeAuthorId] = useState<string | null>(null);
 
   const { user } = useAuthStore();
   const userId = user?.id;
 
-
   useEffect(() => {
     const fetchEpisodeAuthor = async () => {
       try {
-        const response = await fetch(`/api/novel/${novelId}/${episodeId}/comments`);
+        const response = await fetch(
+          `/api/novel/${novelId}/${episodeId}/comments`
+        );
         const data = await response.json();
         setEpisodeAuthorId(data.episodeAuthorId);
-      } catch (error:unknown) {
+      } catch (error: unknown) {
         if (error instanceof Error) {
           throw new Error(`Failed to parse JSON response: ${error.message}`);
         }
@@ -65,7 +66,7 @@ const NovelReplyComment = ({
     };
 
     fetchEpisodeAuthor();
-  }, [episodeId , novelId]);
+  }, [episodeId, novelId]);
 
   const handleConfirmDelete = async (replyId: number) => {
     if (!confirm("정말 삭제하시겠습니까?")) {
@@ -73,9 +74,12 @@ const NovelReplyComment = ({
     }
 
     try {
-      const response = await fetch(`/api/novel/${novelId}/${episodeId}/comments/${replyId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `/api/novel/${novelId}/${episodeId}/comments/${replyId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("댓글 삭제에 실패했습니다.");
@@ -119,8 +123,8 @@ const NovelReplyComment = ({
                     commentContent={reply.comment}
                     commentId={reply.id}
                     onCancel={handleCancelEdit}
-                    novelId={novelId}       
-                    episodeId={episodeId} 
+                    novelId={novelId}
+                    episodeId={episodeId}
                   />
                 ) : (
                   <div style={{ width: "100%" }}>
@@ -137,9 +141,9 @@ const NovelReplyComment = ({
                         <div style={{ lineHeight: "1.5" }}>
                           <ReplyCommentAuthor>
                             <p>{reply.userNickname}</p>
-                            {reply.userId === episodeAuthorId && ( 
+                            {reply.userId === episodeAuthorId && (
                               <ReplyAuthor>
-                                <Autor>작가</Autor>
+                                <Author>작가</Author>
                               </ReplyAuthor>
                             )}
                           </ReplyCommentAuthor>

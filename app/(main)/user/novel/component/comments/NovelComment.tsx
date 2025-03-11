@@ -10,7 +10,7 @@ import {
   CommunityPostCommentWrapper as NovelPostCommentWrapper,
   CommunityPostCommentInfo as NovelPostCommentInfo,
   CommunityPostCommentProfile as NovelPostCommentProfile,
-  CommunityPostCommentAutor as NovelPostCommentAutor,
+  CommunityPostCommentAuthor as NovelPostCommentAuthor,
   CommunityPostCommentCreated as NovelPostCommentCreated,
   CommunityPostCommentInfoBox as NovelPostCommentInfoBox,
   CommunityCommentBox as NovelCommentBox,
@@ -49,42 +49,45 @@ const NovelComment = ({
   const { user } = useAuthStore();
   const userId = user?.id;
 
-
   useEffect(() => {
-    
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/api/novel/${novelId}/${episodeId}/comments`);
+        const response = await fetch(
+          `/api/novel/${novelId}/${episodeId}/comments`
+        );
         if (!response.ok) throw new Error("댓글을 불러오는 데 실패했습니다.");
-  
+
         const data = await response.json();
-  
+
         if (!data.comments || !Array.isArray(data.comments)) {
           throw new Error("서버 응답이 올바르지 않습니다. 예상: 배열");
         }
-  
+
         setComments(data.comments);
-        setLoading(false); 
+        setLoading(false);
       } catch (error) {
-        setError(error instanceof Error ? error.message : "알 수 없는 오류 발생");
-        setLoading(false); 
+        setError(
+          error instanceof Error ? error.message : "알 수 없는 오류 발생"
+        );
+        setLoading(false);
       }
     };
-  
+
     fetchComments();
   }, [novelId, episodeId, trigger]);
-   
-  
-  
+
   const handleConfirmDelete = async (commentId: number) => {
     if (!confirm("정말 삭제하시겠습니까?")) {
       return;
     }
 
     try {
-      const response = await fetch(`/api/novel/${novelId}/${episodeId}/comments/${commentId}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `/api/novel/${novelId}/${episodeId}/comments/${commentId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("댓글 삭제에 실패했습니다.");
@@ -93,16 +96,23 @@ const NovelComment = ({
       setTrigger((prev) => !prev);
       alert("댓글이 삭제되었습니다.");
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "알 수 없는 에러가 발생했습니다.");
+      setError(
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 에러가 발생했습니다."
+      );
     }
   };
 
   const handleLike = async (commentId: number) => {
     try {
-      const response = await fetch(`/api/novel/${novelId}/${episodeId}/comments/${commentId}/like`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(
+        `/api/novel/${novelId}/${episodeId}/comments/${commentId}/like`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("좋아요 누르기에 실패했습니다.");
@@ -118,7 +128,11 @@ const NovelComment = ({
 
       setTrigger((prev) => !prev);
     } catch (error: unknown) {
-      alert(error instanceof Error ? error.message : "좋아요 처리 중 오류가 발생했습니다.");
+      alert(
+        error instanceof Error
+          ? error.message
+          : "좋아요 처리 중 오류가 발생했습니다."
+      );
     }
   };
 
@@ -140,8 +154,8 @@ const NovelComment = ({
                   commentContent={comment.comment}
                   commentId={comment.id}
                   onCancel={() => setEditingCommentId(null)}
-                  novelId={novelId}       
-                  episodeId={episodeId} 
+                  novelId={novelId}
+                  episodeId={episodeId}
                 />
               ) : (
                 <>
@@ -156,8 +170,12 @@ const NovelComment = ({
                         />
                       </NovelPostCommentProfile>
                       <div style={{ lineHeight: "1.5" }}>
-                        <NovelPostCommentAutor>{comment.userNickname}</NovelPostCommentAutor>
-                        <NovelPostCommentCreated>{createdAtFormatted}</NovelPostCommentCreated>
+                        <NovelPostCommentAuthor>
+                          {comment.userNickname}
+                        </NovelPostCommentAuthor>
+                        <NovelPostCommentCreated>
+                          {createdAtFormatted}
+                        </NovelPostCommentCreated>
                       </div>
                     </NovelPostCommentInfoBox>
 
@@ -176,7 +194,11 @@ const NovelComment = ({
                     <NovelCommentBox>
                       <NovelLikeButton onClick={() => handleLike(comment.id)}>
                         <Image
-                          src={comment.isLiked ? "/icon/heart_filled.svg" : "/icon/heart.svg"}
+                          src={
+                            comment.isLiked
+                              ? "/icon/heart_filled.svg"
+                              : "/icon/heart.svg"
+                          }
                           alt="좋아요 버튼"
                           width={20}
                           height={20}
@@ -186,11 +208,17 @@ const NovelComment = ({
                     </NovelCommentBox>
                     <NovelReplyButton
                       onClick={() => {
-                        setOpenReplyBox((prev) => (prev === comment.id ? null : comment.id));
+                        setOpenReplyBox((prev) =>
+                          prev === comment.id ? null : comment.id
+                        );
                       }}
                     >
                       <Image
-                        src={openReplyBox === comment.id ? "/icon/top_arrow.svg" : "/icon/dropdown_arrow.svg"}
+                        src={
+                          openReplyBox === comment.id
+                            ? "/icon/top_arrow.svg"
+                            : "/icon/dropdown_arrow.svg"
+                        }
                         alt="답글 화살표"
                         width={15}
                         height={15}
@@ -201,7 +229,9 @@ const NovelComment = ({
 
                   {openReplyBox === comment.id && (
                     <ReplyComment
-                      replies={comments.filter((reply) => reply.parentId === comment.id)}
+                      replies={comments.filter(
+                        (reply) => reply.parentId === comment.id
+                      )}
                       parentId={comment.id}
                       episodeId={episodeId}
                       setTrigger={setTrigger}

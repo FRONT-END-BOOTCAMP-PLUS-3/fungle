@@ -53,7 +53,7 @@ export const CommunityPostCommentEditButton = styled.button`
   padding: 0.625rem;
 `;
 
-export const CommunityPostCommentAutor = styled.p`
+export const CommunityPostCommentAuthor = styled.p`
   font-size: 0.875rem;
 `;
 export const CommunityPostCommentCreated = styled.p`
