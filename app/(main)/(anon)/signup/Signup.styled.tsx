@@ -2,11 +2,19 @@ import styled from "styled-components";
 
 export const SignupContainer = styled.div`
   max-width: 100%;
+  min-height: 100vh;
   padding: 2rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: auto;
+  gap: 1.6rem;
 `;
 
 export const LogoWrapper = styled.div`
-  margin-bottom: 1.1rem;
+  align-self: flex-start; /* 왼쪽 정렬 */
 `;
 
 export const SignupForm = styled.form`
@@ -14,31 +22,27 @@ export const SignupForm = styled.form`
   flex-direction: column;
   width: 100%;
   max-width: 100%;
+  gap: 1.6rem;
 `;
 
-export const Label = styled.label`
-  margin-bottom: 0.2rem;
-`;
+export const Label = styled.label``;
 
 export const InputGroupWrapper = styled.div`
   width: 100%;
-  margin-bottom: 1.6rem;
 `;
 
 export const InputWrapper = styled.div`
   width: 100%;
   max-width: 100%;
-  margin-bottom: 1.6rem;
 `;
 
 export const InputGroup = styled.div`
   display: flex;
-  align-items: center;
+  align-items: end;
   width: 100%;
   max-width: 100%;
-  gap: 0.5rem; /* 버튼과 인풋 간격 조정 */
-  flex-wrap: nowrap; /* 줄바꿈 방지 */
-  align-items: end;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
 `;
 
 export const ButtonWrapper = styled.div`
@@ -49,7 +53,6 @@ export const ButtonWrapper = styled.div`
 export const ErrorMessage = styled.p`
   font-size: 0.875rem;
   color: var(--error-color);
-  margin-top: 0.25rem;
-  max-width: 100%;
   word-wrap: break-word;
+  max-width: 100%;
 `;
