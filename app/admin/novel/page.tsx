@@ -49,7 +49,7 @@ const Page = () => {
     };
 
     fetchData();
-  }, []);
+  }, [setEpisodes]);
 
   const handleReviewButtonClick = (ep: EpisodeWithUserInfo) => {
     setSelectedEpisode(ep);
