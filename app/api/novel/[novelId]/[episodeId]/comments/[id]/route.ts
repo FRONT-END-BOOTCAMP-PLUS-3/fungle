@@ -1,18 +1,23 @@
 import { novelDi } from "@/infrastructure/config/novelDi";
-import { userDi } from "@/infrastructure/config/userDi"; 
+import { userDi } from "@/infrastructure/config/userDi";
+import { getParamsFromRequest } from "@/utils/params/requestParams";
 import { NextRequest, NextResponse } from "next/server";
 
+export const PATCH = async (request: NextRequest) => {
+  const { id } = getParamsFromRequest(request, ["id"]);
 
-export const PATCH = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  const { id } = await params;
+  if (!id) {
+    return NextResponse.json(
+      { error: "요청에 id를 포함해야 합니다." },
+      { status: 400 }
+    );
+  }
+
   const body = await request.json();
   const { comment } = body;
 
   try {
-    const userId = await userDi.getUserIdUsecase.execute(); 
+    const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {
       return NextResponse.json(
         { error: "유효하지 않은 사용자" },
@@ -20,7 +25,11 @@ export const PATCH = async (
       );
     }
 
-    const result = await novelDi.updateCommentUsecase.execute(id, userId, comment);
+    const result = await novelDi.updateCommentUsecase.execute(
+      id,
+      userId,
+      comment
+    );
 
     return NextResponse.json({ result });
   } catch (error: unknown) {
@@ -34,14 +43,18 @@ export const PATCH = async (
   }
 };
 
-export const DELETE = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  const { id } = await params;
+export const DELETE = async (request: NextRequest) => {
+  const { id } = getParamsFromRequest(request, ["id"]);
+
+  if (!id) {
+    return NextResponse.json(
+      { error: "요청에 id를 포함해야 합니다." },
+      { status: 400 }
+    );
+  }
 
   try {
-    const userId = await userDi.getUserIdUsecase.execute(); 
+    const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {
       return NextResponse.json(
         { error: "유효하지 않은 사용자" },

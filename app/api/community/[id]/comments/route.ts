@@ -1,14 +1,19 @@
 import { DfPostDetailCommentUsecase } from "@/application/usecases/community/DfPostDetailCommentUsecase";
 import { userDi } from "@/infrastructure/config/userDi";
 import { PrCommunityCommentRepository } from "@/infrastructure/repositories/PrCommunityCommentRepository";
+import { getParamsFromRequest } from "@/utils/params/requestParams";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (
-  requets: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  const { id } = await params;
-  if (!id) return "ID가 없습니다.";
+export const GET = async (request: NextRequest) => {
+  const { id } = getParamsFromRequest(request, ["id"]);
+
+  if (!id) {
+    return NextResponse.json(
+      { error: "요청에 id를 포함해야 합니다." },
+      { status: 400 }
+    );
+  }
+
   try {
     const commentPostRepository = new PrCommunityCommentRepository();
     const postCommentUsecase = new DfPostDetailCommentUsecase(

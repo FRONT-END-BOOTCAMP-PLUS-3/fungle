@@ -1,15 +1,20 @@
 import { DfPostUpdateUsecase } from "@/application/usecases/community/DfPostUpdateUsecase";
 import { userDi } from "@/infrastructure/config/userDi";
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
+import { getParamsFromRequest } from "@/utils/params/requestParams";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PUT = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
+export const PUT = async (request: NextRequest) => {
   try {
-    const { id } = await params;
+    const { id } = getParamsFromRequest(request, ["id"]);
     const body = await request.json();
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "요청에 id를 포함해야 합니다." },
+        { status: 400 }
+      );
+    }
 
     const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {

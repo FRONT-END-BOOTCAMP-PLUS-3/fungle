@@ -2,13 +2,12 @@ import { DfDeleteNovelEpisodeUsecase } from "@/application/usecases/novel/DfDele
 import { DfUpdateNovelEpisodeStatusUsecase } from "@/application/usecases/novel/DfUpdateNovelEpisodeStatusUsecase";
 import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
 import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelEpisodeRepository";
+import { getParamsFromRequest } from "@/utils/params/requestParams";
 import { NextRequest, NextResponse } from "next/server";
 
-export const DELETE = async (
-  request: NextRequest,
-  { params }: { params: { episodeId: string } }
-) => {
-  const { episodeId } = await params;
+export const DELETE = async (request: NextRequest) => {
+  const { episodeId } = getParamsFromRequest(request, ["episodeId"]);
+
   if (!episodeId) {
     return NextResponse.json(
       { success: false, error: "유효하지 않은 episodeId입니다." },
@@ -35,11 +34,9 @@ export const DELETE = async (
   }
 };
 
-export const PATCH = async (
-  request: NextRequest,
-  { params }: { params: { episodeId: string } }
-) => {
-  const { episodeId } = await params;
+export const PATCH = async (request: NextRequest) => {
+  const { episodeId } = getParamsFromRequest(request, ["episodeId"]);
+
   if (!episodeId) {
     return NextResponse.json(
       { success: false, error: "유효하지 않은 episodeId입니다." },

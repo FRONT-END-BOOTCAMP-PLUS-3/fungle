@@ -7,10 +7,7 @@ export class DfVerifyAccessTokenUsecase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(token: string): Promise<{
-    verifiedUser: Omit<
-      User,
-      "userEmail" | "password" | "createdAt" | "type"
-    > | null;
+    verifiedUser: Omit<User, "userEmail" | "password" | "createdAt"> | null;
     decodedAccessToken: DecodedAccessToken | null;
   } | null> {
     try {
