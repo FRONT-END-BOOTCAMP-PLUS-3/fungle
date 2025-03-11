@@ -14,7 +14,7 @@ export const SignupContainer = styled.div`
 `;
 
 export const LogoWrapper = styled.div`
-  align-self: flex-start; /* 왼쪽 정렬 */
+  align-self: flex-start;
 `;
 
 export const SignupForm = styled.form`
