@@ -1,28 +1,79 @@
 import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 const middleware = (req: NextRequest) => {
-  const authRoutes: Record<string, string> = {
-    "/login": "/user/novel",
-    "/novel": "/user/novel",
-    "/community": "/user/community",
-  };
   const publicRoutes = ["/signup"];
   const currentPath = req.nextUrl.pathname;
 
   const accessToken = req.cookies.get("accessToken")?.value;
 
-  // publicRoute에서는 다음 동작으로 넘어감
+  let verifiedUser: { type: string } | null = null;
+
+  if (accessToken) {
+    try {
+      const decoded = jwt.decode(accessToken) as {
+        type: string;
+      } | null;
+
+      if (!decoded || !decoded.type) {
+        throw new Error("Failed to decode token");
+      }
+
+      verifiedUser = { type: decoded.type };
+    } catch (error: unknown) {
+      if (currentPath !== "/login") {
+        const returnUrl = req.nextUrl.href;
+        const response = NextResponse.redirect(new URL("/login", req.url));
+        response.cookies.set("returnUrl", returnUrl);
+        response.cookies.set("alertMessage", "로그인이 필요합니다.", {
+          path: "/",
+          maxAge: 5,
+        });
+
+        return response;
+      }
+    }
+  } else {
+    if (currentPath !== "/login") {
+      const returnUrl = req.nextUrl.href;
+      const response = NextResponse.redirect(new URL("/login", req.url));
+      response.cookies.set("returnUrl", returnUrl);
+      response.cookies.set("alertMessage", "로그인이 필요합니다.", {
+        path: "/",
+        maxAge: 5,
+      });
+
+      return response;
+    }
+  }
+
+  if (accessToken && currentPath === "/login") {
+    return NextResponse.redirect(new URL("/user/novel", req.url));
+  }
+
   if (publicRoutes.includes(currentPath)) {
     return NextResponse.next();
   }
 
-  // 사용자가 로그인된 상태면 `/login` 페이지에서 `/user/novel`으로 리다이렉트
-  if (accessToken && authRoutes[currentPath]) {
-    return NextResponse.redirect(new URL(authRoutes[currentPath], req.url));
+  if (
+    !accessToken &&
+    (currentPath.startsWith("/user") || currentPath.startsWith("/admin"))
+  ) {
+    if (currentPath !== "login") {
+      const returnUrl = req.nextUrl.href;
+      const response = NextResponse.redirect(new URL("/login", req.url));
+      response.cookies.set("returnUrl", returnUrl);
+      response.cookies.set("alertMessage", "로그인이 필요합니다.", {
+        path: "/",
+        maxAge: 5,
+      });
+
+      return response;
+    }
   }
 
-  if (!accessToken && currentPath.startsWith("/user")) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (verifiedUser?.type === "user" && currentPath.startsWith("/admin")) {
+    return NextResponse.redirect(new URL("/403", req.url));
   }
 
   return NextResponse.next();
@@ -30,7 +81,6 @@ const middleware = (req: NextRequest) => {
 
 export default middleware;
 
-// 실행될 경로 설정
 export const config = {
-  matcher: ["/login", "/user/:path*"],
+  matcher: ["/login", "/user/:path*", "/admin/:path*"],
 };

@@ -16,7 +16,7 @@ import { loginProc } from "./actions/loginProc";
 import useAuthStore from "@/store/useAuthStore";
 import Image from "next/image";
 
-const initialState = { message: null, isLoggedIn: false };
+const initialState = { message: null, isLoggedIn: false, redirectUrl: "" };
 
 const Page = () => {
   const router = useRouter();
@@ -29,9 +29,25 @@ const Page = () => {
         const user = state.user;
         setUser(user);
       }
-      router.push("/user/novel");
+      const redirectTo = state.redirectUrl || "/user/novel";
+      router.push(redirectTo);
+
+      state.redirectUrl = "";
     }
-  }, [state.isLoggedIn, state.user, setUser, router]);
+  }, [state, state.isLoggedIn, state.user, setUser, router]);
+
+  useEffect(() => {
+    const alertMessage = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("alertMessage="))
+      ?.split("=")[1];
+
+    if (alertMessage) {
+      setTimeout(() => {
+        alert(decodeURIComponent(alertMessage));
+      }, 100);
+    }
+  }, []);
 
   return (
     <LoginContainer>

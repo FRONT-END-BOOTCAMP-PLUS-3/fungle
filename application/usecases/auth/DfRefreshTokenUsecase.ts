@@ -34,7 +34,7 @@ export class DfRefreshTokenUsecase implements IRefreshTokenUsecase {
     }
 
     // 새로운 access token 발급
-    const newAccessToken = generateAccessToken(decoded.userId);
+    const newAccessToken = generateAccessToken(decoded.userId, decoded.type);
     // 새로운 refresh token 발급
     const newRefreshToken = generateRefreshToken(decoded.userId);
 

@@ -4,9 +4,10 @@ import { generateAccessToken, generateRefreshToken } from "@/utils/auth/jwt";
 
 export class PrAuthRepository implements AuthRepository {
   async generateTokens(
-    userId: string
+    userId: string,
+    type: string
   ): Promise<{ accessToken: string; refreshToken: string }> {
-    const accessToken = generateAccessToken(userId);
+    const accessToken = generateAccessToken(userId, type);
     const refreshToken = generateRefreshToken(userId);
 
     await prisma.refreshToken.upsert({
