@@ -131,6 +131,11 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
         where: { id: episodeId },
         data: { status: "approved" },
       });
+    } else {
+      await prisma.novelEpisode.update({
+        where: { id: episodeId },
+        data: { status: "approved" },
+      });
     }
   }
 }
