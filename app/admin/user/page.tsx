@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AdminHeader, AdminMain, Table } from "../AdminPage.styled";
+import {
+  AdminHeader,
+  AdminMain,
+  Table,
+  TableWrapper,
+} from "../AdminPage.styled";
 import { FindAllUserDto } from "@/application/usecases/user/dto/FindAllUser";
 import Image from "next/image";
 
@@ -36,43 +41,45 @@ const Page = () => {
       <AdminHeader>
         <h1>회원 관리</h1>
       </AdminHeader>
-      <Table>
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>이메일</th>
-            <th>닉네임</th>
-            <th>회원 유형</th>
-            <th>소개</th>
-            <th>프로필 사진</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.length > 0 ? (
-            users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.userEmail}</td>
-                <td>{user.nickname}</td>
-                <td>{user.type}</td>
-                <td>{user.introduce || "소개가 등록되지 않았습니다."}</td>
-                <td>
-                  <Image
-                    src={user.profileImage || "/image/profile.svg"}
-                    alt={`${user.nickname} 프로필 사진`}
-                    width={100}
-                    height={100}
-                  />
-                </td>
-              </tr>
-            ))
-          ) : (
+      <TableWrapper>
+        <Table>
+          <thead>
             <tr>
-              <td colSpan={6}>{error}</td>
+              <th>id</th>
+              <th>이메일</th>
+              <th>닉네임</th>
+              <th>회원 유형</th>
+              <th>소개</th>
+              <th>프로필 사진</th>
             </tr>
-          )}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {users.length > 0 ? (
+              users.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.userEmail}</td>
+                  <td>{user.nickname}</td>
+                  <td>{user.type}</td>
+                  <td>{user.introduce || "소개가 등록되지 않았습니다."}</td>
+                  <td>
+                    <Image
+                      src={user.profileImage || "/image/profile.svg"}
+                      alt={`${user.nickname} 프로필 사진`}
+                      width={100}
+                      height={100}
+                    />
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6}>{error}</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </TableWrapper>
     </AdminMain>
   );
 };

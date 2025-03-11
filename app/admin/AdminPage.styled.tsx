@@ -10,11 +10,15 @@ export const AdminMain = styled.main`
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  flex-grow: 1;
+  overflow: auto;
+  min-width: 0;
 `;
 
 export const TableWrapper = styled.div`
-  width: 100%;
-  overflow-x: scroll;
+  width: fit-content;
+  min-width: 100%;
+  overflow-x: auto;
 `;
 
 export const Table = styled.table`

@@ -227,6 +227,6 @@ td {
   display: flex;
   flex-direction: row;
   min-width: 100vw;
-  width: fit-content;
+  overflow: hidden;
   background-color: var(--white-color);
 }
