@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Main, EpisodeTitle, AuthorInfo, ProfileImage, AuthorDetails, AuthorMeta, CommentWrapper, Content } from "./EpisodePage.styled";
+import { Main, EpisodeTitle, AuthorInfo, ProfileImage, AuthorDetails, AuthorMeta, Content } from "./EpisodePage.styled";
 import NovelCompleted from "@/components/novelcompleted/NovelCompleted";
 import { NovelDto } from "@/application/usecases/novel/dto/Novel";
 import { NovelEpisodeDto } from "@/application/usecases/novel/dto/NovelEpisode";
@@ -35,8 +35,10 @@ const Page = () => {
         let data;
         try {
           data = JSON.parse(textResponse); 
-        } catch (parseError) {
-          throw new Error("Failed to parse JSON response");
+        } catch (error:unknown) {
+          if (error instanceof Error) {
+            throw new Error(`Failed to parse JSON response: ${error.message}`);
+          }
         }
     
         if (!response.ok) {
@@ -45,20 +47,15 @@ const Page = () => {
     
         if (!data || !data.episode) {
           throw new Error("Missing episode data in response");
-        }
-
-        console.log("data.isCompleted : ", data.isCompleted);
-        console.log("isLastEpisode:", data.isLastEpisode);
-
-
-    
+        }   
         setNovel(data.novel);
         setEpisode(data.episode);
         setIsLastEpisode(data.isLastEpisode);
         setIsCompleted(data.isCompleted);
-      } catch (error) {
-        console.error("Error fetching episode:", error);
-        setError("에피소드를 불러오는 중 오류가 발생했습니다.");
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to parse JSON response: ${error.message}`);
+        }
       } finally {
         setLoading(false);
       }

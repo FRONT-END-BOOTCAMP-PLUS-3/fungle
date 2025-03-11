@@ -57,13 +57,15 @@ const NovelReplyComment = ({
         const response = await fetch(`/api/novel/${novelId}/${episodeId}/comments`);
         const data = await response.json();
         setEpisodeAuthorId(data.episodeAuthorId);
-      } catch (error) {
-        console.error("에피소드 작성자 정보를 가져오는 데 실패했습니다.");
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to parse JSON response: ${error.message}`);
+        }
       }
     };
 
     fetchEpisodeAuthor();
-  }, [episodeId]);
+  }, [episodeId , novelId]);
 
   const handleConfirmDelete = async (replyId: number) => {
     if (!confirm("정말 삭제하시겠습니까?")) {

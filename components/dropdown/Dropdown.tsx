@@ -20,14 +20,15 @@ interface DropdownProps {
   size?: "default" | "small";
 }
 
-const Dropdown = ({
-  options,
-  onSelect,
-  selected,
-  size = "default",
-}: DropdownProps) => {
+const Dropdown = ({ options, onSelect, selected, size = "default" }: DropdownProps) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // ✅ `open` 상태 추가
+
+  // ✅ open 값이 변경될 때 상태 업데이트
+  useEffect(() => {
+    setIsOpen(menuOpen);
+  }, [menuOpen]);
 
   useEffect(() => {
     if (isOpen && menuRef.current) {
@@ -35,15 +36,16 @@ const Dropdown = ({
         menuRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 100);
     }
-  }, [isOpen]); 
+  }, [isOpen]);
 
   return (
     <DropdownWrapper size={size}>
       <Menu>
         {({ open }) => {
-          useEffect(() => {
-            setIsOpen(open);
-          }, [open]);
+          // ✅ 렌더링 중 상태 업데이트 방지를 위해 useEffect를 사용하지 않고, 직접 상태 변경
+          if (menuOpen !== open) {
+            setTimeout(() => setMenuOpen(open), 0); // ✅ setTimeout으로 비동기 처리
+          }
 
           const selectedLabel = Array.isArray(selected)
             ? selected

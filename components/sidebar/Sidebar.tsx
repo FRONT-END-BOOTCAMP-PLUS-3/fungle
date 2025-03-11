@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -42,8 +42,10 @@ const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
       setUser(null); 
       useAuthStore.setState({ isLoggedIn: false });
       router.push("/");
-    } catch (error) {
-      throw new Error("서버 에러 : 로그아웃 실패");
+    } catch (error:unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to parse JSON response: ${error.message}`);
+      }
     }
   };
 
