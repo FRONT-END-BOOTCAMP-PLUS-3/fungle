@@ -20,12 +20,7 @@ interface DropdownProps {
   size?: "default" | "small";
 }
 
-const Dropdown = ({
-  options,
-  onSelect,
-  selected,
-  size = "default",
-}: DropdownProps) => {
+const Dropdown = ({ options, onSelect, selected, size = "default" }: DropdownProps) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,7 +30,7 @@ const Dropdown = ({
         menuRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 100);
     }
-  }, [isOpen]); 
+  }, [isOpen]);
 
   return (
     <DropdownWrapper size={size}>
@@ -43,7 +38,7 @@ const Dropdown = ({
         {({ open }) => {
           useEffect(() => {
             setIsOpen(open);
-          }, [open]);
+          }, [open]); 
 
           const selectedLabel = Array.isArray(selected)
             ? selected

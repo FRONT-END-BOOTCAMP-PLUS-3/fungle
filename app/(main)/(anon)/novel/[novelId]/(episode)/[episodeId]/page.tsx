@@ -37,21 +37,6 @@ const Page = async ({
   const isLastEpisode = episodeId === lastEpisodeId;
   const isCompleted = novel.serialStatus === "완결";
 
-  // 댓글 BE 후 삭제 예정
-  const post = {
-    id: 1,
-    title: "1. 강지한은.... 나쁜 남자니까....",
-    status: "published",
-    genre: "romance",
-    author: "최강두산v7",
-    content: "소설 내용...",
-    time: "2025-02-17",
-    likes: 1700,
-    views: 120,
-    commentCount: 123,
-    createdAt: "2025-02-17",
-  };
-
   return (
     <Main>
       <EpisodeTitle>

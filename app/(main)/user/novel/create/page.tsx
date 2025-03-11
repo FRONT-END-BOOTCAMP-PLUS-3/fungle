@@ -45,8 +45,10 @@ const Page = () => {
           alert("현재 연재 중인 소설이 있습니다. 기존 연재 페이지로 이동합니다.");
           router.push(`/user/novel/serialize/${ongoingNovel.id}`);
         }
-      } catch (error) {
-        throw new Error("서버 에러");
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to parse JSON response: ${error.message}`);
+        }
       }
     };
   
@@ -110,8 +112,10 @@ const Page = () => {
 
       alert("소설 생성이 완료되었습니다! 1화 연재로 넘어갑니다.");
       router.push(`/user/novel/serialize/${novelId}`);
-    } catch (error) {
-      throw new Error("서버 에러");
+    } catch (error:unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to parse JSON response: ${error.message}`);
+      }
     }
   };
 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi";
 
-export const GET = async (req: NextRequest) => {
+export const GET = async (_req: NextRequest) => {
   try {
     const topNovels = await novelDi.getTopNovelsUseCase.execute(10);
 

@@ -3,7 +3,7 @@
 import Input from "@/components/input/Input";
 import Textarea from "@/components/textarea/Textarea";
 import Button from "@/components/button/Button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useModalStore } from "@/store/useModalStore";
 import useAuthStore from "@/store/useAuthStore";
@@ -31,7 +31,6 @@ const Page = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [episodeNumber, setEpisodeNumber] = useState<number | null>(null);
   const [isFinalEpisode, setIsFinalEpisode] = useState(false);
-  const [serialStatus, setSerialStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,42 +42,50 @@ const Page = () => {
     }
   }, [openModal, novelId]);
 
-  const fetchNovelStatus = async () => {
+  const fetchNovelStatus = useCallback(async () => {
     try {
       const response = await fetch(`/api/novel/${novelId}`);
       if (!response.ok) throw new Error("소설 정보를 불러올 수 없습니다.");
-
+  
       const data = await response.json();
-      setSerialStatus(data.serialStatus);
-
+  
       if (data.serialStatus === "completed") {
         alert("이 소설은 이미 완결되었습니다. 연재할 수 없습니다.");
         router.push("/user/novel");
       }
-    } catch (error) {
-      console.error("소설 상태 조회 오류:", error);
-    } finally {
+    } catch (error:unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to parse JSON response: ${error.message}`);
+      }
+    }finally {
       setLoading(false);
     }
-  };
-
-  const fetchEpisodeNumber = async () => {
+  }, [novelId, router]);
+  
+  const fetchEpisodeNumber = useCallback(async () => {
     try {
       const response = await fetch(`/api/novel/${novelId}/episode`);
-      if (!response.ok)
-        throw new Error("에피소드 정보를 불러오는 중 오류가 발생했습니다.");
-
+      if (!response.ok) throw new Error("에피소드 정보를 불러오는 중 오류가 발생했습니다.");
+  
       const data = await response.json();
-      const lastEpisode =
-        data.episodes.length > 0
-          ? data.episodes[data.episodes.length - 1]
-          : null;
+      const lastEpisode = data.episodes.length > 0 ? data.episodes[data.episodes.length - 1] : null;
       setEpisodeNumber(lastEpisode ? lastEpisode.episode + 1 : 1);
     } catch (error) {
-      console.error("Error fetching episode number:", error);
+      if (error instanceof Error) {
+        throw new Error(`Failed to parse JSON response: ${error.message}`);
+      }
       setEpisodeNumber(1);
     }
-  };
+  }, [novelId]);
+  
+  useEffect(() => {
+    openModal();
+  
+    if (!isNaN(novelId)) {
+      fetchNovelStatus();
+      fetchEpisodeNumber();
+    }
+  }, [openModal, novelId, fetchNovelStatus, fetchEpisodeNumber]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
