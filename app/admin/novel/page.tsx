@@ -15,7 +15,12 @@ import RejectionButton from "./components/RejectionButton";
 import { useAdminNovelStore } from "@/store/useAdminNovelStore";
 import { EpisodeWithUserInfo } from "@/application/usecases/novel/dto/EpisodeWithUserInfo";
 import ApproveButton from "./components/ApproveButton";
-import { AdminHeader, AdminMain, Table } from "../AdminPage.styled";
+import {
+  AdminHeader,
+  AdminMain,
+  Table,
+  TableWrapper,
+} from "../AdminPage.styled";
 
 const Page = () => {
   const { episodes, setEpisodes } = useAdminNovelStore();
@@ -62,47 +67,49 @@ const Page = () => {
         <h1>소설 검토</h1>
       </AdminHeader>
 
-      <Table>
-        <thead>
-          <tr>
-            <th>사용자 ID</th>
-            <th>닉네임</th>
-            <th>소설 제목</th>
-            <th>에피소드 제목</th>
-            <th>등록 일자</th>
-            <th>검토 상태</th>
-          </tr>
-        </thead>
-        <tbody>
-          {episodes.length > 0 ? (
-            episodes.map((episode) => (
-              <tr key={episode.episodeTitle}>
-                <td>{episode.userId}</td>
-                <td>{episode.userNickname}</td>
-                <td>{episode.novelTitle}</td>
-                <td>{episode.episodeTitle}</td>
-                <td>{new Date(episode.createdAt).toLocaleString()}</td>
-                <StatusText status={episode.status}>
-                  {episode.statusLabel}
-                  {episode.status === "pending" && (
-                    <Button
-                      buttonSize="small"
-                      backgroudColor="primary"
-                      onClick={() => handleReviewButtonClick(episode)}
-                    >
-                      검토하러 가기
-                    </Button>
-                  )}
-                </StatusText>
-              </tr>
-            ))
-          ) : (
+      <TableWrapper>
+        <Table>
+          <thead>
             <tr>
-              <td colSpan={5}>데이터가 없습니다.</td>
+              <th>사용자 ID</th>
+              <th>닉네임</th>
+              <th>소설 제목</th>
+              <th>에피소드 제목</th>
+              <th>등록 일자</th>
+              <th>검토 상태</th>
             </tr>
-          )}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {episodes.length > 0 ? (
+              episodes.map((episode) => (
+                <tr key={episode.episodeTitle}>
+                  <td>{episode.userId}</td>
+                  <td>{episode.userNickname}</td>
+                  <td>{episode.novelTitle}</td>
+                  <td>{episode.episodeTitle}</td>
+                  <td>{new Date(episode.createdAt).toLocaleString()}</td>
+                  <StatusText status={episode.status}>
+                    {episode.statusLabel}
+                    {episode.status === "pending" && (
+                      <Button
+                        buttonSize="small"
+                        backgroudColor="primary"
+                        onClick={() => handleReviewButtonClick(episode)}
+                      >
+                        검토하러 가기
+                      </Button>
+                    )}
+                  </StatusText>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5}>데이터가 없습니다.</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </TableWrapper>
       {isOpen && selectedEpisode && (
         <Modal>
           <ModalContentWrapper>

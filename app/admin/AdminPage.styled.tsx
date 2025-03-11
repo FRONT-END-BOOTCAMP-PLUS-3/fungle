@@ -12,6 +12,11 @@ export const AdminMain = styled.main`
   padding: 1rem;
 `;
 
+export const TableWrapper = styled.div`
+  width: 100%;
+  overflow-x: scroll;
+`;
+
 export const Table = styled.table`
   width: 100%;
   background-color: white;
@@ -26,6 +31,7 @@ export const Table = styled.table`
     color: var(--white-color);
     text-align: center;
     padding: 1rem;
+    min-width: 8rem;
   }
 
   td {
