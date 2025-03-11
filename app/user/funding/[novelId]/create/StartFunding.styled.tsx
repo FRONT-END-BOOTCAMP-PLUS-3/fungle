@@ -40,22 +40,6 @@ export const Amount = styled.div`
   text-align: left;
 `;
 
-export const TextArea = styled.textarea`
-  width: 100%;
-  height: 6rem;
-  padding: 0.5rem;
-  font-size: 0.875rem;
-  box-sizing: border-box;
-  text-align: left;
-  border: 0.0625rem solid var(--gray-300);
-  border-radius: 0.375rem;
-  resize: none;
-  &:focus {
-    outline: none;
-    border-color: var(--primary-color);
-  }
-`;
-
 export const ButtonRow = styled.div`
   display: flex;
   justify-content: space-between;

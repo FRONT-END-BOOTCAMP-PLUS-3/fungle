@@ -8,11 +8,11 @@ import {
   Title,
   SubTitle,
   Label,
-  TextArea,
   ButtonRow,
   Amount,
 } from "./StartFunding.styled";
 import Button from "@/components/button/Button";
+import Textarea from "@/components/textarea/Textarea";
 
 const CreateFundingPage: React.FC = (): React.ReactElement => {
   const { novelId } = useParams();
@@ -54,10 +54,13 @@ const CreateFundingPage: React.FC = (): React.ReactElement => {
       <Amount>50,000원</Amount>
 
       <Label>펀딩 소개</Label>
-      <TextArea
+      <Textarea
         placeholder="펀딩에 대한 내용을 입력하세요."
-        value={fundingIntro}
+        defaultValue={fundingIntro}
+        ariaLabel="펀딩 소개"
         onChange={(e) => setFundingIntro(e.target.value)}
+        height="6rem"
+        name="fundingIntro"
       />
 
       <ButtonRow>
