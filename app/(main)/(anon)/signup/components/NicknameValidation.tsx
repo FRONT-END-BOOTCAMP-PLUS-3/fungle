@@ -42,7 +42,6 @@ const NicknameValidation = ({
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.message);
-      console.log(data);
 
       // ✅ 닉네임 사용 가능 여부 업데이트
       setNicknameChecked(true);
