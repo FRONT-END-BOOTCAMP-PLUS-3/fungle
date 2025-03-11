@@ -67,7 +67,7 @@ export class PrNovelCommentRepository implements NovelCommentRepository {
     userId: string,
     comment: string,
     parentId: string | null,
-    novelId: number  // ✅ novelId 추가
+    novelId: number  
   ): Promise<boolean> {
     const epId = Number(episodeId);
     const parent = parentId ? Number(parentId) : null;
@@ -77,7 +77,7 @@ export class PrNovelCommentRepository implements NovelCommentRepository {
         data: {
           comment: comment,
           episodeId: epId,
-          novelId: novelId, // ✅ 필수 필드로 추가
+          novelId: novelId, 
           userId: userId,
           parentId: parent,
         },
