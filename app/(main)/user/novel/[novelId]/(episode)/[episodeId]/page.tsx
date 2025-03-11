@@ -52,8 +52,10 @@ const Page = () => {
         setEpisode(data.episode);
         setIsLastEpisode(data.isLastEpisode);
         setIsCompleted(data.isCompleted);
-      } catch (error) {
-        setError("에피소드를 불러오는 중 오류가 발생했습니다.");
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to parse JSON response: ${error.message}`);
+        }
       } finally {
         setLoading(false);
       }

@@ -33,15 +33,6 @@ const Page = () => {
   const [isFinalEpisode, setIsFinalEpisode] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    openModal();
-
-    if (!isNaN(novelId)) {
-      fetchNovelStatus();
-      fetchEpisodeNumber();
-    }
-  }, [openModal, novelId]);
-
   const fetchNovelStatus = useCallback(async () => {
     try {
       const response = await fetch(`/api/novel/${novelId}`);
@@ -57,7 +48,7 @@ const Page = () => {
       if (error instanceof Error) {
         throw new Error(`Failed to parse JSON response: ${error.message}`);
       }
-    }finally {
+    } finally {
       setLoading(false);
     }
   }, [novelId, router]);
@@ -65,22 +56,20 @@ const Page = () => {
   const fetchEpisodeNumber = useCallback(async () => {
     try {
       const response = await fetch(`/api/novel/${novelId}/episode`);
-      if (!response.ok) throw new Error("에피소드 정보를 불러오는 중 오류가 발생했습니다.");
+      if (!response.ok) throw new Error("에피소드 정보를 불러오는 중 오류 발생");
   
       const data = await response.json();
       const lastEpisode = data.episodes.length > 0 ? data.episodes[data.episodes.length - 1] : null;
       setEpisodeNumber(lastEpisode ? lastEpisode.episode + 1 : 1);
-    } catch (error) {
+    } catch (error:unknown) {
       if (error instanceof Error) {
-        throw new Error(`Failed to parse JSON response: ${error.message}`);
-      }
-      setEpisodeNumber(1);
+        throw new Error(`Failed to parse JSON response: ${error.message}`);}
+        setEpisodeNumber(1)
     }
   }, [novelId]);
   
   useEffect(() => {
     openModal();
-  
     if (!isNaN(novelId)) {
       fetchNovelStatus();
       fetchEpisodeNumber();
@@ -140,8 +129,10 @@ const Page = () => {
       }
 
       setIsSubmitted(true);
-    } catch (error) {
-      alert("에피소드를 게시하는 중 오류가 발생했습니다.");
+    } catch (error:unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to parse JSON response: ${error.message}`);
+      }
     }
   };
 

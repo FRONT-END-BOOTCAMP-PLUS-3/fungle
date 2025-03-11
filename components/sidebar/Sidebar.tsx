@@ -42,8 +42,10 @@ const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
       setUser(null); 
       useAuthStore.setState({ isLoggedIn: false });
       router.push("/");
-    } catch (error) {
-      throw new Error("서버 에러 : 로그아웃 실패");
+    } catch (error:unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to parse JSON response: ${error.message}`);
+      }
     }
   };
 
