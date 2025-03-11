@@ -1,8 +1,10 @@
 import Button from "@/components/button/Button";
+import { useAdminNovelStore } from "@/store/useAdminNovelStore";
 import { useModalStore } from "@/store/useModalStore";
 
 const RejectionButton = ({ episodeId }: { episodeId: number }) => {
   const { onClose } = useModalStore();
+  const { removeEpisode } = useAdminNovelStore();
   const handleButtonClick = async () => {
     try {
       const response = await fetch(`/api/admin/novel-episode/${episodeId}`, {
@@ -13,6 +15,7 @@ const RejectionButton = ({ episodeId }: { episodeId: number }) => {
 
       if (response.ok) {
         alert(data.message);
+        removeEpisode(episodeId);
         onClose();
       } else alert(data.error || "에피소드 삭제에 실패했습니다.");
     } catch {

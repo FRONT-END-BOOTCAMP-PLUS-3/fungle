@@ -15,16 +15,14 @@ import { useModalStore } from "@/store/useModalStore";
 import Button from "@/components/button/Button";
 import Modal from "@/components/modal/Modal";
 import RejectionButton from "./components/RejectionButton";
-
-interface EpisodeWithUserInfo extends NovelEpisodeWithUserInfo {
-  statusLabel: string;
-}
+import { useAdminNovelStore } from "@/store/useAdminNovelStore";
+import { EpisodeWithUserInfo } from "@/application/usecases/novel/dto/EpisodeWithUserInfo";
 
 const Page = () => {
-  const [novelEpisodes, setNovelEpisodes] = useState<EpisodeWithUserInfo[]>([]);
-  const { isOpen, openModal, onClose } = useModalStore();
+  const { episodes, setEpisodes } = useAdminNovelStore();
+  const { isOpen, openModal } = useModalStore();
   const [selectedEpisode, setSelectedEpisode] =
-    useState<EpisodeWithUserInfo | null>(null);
+    useState<NovelEpisodeWithUserInfo | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +42,7 @@ const Page = () => {
             })
           );
 
-          setNovelEpisodes(formattedData);
+          setEpisodes(formattedData);
         }
       } catch {
         throw new Error("데이터를 가져오는 데 실패했습니다.");
@@ -77,8 +75,8 @@ const Page = () => {
           </tr>
         </thead>
         <tbody>
-          {novelEpisodes.length > 0 ? (
-            novelEpisodes.map((episode) => (
+          {episodes.length > 0 ? (
+            episodes.map((episode) => (
               <tr key={episode.episodeTitle}>
                 <td>{episode.userId}</td>
                 <td>{episode.userNickname}</td>
