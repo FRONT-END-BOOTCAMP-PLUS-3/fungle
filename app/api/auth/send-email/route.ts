@@ -1,9 +1,11 @@
+import { DfCheckEmailDuplicationUsecase } from "@/application/usecases/auth/DfCheckEmailDuplicationUsecase";
 import { IMVerificationRepository } from "@/infrastructure/repositories/IMVerificationRepository";
 import { SendEmailUseCase } from "@/application/usecases/auth/DfSendEmailUsecase";
 import { DfGenerateVerificationCodeUseCase } from "@/application/usecases/auth/DfGenerateVerifyCodeUsecase";
 import { NextRequest, NextResponse } from "next/server";
+import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
+import { UserRepository } from "@/domain/repositories/UserRepository";
 
-// ✅ Next.js API Route를 `POST` 함수로 변경
 export async function POST(req: NextRequest) {
   const request = await req.json();
   if (!request) {
@@ -16,7 +18,6 @@ export async function POST(req: NextRequest) {
   try {
     const { email } = request;
 
-    // ✅ 인스턴스 생성 (함수 내부에서 생성하도록 변경)
     const verificationRepository = IMVerificationRepository.getInstance();
     const generateVerificationCodeUseCase =
       new DfGenerateVerificationCodeUseCase();
@@ -24,6 +25,20 @@ export async function POST(req: NextRequest) {
       generateVerificationCodeUseCase,
       verificationRepository
     );
+
+    const userRepository: UserRepository = new PrUserRepository();
+    const checkEmailDuplicationUseCase = new DfCheckEmailDuplicationUsecase(
+      userRepository
+    );
+
+    // 이메일 중복 검사
+    const isDuplicate = await checkEmailDuplicationUseCase.execute(email);
+    if (isDuplicate) {
+      return NextResponse.json(
+        { message: "이미 가입된 이메일입니다." },
+        { status: 400 }
+      );
+    }
 
     // 이메일 전송 실행
     await sendEmailUseCase.execute(email);
