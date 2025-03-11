@@ -110,4 +110,13 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
   async deleteEpisode(episodeId: number): Promise<void> {
     await prisma.novelEpisode.delete({ where: { id: episodeId } });
   }
+
+  async updateNovelEpisodeStatus(episodeId: number): Promise<void> {
+    await prisma.novelEpisode.update({
+      where: { id: episodeId },
+      data: {
+        status: "approved",
+      },
+    });
+  }
 }

@@ -17,6 +17,7 @@ import Modal from "@/components/modal/Modal";
 import RejectionButton from "./components/RejectionButton";
 import { useAdminNovelStore } from "@/store/useAdminNovelStore";
 import { EpisodeWithUserInfo } from "@/application/usecases/novel/dto/EpisodeWithUserInfo";
+import ApproveButton from "./components/ApproveButton";
 
 const Page = () => {
   const { episodes, setEpisodes } = useAdminNovelStore();
@@ -121,9 +122,7 @@ const Page = () => {
             </div>
             <ButtonWrapper>
               <RejectionButton episodeId={selectedEpisode.episodeId} />
-              <Button buttonSize="big" backgroudColor="primary">
-                검토 완료
-              </Button>
+              <ApproveButton episodeId={selectedEpisode.episodeId} />
             </ButtonWrapper>
           </ModalContentWrapper>
         </Modal>
