@@ -35,11 +35,11 @@ const ProfileIntroduce = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "소개글 변경에 실패했습니다.");
+        alert(data.error || "소개글 변경에 실패했습니다.");
       }
 
       return data.message;
-    } catch (error) {
+    } catch (error: unknown) {
       alert(
         error instanceof Error
           ? error.message

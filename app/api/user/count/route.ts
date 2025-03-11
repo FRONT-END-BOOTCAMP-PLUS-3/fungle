@@ -26,10 +26,13 @@ export const GET = async () => {
     const counts = await getUserStatsUsecase.execute(userId);
 
     return NextResponse.json({ counts }, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
     return NextResponse.json(
       {
-        error: "사용자가 작성한 글 개수를 가져오는 데 실패했습니다.",
+        error:
+          error instanceof Error
+            ? error.message
+            : "사용자가 작성한 글 개수를 가져오는 데 실패했습니다.",
       },
       { status: 500 }
     );

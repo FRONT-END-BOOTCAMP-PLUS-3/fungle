@@ -10,7 +10,10 @@ export const GET = async () => {
     const userId = await userDi.getUserIdUsecase.execute();
 
     if (!userId) {
-      return NextResponse.json({ novels: null }, { status: 400 });
+      return NextResponse.json(
+        { novels: null, error: "로그인 되어 있지 않습니다." },
+        { status: 401 }
+      );
     }
 
     const novelLikeRepository: NovelLikeRepository =
@@ -22,9 +25,14 @@ export const GET = async () => {
     );
 
     return NextResponse.json({ novels: likedNovels }, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { error: "좋아요를 누른 소설 목록을 가져오는 데 실패했습니다." },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "좋아요를 누른 소설 목록을 가져오는 데 실패했습니다.",
+      },
       { status: 500 }
     );
   }

@@ -25,15 +25,12 @@ export const PATCH = async (req: NextRequest) => {
       newNickname
     );
     return NextResponse.json({ nickname: updatedNickname }, { status: 200 });
-  } catch (error) {
-    if (error instanceof NicknameError) {
-      return NextResponse.json(
-        { error: error.message, type: error.type },
-        { status: 400 }
-      );
-    }
+  } catch (error: unknown) {
     return NextResponse.json(
-      { error: "서버 오류가 발생했습니다." },
+      {
+        error:
+          error instanceof Error ? error.message : "서버 오류가 발생했습니다.",
+      },
       { status: 500 }
     );
   }
