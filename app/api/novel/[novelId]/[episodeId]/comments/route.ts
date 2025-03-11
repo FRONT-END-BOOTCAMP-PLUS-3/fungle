@@ -22,10 +22,20 @@ export const GET = async (
       return NextResponse.json({ error: "유효하지 않은 사용자" }, { status: 401 });
     }
 
+
     const comments = await novelDi.getCommentsUsecase.execute(episodeId, userId);
     const count = await novelDi.getCommentCountUsecase.execute(episodeId);
+    const episode = await novelDi.getEpisodeByIdUseCase.execute(Number(episodeId)); 
+    
+    
+    if (!episode) {
+      return NextResponse.json(
+        { error: "해당 에피소드를 찾을 수 없습니다." },
+        { status: 404 }
+      );
+    }
 
-    return NextResponse.json({ count, comments });
+  return NextResponse.json({ count, comments, episodeAuthorId: episode.userId });
   } catch (error: unknown) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "서버 오류" },

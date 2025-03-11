@@ -1,5 +1,5 @@
 import { novelDi } from "@/infrastructure/config/novelDi";
-import { userDi } from "@/infrastructure/config/userDi"; // ✅ userDi 유지
+import { userDi } from "@/infrastructure/config/userDi"; 
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (
@@ -9,7 +9,7 @@ export const POST = async (
   const { id } = await params;
 
   try {
-    const userId = await userDi.getUserIdUsecase.execute(); // ✅ userDi 유지
+    const userId = await userDi.getUserIdUsecase.execute(); 
     if (!userId) {
       return NextResponse.json(
         { error: "유효하지 않은 사용자" },
@@ -17,7 +17,7 @@ export const POST = async (
       );
     }
 
-    const isLiked = await novelDi.toggleCommentLikeUseCase.execute(id, userId);
+    const isLiked = await novelDi.toggleCommentLikeUsecase.execute(id, userId);
 
     return NextResponse.json({ isLiked });
   } catch (error: unknown) {

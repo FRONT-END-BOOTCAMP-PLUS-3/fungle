@@ -58,7 +58,6 @@ const NovelComment = ({
         if (!response.ok) throw new Error("댓글을 불러오는 데 실패했습니다.");
   
         const data = await response.json();
-        console.log("📌 서버 응답 데이터:", data);
   
         if (!data.comments || !Array.isArray(data.comments)) {
           throw new Error("서버 응답이 올바르지 않습니다. 예상: 배열");
@@ -176,7 +175,7 @@ const NovelComment = ({
                   <NovelCommentWrapper>
                     <NovelCommentBox>
                       <NovelLikeButton onClick={() => handleLike(comment.id)}>
-                        <img
+                        <Image
                           src={comment.isLiked ? "/icon/heart_filled.svg" : "/icon/heart.svg"}
                           alt="좋아요 버튼"
                           width={20}
@@ -190,7 +189,7 @@ const NovelComment = ({
                         setOpenReplyBox((prev) => (prev === comment.id ? null : comment.id));
                       }}
                     >
-                      <img
+                      <Image
                         src={openReplyBox === comment.id ? "/icon/top_arrow.svg" : "/icon/dropdown_arrow.svg"}
                         alt="답글 화살표"
                         width={15}

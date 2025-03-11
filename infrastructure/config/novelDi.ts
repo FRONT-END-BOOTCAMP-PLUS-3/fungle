@@ -85,7 +85,7 @@ export const novelDi = {
     new PrNovelGenreRepository(),
     new PrUserRepository()
   ),
-  getCommentsUsecase: new DfgetNovelCommentUsecase( // ✅ 댓글 전체 조회용 유스케이스 추가 
+  getCommentsUsecase: new DfgetNovelCommentUsecase(  
     new PrNovelCommentRepository()
   ),
   getCommentCountUsecase: new DfNovelCommentCountUsecase(

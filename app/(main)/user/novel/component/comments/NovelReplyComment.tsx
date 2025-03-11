@@ -8,8 +8,8 @@ import {
   ReplyCommentAuthor,
   ReplyCommentCreated,
   ReplyCommentWrapper,
-  ReplyAuthor, // ✅ 추가됨
-  Autor, // ✅ 추가됨
+  ReplyAuthor, 
+  Autor, 
   ReplyContainer,
 } from "@/components/comment/ReplyComment.styled";
 import { formatDate } from "@/utils/date/formatDate";
@@ -56,7 +56,7 @@ const NovelReplyComment = ({
       try {
         const response = await fetch(`/api/novel/${novelId}/${episodeId}/comments`);
         const data = await response.json();
-        setEpisodeAuthorId(data.userId);
+        setEpisodeAuthorId(data.episodeAuthorId);
       } catch (error) {
         console.error("에피소드 작성자 정보를 가져오는 데 실패했습니다.");
       }

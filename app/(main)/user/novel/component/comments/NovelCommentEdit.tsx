@@ -9,15 +9,15 @@ const NovelCommentEdit = ({
   commentContent,
   commentId,
   onCancel,
-  novelId,       // ✅ 추가
-  episodeId,     // ✅ 추가
+  novelId,    
+  episodeId,     
 }: {
   setTrigger: React.Dispatch<React.SetStateAction<boolean>>;
   commentContent: string;
   commentId: number;
   onCancel: () => void;
-  novelId: number;      // ✅ 추가
-  episodeId: number;    // ✅ 추가
+  novelId: number;      
+  episodeId: number;   
 }) => {
   const [editComment, setEditComment] = useState<string>(commentContent);
   const [errorMessage, setErrorMessage] = useState<string>("");

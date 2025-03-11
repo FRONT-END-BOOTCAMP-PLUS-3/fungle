@@ -67,8 +67,6 @@ const Page = () => {
     fetchEpisode();
   }, [novelId, episodeId]);
 
-  console.log("📌 Page.tsx에서 episode 값:", episode);
-
   const formatDate = (isoString: string) => {
     return new Date(isoString).toLocaleDateString("ko-KR", {
       year: "numeric",
