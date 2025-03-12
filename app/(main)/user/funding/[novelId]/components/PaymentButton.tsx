@@ -27,7 +27,7 @@ export default function PaymentButton() {
         orderId: data.orderId,
         orderName: data.orderName,
         customerName: data.customerName,
-        successUrl: `${window.location.origin}/user/funding/success`,
+        successUrl: window.location.origin + "/user/funding/pay/success",
         failUrl: `${window.location.origin}/user/funding/fail`,
       });
     } catch (error) {
