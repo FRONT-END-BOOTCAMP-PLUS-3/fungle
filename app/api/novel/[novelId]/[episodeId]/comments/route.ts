@@ -4,9 +4,9 @@ import { getParamsFromRequest } from "@/utils/params/requestParams";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest) => {
-  const { episodeId, novelId } = getParamsFromRequest(request, [
-    "episodeId",
+  const { novelId, episodeId } = getParamsFromRequest(request, [
     "novelId",
+    "episodeId",
   ]);
 
   const novelIdNumber = Number(novelId);
@@ -57,9 +57,9 @@ export const GET = async (request: NextRequest) => {
 };
 
 export const POST = async (request: NextRequest) => {
-  const { episodeId, novelId } = getParamsFromRequest(request, [
-    "episodeId",
+  const { novelId, episodeId } = getParamsFromRequest(request, [
     "novelId",
+    "episodeId",
   ]);
 
   const novelIdNumber = Number(novelId);
