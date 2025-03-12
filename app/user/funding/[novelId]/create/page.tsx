@@ -14,7 +14,7 @@ import {
 import Button from "@/components/button/Button";
 import Textarea from "@/components/textarea/Textarea";
 
-const CreateFundingPage: React.FC = (): React.ReactElement => {
+const Page: React.FC = (): React.ReactElement => {
   const { novelId } = useParams();
   const router = useRouter();
   const [fundingIntro, setFundingIntro] = useState("");
@@ -85,4 +85,4 @@ const CreateFundingPage: React.FC = (): React.ReactElement => {
   );
 };
 
-export default CreateFundingPage;
+export default Page;
