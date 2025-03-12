@@ -21,7 +21,7 @@ export const BookImage = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: var(--font-size-lg)
+  font-size: var(--font-size-lg);
   margin: 0.5rem 0;
 `;
 
