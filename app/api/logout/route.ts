@@ -22,6 +22,7 @@ export const POST = async () => {
 
   cookieStore.set("accessToken", "", { maxAge: 0, path: "/" });
   cookieStore.set("refreshToken", "", { maxAge: 0, path: "/" });
+  cookieStore.set("lastUserId", "", { maxAge: 0, path: "/" });
 
   return response;
 };

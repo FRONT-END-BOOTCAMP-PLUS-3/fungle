@@ -6,8 +6,6 @@ import {
 import { AuthRepository } from "@/domain/repositories/AuthRepository";
 import { IRefreshTokenUsecase } from "./interfaces/IRefreshTokenUsecase";
 
-const REFRESH_TOKEN = process.env.REFRESH_TOKEN_SECRET!;
-
 export class DfRefreshTokenUsecase implements IRefreshTokenUsecase {
   private authRepository: AuthRepository;
 
