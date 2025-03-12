@@ -12,12 +12,12 @@ export const FundingCard = styled.div`
 `;
 
 export const BookImage = styled.div`
-  width: 6.625rem;
-  height: 8.125rem;
   position: relative;
   img {
     object-fit: cover;
     border-radius: 0.625rem;
+    width: 6.625rem;
+    height: 8.75rem;
   }
 `;
 

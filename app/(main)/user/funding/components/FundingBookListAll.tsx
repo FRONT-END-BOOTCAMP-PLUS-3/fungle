@@ -21,7 +21,7 @@ const fundingData = [
   { id: 4, title: "야구는 나쁜놈이 잘한다", step: "1단계", progress: 10, amount: 40000 },
 ];
 
-const FundingBookList = () => {
+const FundingBookListAll = () => {
   return (
     <ListContainer>
       {fundingData.map((item) => (
@@ -52,4 +52,4 @@ const FundingBookList = () => {
   );
 };
 
-export default FundingBookList;
+export default FundingBookListAll;
