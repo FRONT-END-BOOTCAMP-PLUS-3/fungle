@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Divider, Main, TabContainer, Tab, Content, SearchContainer } from "./FundingList.styled";
 import FundingSearch from "./components/FundingSearch";
-import { FUNDING_SEARCH } from "@/constants/FUNDING-SEARCH";  
+import { FUNDING_SEARCH } from "@/constants/FUNDING_SEARCH";  
 import FundingBookListAll from "./components/FundingBookListAll";
 import FundingBookListStep1 from "./components/FundingBookListStep1";
 import FundingBookListStep2 from "./components/FundingBookListStep2";

@@ -10,7 +10,7 @@ import {
   InputWrapper,
   SearchIcon,
 } from "@/app/(main)/user/novel/component/SearchBook.styled";
-import { FUNDING_SEARCH } from "@/constants/FUNDING-SEARCH";
+import { FUNDING_SEARCH } from "@/constants/FUNDING_SEARCH";
 import Image from "next/image";
 
 interface FilterProps {
