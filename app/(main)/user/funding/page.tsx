@@ -66,7 +66,6 @@ const Page = () => {
         </NumberText>
       </AmountContainer>
 
-      {/* ✅ ProgressBar 적용 */}
       <ProgressContainer>
         <ProgressBarWrapper $size="thick">
           <Progress $progress={progressValue} />
