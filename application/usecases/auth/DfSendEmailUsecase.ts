@@ -3,6 +3,7 @@ import { sendEmailTemplate } from "@/styles/email/sendEmailTemplate";
 import { DfGenerateVerificationCodeUseCase } from "./DfGenerateVerifyCodeUsecase";
 import { ISendEmailUseCase } from "./interfaces/ISendEmailUsecase";
 import { IVerificationRepository } from "@/domain/repositories/IVerificationRepository";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 export class SendEmailUseCase implements ISendEmailUseCase {
   private transporter;
@@ -11,21 +12,20 @@ export class SendEmailUseCase implements ISendEmailUseCase {
     private verificationRepository: IVerificationRepository
   ) {
     this.transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      host: process.env.EMAIL_HOST as string,
+      port: Number(process.env.EMAIL_PORT),
       secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
-    });
+    } as SMTPTransport.Options);
   }
 
   async execute(email: string): Promise<void> {
     if (!email) throw new Error("이메일을 입력해야 합니다.");
 
     const verificationCode = this.generateVerificationCodeUseCase.execute();
-    console.log(`🔹 생성된 인증 코드: ${verificationCode}`);
 
     await this.verificationRepository.saveVerificationCode(
       email,

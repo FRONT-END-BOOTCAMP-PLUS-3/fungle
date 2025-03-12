@@ -9,7 +9,7 @@ import {
   ReplyCommentCreated,
   ReplyCommentWrapper,
   ReplyAuthor,
-  Autor,
+  Author,
   ReplyContainer,
 } from "./ReplyComment.styled";
 import { formatDate } from "@/utils/date/formatDate";
@@ -118,7 +118,7 @@ const ReplyComment = ({
                             <p>{reply.userNickname}</p>
                             {reply.userId === postUserId && (
                               <ReplyAuthor>
-                                <Autor>작성자</Autor>
+                                <Author>작성자</Author>
                               </ReplyAuthor>
                             )}
                           </ReplyCommentAuthor>

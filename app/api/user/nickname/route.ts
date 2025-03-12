@@ -1,16 +1,16 @@
 import { DfUpdateNicknameUsecase } from "@/application/usecases/user/DfUpdateNicknameUsecase";
-import { NicknameError } from "@/application/usecases/user/error/NicknameError";
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { userDi } from "@/infrastructure/config/userDi";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
+import { NicknameError } from "@/application/usecases/user/error/NicknameError";
 
 export const PATCH = async (req: NextRequest) => {
   const userId = await userDi.getUserIdUsecase.execute();
   if (!userId) {
     return NextResponse.json(
-      { message: "사용자를 찾을 수 없습니다." },
-      { status: 400 }
+      { error: "로그인 되어 있지 않습니다." },
+      { status: 401 }
     );
   }
 
@@ -25,11 +25,13 @@ export const PATCH = async (req: NextRequest) => {
       newNickname
     );
     return NextResponse.json({ nickname: updatedNickname }, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof NicknameError) {
+      let statusCode = 400;
+      if (error.type === "DUPLICATE_NICKNAME") statusCode = 409;
       return NextResponse.json(
-        { error: error.message, type: error.type },
-        { status: 400 }
+        { error: error.message },
+        { status: statusCode }
       );
     }
     return NextResponse.json(

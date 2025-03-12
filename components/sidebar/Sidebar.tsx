@@ -9,6 +9,7 @@ import {
   LogoutButton,
   CloseButton,
 } from "@/components/sidebar/Sidebar.styled";
+import useAuthStore from "@/store/useAuthStore"; 
 
 interface SidebarProps {
   $isOpen: boolean;
@@ -18,17 +19,35 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const [hoveredItem, setHoveredItem] = useState<string>(""); 
+  const { isLoggedIn, setUser } = useAuthStore(); 
+  const [hoveredItem, setHoveredItem] = useState<string>("");
 
-  if (!$isOpen) return <></>;
+  if (!$isOpen) return null;
 
   const menuItems = [
-    { name: "홈", icon: "/icon/home.svg", path: "/" },
     { name: "소설", icon: "/icon/book.svg", path: "/user/novel" },
     { name: "커뮤니티", icon: "/icon/people.svg", path: "/user/community" },
     { name: "마이페이지", icon: "/icon/person.svg", path: "/user" },
     { name: "펀딩", icon: "/icon/money.svg", path: "/user/funding" },
   ];
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/logout", { method: "POST" });
+
+      if (!response.ok) {
+        throw new Error("로그아웃에 실패했습니다.");
+      }
+
+      setUser(null); 
+      useAuthStore.setState({ isLoggedIn: false });
+      router.push("/");
+    } catch (error:unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to parse JSON response: ${error.message}`);
+      }
+    }
+  };
 
   return (
     <SidebarContainer $isOpen={$isOpen}>
@@ -49,18 +68,14 @@ const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
               key={item.name}
               className={isActive ? "active" : ""}
               onMouseEnter={() => setHoveredItem(item.name)}
-              onMouseLeave={() => setHoveredItem("")} 
+              onMouseLeave={() => setHoveredItem("")}
               onClick={() => {
                 router.push(item.path);
                 $setIsOpen(false);
               }}
             >
               <Image
-                src={
-                  isHovered || isActive
-                    ? item.icon.replace(".svg", "_white.svg")
-                    : item.icon
-                }
+                src={isHovered || isActive ? item.icon.replace(".svg", "_white.svg") : item.icon}
                 alt={item.name}
                 width={20}
                 height={20}
@@ -71,10 +86,17 @@ const Sidebar: React.FC<SidebarProps> = ({ $isOpen, $setIsOpen }) => {
         })}
       </SidebarList>
 
-      <LogoutButton>
-        로그아웃
-        <Image src="/icon/logout.svg" alt="로그아웃" width={20} height={20} />
-      </LogoutButton>
+      {isLoggedIn ? (
+        <LogoutButton onClick={handleLogout}>
+          로그아웃
+          <Image src="/icon/logout.svg" alt="로그아웃" width={20} height={20} />
+        </LogoutButton>
+      ) : (
+        <LogoutButton onClick={() => router.push("/login")}>
+          로그인
+          <Image src="/icon/login.svg" alt="로그인" width={20} height={20} />
+        </LogoutButton>
+      )}
     </SidebarContainer>
   );
 };

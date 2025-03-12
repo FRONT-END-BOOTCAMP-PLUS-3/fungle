@@ -6,7 +6,6 @@ import {
   FormWrapper,
   InputWrapper,
   LoginContainer,
-  Logo,
   SignupLink,
   SignupWrapper,
 } from "./LoginPage.styled";
@@ -15,8 +14,9 @@ import Button from "@/components/button/Button";
 import { useRouter } from "next/navigation";
 import { loginProc } from "./actions/loginProc";
 import useAuthStore from "@/store/useAuthStore";
+import Image from "next/image";
 
-const initialState = { message: null, isLoggedIn: false };
+const initialState = { message: null, isLoggedIn: false, redirectUrl: "" };
 
 const Page = () => {
   const router = useRouter();
@@ -29,13 +29,29 @@ const Page = () => {
         const user = state.user;
         setUser(user);
       }
-      router.push("/user/novel");
+      const redirectTo = state.redirectUrl || "/user/novel";
+      router.push(redirectTo);
+
+      state.redirectUrl = "";
     }
-  }, [state.isLoggedIn, router]);
+  }, [state, state.isLoggedIn, state.user, setUser, router]);
+
+  useEffect(() => {
+    const alertMessage = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("alertMessage="))
+      ?.split("=")[1];
+
+    if (alertMessage) {
+      setTimeout(() => {
+        alert(decodeURIComponent(alertMessage));
+      }, 100);
+    }
+  }, []);
 
   return (
     <LoginContainer>
-      <Logo src="/logo/FUNGLE.svg" />
+      <Image src="/logo/FUNGLE.svg" alt="펀글 로고" width={180} height={180} />
       <FormWrapper action={formAction}>
         <InputWrapper>
           <Input

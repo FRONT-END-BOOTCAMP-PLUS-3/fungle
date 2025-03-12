@@ -1,6 +1,7 @@
 import { prisma } from "@/infrastructure/config/prisma";
 import { NovelEpisode } from "@prisma/client";
 import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
+import { NovelEpisodeWithUserInfo } from "@/application/usecases/novel/dto/NovelEpisodeWithUserInfo";
 
 export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
   async getEpisodeById(episodeId: number): Promise<NovelEpisode | null> {
@@ -54,15 +55,82 @@ export class PrNovelEpisodeRepository implements NovelEpisodeRepository {
         episode,
         title,
         content,
-        isFinalEpisode
+        isFinalEpisode,
       },
     });
   }
   async getTotalViewsByNovelId(novelId: number): Promise<number> {
     const result = await prisma.novelEpisode.aggregate({
       where: { novelId },
-      _sum: { view: true }
+      _sum: { view: true },
     });
     return result._sum.view || 0;
+  }
+
+  async getNovelEpisodeWithUserInfo(): Promise<NovelEpisodeWithUserInfo[]> {
+    return await prisma.novelEpisode
+      .findMany({
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          content: true,
+          createdAt: true,
+          novel: {
+            select: {
+              id: true,
+              title: true,
+              user: {
+                select: {
+                  id: true,
+                  nickname: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      })
+      .then((episodes) =>
+        episodes.map((episode) => ({
+          episodeId: episode.id,
+          userId: episode.novel.user.id,
+          userNickname: episode.novel.user.nickname,
+          novelTitle: episode.novel.title,
+          episodeTitle: episode.title,
+          episodeContent: episode.content,
+          status: episode.status,
+          createdAt: episode.createdAt,
+        }))
+      );
+  }
+
+  async deleteEpisode(episodeId: number): Promise<void> {
+    await prisma.novelEpisode.delete({ where: { id: episodeId } });
+  }
+
+  async updateNovelEpisodeStatus(episodeId: number): Promise<void> {
+    const episode = await prisma.novelEpisode.findUnique({
+      where: { id: episodeId },
+      select: { isFinalEpisode: true, novelId: true },
+    });
+
+    if (!episode) {
+      throw new Error("에피소드를 찾지 못했습니다.");
+    }
+
+    if (episode.isFinalEpisode) {
+      await prisma.novel.update({
+        where: { id: episode.novelId },
+        data: { serialStatus: "completed" },
+      });
+
+      await prisma.novelEpisode.update({
+        where: { id: episodeId },
+        data: { status: "approved" },
+      });
+    }
   }
 }

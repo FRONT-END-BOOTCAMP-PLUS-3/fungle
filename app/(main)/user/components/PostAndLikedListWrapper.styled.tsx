@@ -32,3 +32,8 @@ export const DropdownWrapper = styled.div`
     text-align: left;
   }
 `;
+
+export const ErrorMessage = styled.p`
+  padding: 1rem;
+  text-align: center;
+`;

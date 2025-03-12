@@ -14,12 +14,15 @@ import { PrNovelRepository } from "@/infrastructure/repositories/PrNovelRepostio
 import { FileService } from "@/infrastructure/services/FileService";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
   try {
     const userId = await userDi.getUserIdUsecase.execute();
 
     if (!userId) {
-      return NextResponse.json({ novels: null }, { status: 400 });
+      return NextResponse.json(
+        { novels: null, error: "로그인 되어 있지 않습니다." },
+        { status: 401 }
+      );
     }
 
     const novelRepository: NovelRepository = new PrNovelRepository();
@@ -54,9 +57,14 @@ export const GET = async (req: NextRequest) => {
     );
 
     return NextResponse.json({ novels: novelsWithFunding }, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { message: "소설 데이터를 가져오는 중 오류가 발생했습니다." },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "소설 데이터를 가져오는 중 오류가 발생했습니다.",
+      },
       { status: 500 }
     );
   }
@@ -67,7 +75,7 @@ export const DELETE = async (req: NextRequest) => {
     const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {
       return NextResponse.json(
-        { error: "유효하지 않은 사용자" },
+        { error: "로그인 되어 있지 않습니다." },
         { status: 401 }
       );
     }
@@ -94,13 +102,16 @@ export const DELETE = async (req: NextRequest) => {
     }
 
     return NextResponse.json({ message: result.message }, { status: 200 });
-  } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { error: "소설 삭제 중 오류가 발생했습니다." },
-        { status: 500 }
-      );
-    }
+  } catch (error: unknown) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "소설 삭제 중 오류가 발생했습니다.",
+      },
+      { status: 500 }
+    );
   }
 };
 
@@ -109,7 +120,7 @@ export const PATCH = async (req: NextRequest) => {
     const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {
       return NextResponse.json(
-        { error: "유효하지 않은 사용자" },
+        { error: "로그인 되어 있지 않습니다." },
         { status: 401 }
       );
     }
@@ -144,12 +155,15 @@ export const PATCH = async (req: NextRequest) => {
     }
 
     return NextResponse.json({ message: result.message }, { status: 200 });
-  } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { error: "소설 연재 상태 변경 중 오류가 발생했습니다." },
-        { status: 500 }
-      );
-    }
+  } catch (error: unknown) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "소설 연재 상태 변경 중 오류가 발생했습니다.",
+      },
+      { status: 500 }
+    );
   }
 };

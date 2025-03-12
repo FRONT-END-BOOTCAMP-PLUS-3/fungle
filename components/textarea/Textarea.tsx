@@ -1,4 +1,4 @@
-import { Label, TextareaComponent } from "./Textarea.styled";
+import { TextareaComponent } from "./Textarea.styled";
 
 interface TextareaProps {
   placeholder?: string;

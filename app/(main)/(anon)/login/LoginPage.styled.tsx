@@ -10,11 +10,6 @@ export const LoginContainer = styled.section`
   height: 100vh;
 `;
 
-export const Logo = styled.img`
-  width: 11.25rem;
-  height: auto;
-`;
-
 export const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;

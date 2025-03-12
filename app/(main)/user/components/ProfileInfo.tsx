@@ -20,9 +20,13 @@ const ProfileInfo = () => {
         setPostCount(counts.postCount ?? 0);
         setNovelCount(counts.novelCount ?? 0);
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          throw new Error("데이터를 불러오는 중 오류가 발생했습니다.");
-        }
+        alert(
+          error instanceof Error
+            ? error.message
+            : "사용자 정보를 가져오는 데 실패했습니다."
+        );
+        setPostCount(0);
+        setNovelCount(0);
       }
     };
 

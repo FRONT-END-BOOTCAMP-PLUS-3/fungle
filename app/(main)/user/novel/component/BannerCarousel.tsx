@@ -29,9 +29,13 @@ const BannerCarousel = () => {
 
         const data = await response.json();
         setBanners(data.banners);
-      } catch (error) {
-        throw new Error("배너 불러오기 에러");
-      } finally {
+      } 
+      catch (error:unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to parse JSON response: ${error.message}`);
+        }
+      } 
+      finally {
         setLoading(false);
       }
     };

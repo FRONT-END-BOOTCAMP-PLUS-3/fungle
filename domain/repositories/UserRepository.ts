@@ -9,10 +9,7 @@ export interface UserRepository {
   deleteUser(userId: string): Promise<void>;
   getUserById(
     userId: string
-  ): Promise<Omit<
-    User,
-    "password" | "userEmail" | "createdAt" | "type"
-  > | null>;
+  ): Promise<Omit<User, "password" | "userEmail" | "createdAt"> | null>;
   updateNickname(userId: string, newNickname: string): Promise<void>;
   updateIntroduce(userId: string, introduce: string): Promise<void>;
   updateProfileImage(data: {

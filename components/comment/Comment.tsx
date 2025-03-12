@@ -5,7 +5,7 @@ import {
   CommunityPostCommentWrapper,
   CommunityPostCommentInfo,
   CommunityPostCommentProfile,
-  CommunityPostCommentAutor,
+  CommunityPostCommentAuthor,
   CommunityPostCommentCreated,
   CommunityPostCommentInfoBox,
   CommunityCommentBox,
@@ -177,9 +177,9 @@ const Comment = ({
                           />
                         </CommunityPostCommentProfile>
                         <div style={{ lineHeight: "1.5" }}>
-                          <CommunityPostCommentAutor>
+                          <CommunityPostCommentAuthor>
                             {comment.userNickname}
-                          </CommunityPostCommentAutor>
+                          </CommunityPostCommentAuthor>
                           <CommunityPostCommentCreated>
                             {createdAtFormatted}
                           </CommunityPostCommentCreated>

@@ -52,10 +52,7 @@ export class PrUserRepository implements UserRepository {
 
   async getUserById(
     userId: string
-  ): Promise<Omit<
-    User,
-    "password" | "userEmail" | "createdAt" | "type"
-  > | null> {
+  ): Promise<Omit<User, "password" | "userEmail" | "createdAt"> | null> {
     return await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -63,6 +60,7 @@ export class PrUserRepository implements UserRepository {
         nickname: true,
         introduce: true,
         profileImage: true,
+        type: true,
       },
     });
   }

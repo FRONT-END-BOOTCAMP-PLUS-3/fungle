@@ -12,6 +12,7 @@ import {
 import { realTimeView } from "../community/utils/realTimeView";
 import {
   CustomPostFooter,
+  ErrorMessage,
   NoPosts,
   PostAndLikedListWrapper,
 } from "./PostAndLikedListWrapper.styled";
@@ -39,7 +40,10 @@ const ProfilePostList = () => {
 
         const data = await response.json();
         setPosts(data.posts);
-      } catch (error) {
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        }
         setError("게시글을 불러오는 중 오류가 발생했습니다.");
       }
     };
@@ -75,9 +79,11 @@ const ProfilePostList = () => {
       const result = await response.json();
       alert(result.message);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert("오류가 발생했습니다. 다시 시도해주세요.");
-      }
+      alert(
+        error instanceof Error
+          ? error.message
+          : "오류가 발생했습니다. 다시 시도해주세요."
+      );
     }
   };
 
@@ -85,6 +91,7 @@ const ProfilePostList = () => {
 
   return (
     <>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
       {posts.map((post: PostWithRecruitmentDto) => (
         <PostAndLikedListWrapper key={post.id}>
           <Link href={`/user/community/${post.id}`}>

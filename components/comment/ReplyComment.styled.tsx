@@ -48,7 +48,7 @@ export const ReplyAuthor = styled.div`
   border-radius: 0.25rem;
 `;
 
-export const Autor = styled.p`
+export const Author = styled.p`
   font-size: 0.5625rem;
   color: var(--gray-100);
 `;

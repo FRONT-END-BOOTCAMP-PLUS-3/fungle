@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Main, EpisodeTitle, AuthorInfo, ProfileImage, AuthorDetails, AuthorMeta, CommentWrapper, Content } from "./EpisodePage.styled";
+import { Main, EpisodeTitle, AuthorInfo, ProfileImage, AuthorDetails, AuthorMeta, Content } from "./EpisodePage.styled";
 import NovelCompleted from "@/components/novelcompleted/NovelCompleted";
 import { NovelDto } from "@/application/usecases/novel/dto/Novel";
 import { NovelEpisodeDto } from "@/application/usecases/novel/dto/NovelEpisode";
+import NovelCommentHeader from "@/app/(main)/user/novel/component/comments/NovelCommentHeader";
 
 
 const Page = () => {
@@ -34,8 +35,10 @@ const Page = () => {
         let data;
         try {
           data = JSON.parse(textResponse); 
-        } catch (parseError) {
-          throw new Error("Failed to parse JSON response");
+        } catch (error:unknown) {
+          if (error instanceof Error) {
+            throw new Error(`Failed to parse JSON response: ${error.message}`);
+          }
         }
     
         if (!response.ok) {
@@ -44,20 +47,15 @@ const Page = () => {
     
         if (!data || !data.episode) {
           throw new Error("Missing episode data in response");
-        }
-
-        console.log("data.isCompleted : ", data.isCompleted);
-        console.log("isLastEpisode:", data.isLastEpisode);
-
-
-    
+        }   
         setNovel(data.novel);
         setEpisode(data.episode);
         setIsLastEpisode(data.isLastEpisode);
         setIsCompleted(data.isCompleted);
-      } catch (error) {
-        console.error("Error fetching episode:", error);
-        setError("에피소드를 불러오는 중 오류가 발생했습니다.");
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to parse JSON response: ${error.message}`);
+        }
       } finally {
         setLoading(false);
       }
@@ -81,21 +79,6 @@ const Page = () => {
   if (!novel ) return <p>소설을 찾을 수 없습니다.</p>;
   if (!episode ) return <p>에피소드를 찾을 수 없습니다.</p>
 
-  // 댓글 BE 후 삭제 예정 (임시 데이터)
-  const post = {
-    id: 1,
-    title: `${episode.episode}화 ${episode.title}`,
-    status: "published",
-    genre: "romance",
-    author: "임시 작가",
-    content: episode.content,
-    time: episode.createdAt,
-    likes: 1700,
-    views: 120,
-    commentCount: 123,
-    createdAt: episode.createdAt,
-    postId : "1"
-  };
 
   return (
     <Main>
@@ -119,10 +102,7 @@ const Page = () => {
 
       {isCompleted && isLastEpisode && <NovelCompleted title={novel.title} />}
 
-      {/* <CommentCreate post={post} />
-      <CommentWrapper>
-         <Comment postId={post.postId} />
-      </CommentWrapper>  */}
+      <NovelCommentHeader episode = {episode}/>
     </Main>
   );
 };

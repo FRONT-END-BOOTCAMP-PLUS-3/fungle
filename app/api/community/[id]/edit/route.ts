@@ -1,15 +1,18 @@
 import { DfGetPostWithRecruitmentsUsecase } from "@/application/usecases/community/DfGetPostWithRecruitmentsUsecase";
 import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
+import { getParamsFromRequest } from "@/utils/params/requestParams";
 
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  const { id } = await params;
+export const GET = async (request: NextRequest) => {
+  const { id } = getParamsFromRequest(request, ["id"]);
 
-  if (!id) return "ID가 없습니다.";
+  if (!id) {
+    return NextResponse.json(
+      { error: "요청에 id를 포함해야 합니다." },
+      { status: 400 }
+    );
+  }
 
   try {
     const communityPostRepository = new PrCommunityPostRepository();

@@ -7,7 +7,10 @@ export const PATCH = async (req: NextRequest) => {
   try {
     const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {
-      return NextResponse.json({ error: "로그인이 되어 있지 않습니다." });
+      return NextResponse.json(
+        { error: "로그인 되어 있지 않습니다." },
+        { status: 401 }
+      );
     }
 
     const userRepository: UserRepository = new PrUserRepository();
@@ -21,7 +24,13 @@ export const PATCH = async (req: NextRequest) => {
       },
       { status: 200 }
     );
-  } catch (error) {
-    return NextResponse.json({ error: "서버 오류가 발생했습니다." });
+  } catch (error: unknown) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error ? error.message : "서버 오류가 발생했습니다.",
+      },
+      { status: 500 }
+    );
   }
 };

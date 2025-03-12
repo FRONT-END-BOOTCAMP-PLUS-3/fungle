@@ -14,6 +14,7 @@ import {
 import ProgressBar from "@/components/progressbar/ProgressBar";
 import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
 import EmptyBookList from "./EmptyBookList";
+import { Novel } from "@prisma/client";
 
 const MyBook = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const MyBook = () => {
         const novels = data.novels ?? [];
 
         const formattedBooks: NovelsByUserIdDto[] = novels.map(
-          (novel: any) => ({
+          (novel: Novel) => ({
             id: novel.id,
             title: novel.title,
             image: novel.image || "/image/book.svg",
@@ -39,9 +40,11 @@ const MyBook = () => {
         );
 
         setBooks(formattedBooks);
-      } catch (error) {
-        throw new Error("서버 에러");
-      }
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to parse JSON response: ${error.message}`);
+        }
+      } 
     };
 
     fetchNovels();

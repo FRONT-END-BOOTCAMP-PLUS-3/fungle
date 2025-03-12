@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi";
+import { getParamsFromRequest } from "@/utils/params/requestParams";
 
-
-export const GET = async (req: NextRequest, { params }: { params: { day: string } } ) => {
+export const GET = async (req: NextRequest) => {
   try {
-    const day = await params.day; 
+    const { day } = getParamsFromRequest(req, ["day"]);
 
     if (!day) {
       return NextResponse.json(
@@ -15,11 +15,12 @@ export const GET = async (req: NextRequest, { params }: { params: { day: string 
 
     const novels = await novelDi.getNovelsBySerialDayUseCase.execute(day);
     return NextResponse.json({ novels }, { status: 200 });
-
-  } catch (error) {
-    return NextResponse.json(
-      { error: "서버 내부 오류" },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { message: `오류 발생 ${error.message}` },
+        { status: 500 }
+      );
+    }
   }
 };

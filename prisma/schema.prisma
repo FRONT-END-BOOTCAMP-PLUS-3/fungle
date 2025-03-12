@@ -132,17 +132,22 @@ model Novel {
 
 model NovelComment {
   id               Int                @id @default(autoincrement())
-  novelEpisodeId   Int
-  userId           String
-  novelId          Int
-  content          String
+  comment          String
   createdAt        DateTime           @default(now())
-  parentId              Int?
-  novelEpisode     NovelEpisode       @relation(fields: [novelEpisodeId], references: [id])
-  novel            Novel              @relation("NovelComments", fields: [novelId], references: [id], onDelete: Cascade)
+  userId           String
+  episodeId        Int
+  novelId          Int   
+  parentId         Int?
+
+  parent           NovelComment?      @relation("CommentReplies", fields: [parentId], references: [id])
+  replies          NovelComment[]     @relation("CommentReplies")
+  episode          NovelEpisode       @relation("NovelComments", fields: [episodeId], references: [id], onDelete: Cascade)
+  novel            Novel              @relation("NovelComments", fields: [novelId], references: [id], onDelete: Cascade)  // ✅ 반대 관계 추가
   user             User               @relation("UserNovelComments", fields: [userId], references: [id], onDelete: Cascade)
   novelCommentLike NovelCommentLike[] @relation("NovelCommentLike")
 }
+
+
 
 model NovelCommentLike {
   novelCommentId Int
@@ -164,7 +169,7 @@ model NovelEpisode {
   title        String
   status       String         @default("pending")
   isFinalEpisode  Boolean @default(false)
-  novelComment NovelComment[]
+  novelComments NovelComment[]  @relation("NovelComments")
   novel        Novel          @relation("NovelEpisodes", fields: [novelId], references: [id], onDelete: Cascade)
   user         User           @relation("UserNovelEpisodes", fields: [userId], references: [id], onDelete: Cascade)
 

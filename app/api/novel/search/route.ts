@@ -13,7 +13,8 @@ export const GET = async (req: NextRequest) => {
     const novels = await searchUsecase.execute(search, filter);
 
     return NextResponse.json({ novels }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ message: "검색 중 오류 발생" }, { status: 500 });
-  }
+  } catch (error:unknown) {
+    if (error instanceof Error){
+    return NextResponse.json({ message: `검색 중 오류 발생 ${error.message}` }, { status: 500 });
+  }}
 };

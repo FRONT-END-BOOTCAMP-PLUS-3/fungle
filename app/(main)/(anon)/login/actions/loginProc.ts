@@ -13,6 +13,7 @@ interface User {
 interface LoginState {
   message: string | null;
   isLoggedIn: boolean;
+  redirectUrl: string;
   user?: User | null;
 }
 
@@ -35,7 +36,11 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
     const data = await response.json();
 
     if (!response.ok) {
-      return { message: data.error || "로그인 실패", isLoggedIn: false };
+      return {
+        message: data.error || "로그인 실패",
+        isLoggedIn: false,
+        redirectUrl: "",
+      };
     }
 
     const cookieStore = await cookies();
@@ -56,12 +61,24 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
         maxAge: 30 * 60, // 30분 유지
       });
     } else {
-      return { message: "토큰이 누락되었습니다.", isLoggedIn: false };
+      return {
+        message: "토큰이 누락되었습니다.",
+        isLoggedIn: false,
+        redirectUrl: "",
+      };
     }
+
+    const returnUrl = cookieStore.get("returnUrl")?.value;
+    const redirectUrl: string | null = returnUrl
+      ? decodeURIComponent(returnUrl)
+      : "/user/novel";
+
+    cookieStore.delete("returnUrl");
 
     return {
       message: null,
       isLoggedIn: true,
+      redirectUrl,
       user: {
         id: data.id,
         nickname: data.nickname,
@@ -69,7 +86,12 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
         profileImage: data.profileImage,
       },
     };
-  } catch (error) {
-    return { message: "서버 오류가 발생했습니다.", isLoggedIn: false };
+  } catch (error: unknown) {
+    return {
+      message: "서버 오류가 발생했습니다.",
+      error: error instanceof Error ? error.message : "알 수 없는 오류",
+      isLoggedIn: false,
+      redirectUrl: "",
+    };
   }
 };

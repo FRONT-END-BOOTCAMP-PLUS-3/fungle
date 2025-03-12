@@ -25,7 +25,7 @@ export class LoginUsecase {
       throw new LoginError("EMAIL_NOT_FOUND", "가입되지 않은 이메일입니다.");
     }
 
-    const { id, userEmail, password, nickname, introduce, profileImage } =
+    const { id, userEmail, password, nickname, introduce, profileImage, type } =
       userData;
 
     // 비밀번호 비교
@@ -41,7 +41,7 @@ export class LoginUsecase {
 
     // jwt 토큰 생성
     const { accessToken, refreshToken } =
-      await this.authRepository.generateTokens(id);
+      await this.authRepository.generateTokens(id, type);
 
     return {
       id,
