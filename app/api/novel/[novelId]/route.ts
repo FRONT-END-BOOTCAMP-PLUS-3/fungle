@@ -4,12 +4,9 @@ import { getParamsFromRequest } from "@/utils/params/requestParams";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const { novelId, episodeId } = getParamsFromRequest(req, [
-      "novelId",
-      "episodeId",
-    ]);
+    const { novelId } = getParamsFromRequest(req, ["novelId"]);
 
-    if (!novelId || !episodeId) {
+    if (!novelId) {
       return NextResponse.json(
         { error: "요청에 id를 포함해야 합니다." },
         { status: 400 }
