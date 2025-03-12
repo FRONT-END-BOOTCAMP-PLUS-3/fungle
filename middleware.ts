@@ -21,29 +21,9 @@ const middleware = (req: NextRequest) => {
 
       verifiedUser = { type: decoded.type };
     } catch (error: unknown) {
-      if (currentPath !== "/login") {
-        const returnUrl = req.nextUrl.href;
-        const response = NextResponse.redirect(new URL("/login", req.url));
-        response.cookies.set("returnUrl", returnUrl);
-        response.cookies.set("alertMessage", "로그인이 필요합니다.", {
-          path: "/",
-          maxAge: 5,
-        });
-
-        return response;
-      }
-    }
-  } else {
-    if (currentPath !== "/login") {
-      const returnUrl = req.nextUrl.href;
-      const response = NextResponse.redirect(new URL("/login", req.url));
-      response.cookies.set("returnUrl", returnUrl);
-      response.cookies.set("alertMessage", "로그인이 필요합니다.", {
-        path: "/",
-        maxAge: 5,
-      });
-
-      return response;
+      console.error(
+        error instanceof Error ? error.message : "토큰이 유효하지 않습니다."
+      );
     }
   }
 
@@ -55,21 +35,20 @@ const middleware = (req: NextRequest) => {
     return NextResponse.next();
   }
 
-  if (
-    !accessToken &&
-    (currentPath.startsWith("/user") || currentPath.startsWith("/admin"))
-  ) {
-    if (currentPath !== "login") {
-      const returnUrl = req.nextUrl.href;
-      const response = NextResponse.redirect(new URL("/login", req.url));
-      response.cookies.set("returnUrl", returnUrl);
-      response.cookies.set("alertMessage", "로그인이 필요합니다.", {
-        path: "/",
-        maxAge: 5,
-      });
+  const requiresAuth =
+    currentPath.startsWith("/user") || currentPath.startsWith("/admin");
 
-      return response;
-    }
+  if (!accessToken && requiresAuth && currentPath !== "/login") {
+    const returnUrl = req.nextUrl.href;
+    const response = NextResponse.redirect(new URL("/login", req.url));
+    response.cookies.set("returnUrl", returnUrl);
+
+    response.cookies.set("alertMessage", "로그인이 필요합니다.", {
+      path: "/",
+      maxAge: 5,
+    });
+
+    return response;
   }
 
   if (verifiedUser?.type === "user" && currentPath.startsWith("/admin")) {
