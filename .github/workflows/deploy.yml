@@ -31,7 +31,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-output
-          path: .next/  # 빌드된 파일 저장
+          path: |
+            .next
+            package.json
+            node_modules  # 빌드된 파일 저장
           retention-days: 1  # 1일 동안 보관
 
   deploy:
@@ -42,7 +45,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-output
-          path: .next/  # 빌드된 파일 가져오기
+          path: .  # 빌드된 파일 가져오기
   
       - name: Deploy to Remote Server via SSH
         uses: appleboy/ssh-action@v1.0.3
