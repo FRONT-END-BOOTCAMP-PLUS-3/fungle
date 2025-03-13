@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AdminHeader, AdminMain, Table } from "../AdminPage.styled";
 import { FindAllFundingWithNovelDto } from "@/application/usecases/funding/dto/FindAllFundingWithNovel";
-import Button from "@/components/button/Button";
+import FundingCheckButton from "./components/FundingCheckButton";
 
 const Page = () => {
   const [fundings, setFundings] = useState<FindAllFundingWithNovelDto[] | null>(
@@ -60,11 +60,7 @@ const Page = () => {
                 <td>{funding.isActive ? "펀딩 진행 중" : "승인 대기"}</td>
                 <td>{funding.fundingStage}</td>
                 <td>
-                  {!funding.isActive ? (
-                    <Button buttonSize="small">펀딩 검토하러 가기</Button>
-                  ) : (
-                    "펀딩 진행 중"
-                  )}
+                  {!funding.isActive ? <FundingCheckButton /> : "펀딩 진행 중"}
                 </td>
               </tr>
             ))

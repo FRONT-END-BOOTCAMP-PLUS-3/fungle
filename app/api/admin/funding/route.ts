@@ -19,7 +19,6 @@ export const GET = async () => {
     );
 
     const fundings = await findAllFundingWithNovelUsecase.execute();
-    console.log(fundings);
     if (!fundings || fundings.length === 0) {
       return NextResponse.json(
         { message: "시작된 펀딩이 없습니다." },

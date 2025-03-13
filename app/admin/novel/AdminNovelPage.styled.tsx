@@ -20,6 +20,7 @@ export const StatusText = styled.td<{ status: string }>`
 `;
 
 export const ModalContentWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   max-height: 80vh;
