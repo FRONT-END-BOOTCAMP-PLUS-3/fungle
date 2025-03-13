@@ -1,87 +1,44 @@
-name: CI/CD Pipeline
+# 워크 플로우 이름 : 우분투 서버에서 빌드와 배포를 위한 워크 플로우
+name: "Build and Deploy to Ubuntu Server Run"
 
+# main 브랜치에 push 가 발생하면 jobs가 실행되도록 이벤트 설정
 on:
   push:
     branches:
-      - main  # main 브랜치에 push될 때 실행
+      - main # main 브랜치에 push 가 발생하면
 
+# 위에 설정된 push 이벤트를 실행할 job들의 순서를 정한다.
 jobs:
-  # 빌드 단계
+  # 첫번째 단계 : 빌드
   build:
-    runs-on: [self-hosted, fungle-server] # 직접 관리하는 서버에서 실행
+    runs-on: [self-hosted, fungle-server]
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          clean: true  # 기존 파일 삭제 후 새로 Clone
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: npm ci  # 패키지 설치
-
       - name: Build Next.js Project
-        run: npm run build  # Next.js 빌드 실행
+        run: echo "Build Next.js Project"
+  # 두번째 단계: 테스트
+  test:
+    runs-on: [self-hosted, fungle-server]
 
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-output
-          path: |
-            .next
-            package.json
-            node_modules  # 빌드된 파일 저장
-          retention-days: 1  # 1일 동안 보관
+    steps:
+      - name: Test Next.js Project
+        run: echo "Test Next.js Project"
 
+  # 세번째 단계: 배포
   deploy:
-      needs: build  # 빌드가 완료된 후 배포 실행
-      runs-on: [self-hosted, fungle-server]
-      steps:
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build-output
-          path: .  # 빌드된 파일 가져오기
-  
-      - name: Deploy to Remote Server via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_IP }}   # 서버 IP (GitHub Secrets에서 설정)
-          username: ${{ secrets.SSH_USER }}  # SSH 유저명 (GitHub Secrets에서 설정)
-          key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH 개인 키 (GitHub Secrets에서 설정)
-          port: 23  # SSH 포트
-          script: |
-            cd ~/www/fungle  # 프로젝트 폴더로 이동
-  
-            git pull origin main
-  
-            # env 파일 설정
-            cat <<EOF > .env
-            NODE_ENV=production
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
-            EMAIL_HOST=${{ secrets.EMAIL_HOST }}
-            EMAIL_PORT=${{ secrets.EMAIL_PORT }}
-            EMAIL_USER=${{ secrets.EMAIL_USER }}
-            EMAIL_PASS=${{ secrets.EMAIL_PASS }}
-            NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}
-            ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
-            REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}
-            EOF
-  
-            # 패키지 설치 및 빌드
-            npm ci
-            npm run build
-  
-            # PM2 프로세스 실행 및 재시작
-            if pm2 list | grep -q 'fungle'; then
-              echo " 프로세스 재시작..."
-              pm2 restart fungle
-            else
-              echo "새로운 프로세스 시작..."
-              pm2 start npm --name "fungle" -- run start -- -p 3040
-              pm2 save
-            fi
+    runs-on: [self-hosted, fungle-server]
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+      EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+      EMAIL_USER: ${{ secrets.EMAIL_USER }}
+      EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+      NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+      ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+      REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+
+    
+    steps:
+      - name: Deploy Next.js Project
+        run: /home/fungle/www/fungle/fungle-update.sh
