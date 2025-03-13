@@ -5,4 +5,5 @@ export interface FindAllUserDto {
   type: string;
   introduce: string;
   profileImage: string | null;
+  fundingStatus: boolean;
 }

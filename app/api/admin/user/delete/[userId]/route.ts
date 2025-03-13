@@ -1,9 +1,10 @@
 import { userDi } from "@/infrastructure/config/userDi";
-import { getParamsFromRequest } from "@/utils/params/requestParams";
 import { NextRequest, NextResponse } from "next/server";
 
 export const DELETE = async (req: NextRequest) => {
-  const { userId } = getParamsFromRequest(req, ["userId"]);
+  const urlParts = req.nextUrl.pathname.split("/");
+  const userId = urlParts[urlParts.length - 1];
+
   if (!userId) {
     return NextResponse.json(
       { error: "요청에 id를 포함해야 합니다." },
@@ -22,7 +23,7 @@ export const DELETE = async (req: NextRequest) => {
       );
 
     return NextResponse.json(
-      { message: "회원 탈퇴가 완료되었습니다." },
+      { message: "회원 삭제가 완료되었습니다." },
       { status: 200 }
     );
   } catch (error: unknown) {

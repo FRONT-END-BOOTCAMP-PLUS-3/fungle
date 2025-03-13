@@ -1,18 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  AdminHeader,
-  AdminMain,
-  Table,
-  TableWrapper,
-} from "../AdminPage.styled";
+import { AdminHeader, AdminMain, TableWrapper } from "../AdminPage.styled";
 import { FindAllUserDto } from "@/application/usecases/user/dto/FindAllUser";
 import Image from "next/image";
+import { UserTable } from "./AdminUserPage.styled";
+import DeleteUserButton from "./components/DeleteUserButton";
 
 const Page = () => {
   const [users, setUsers] = useState<FindAllUserDto[]>([]);
   const [error, setError] = useState<string>("");
+
+  const handleDeleteSuccess = (deletedUserId: string) => {
+    setUsers((prevUsers) =>
+      prevUsers.filter((user) => user.id !== deletedUserId)
+    );
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +45,7 @@ const Page = () => {
         <h1>회원 관리</h1>
       </AdminHeader>
       <TableWrapper>
-        <Table>
+        <UserTable>
           <thead>
             <tr>
               <th>id</th>
@@ -51,6 +54,7 @@ const Page = () => {
               <th>회원 유형</th>
               <th>소개</th>
               <th>프로필 사진</th>
+              <th>회원 삭제</th>
             </tr>
           </thead>
           <tbody>
@@ -70,6 +74,16 @@ const Page = () => {
                       height={100}
                     />
                   </td>
+                  <td className="delete-user">
+                    {user.fundingStatus === false ? (
+                      <DeleteUserButton
+                        userId={user.id}
+                        onDeleteSuccess={handleDeleteSuccess}
+                      />
+                    ) : (
+                      "펀딩이 진행중인 사용자는 삭제할 수 없습니다."
+                    )}
+                  </td>
                 </tr>
               ))
             ) : (
@@ -78,7 +92,7 @@ const Page = () => {
               </tr>
             )}
           </tbody>
-        </Table>
+        </UserTable>
       </TableWrapper>
     </AdminMain>
   );

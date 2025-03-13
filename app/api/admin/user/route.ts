@@ -1,14 +1,18 @@
-import { DfFindAllUserUsecase } from "@/application/usecases/user/DfFindAllUserUsecase";
+import { DfFindAllUserWithFundingStatus } from "@/application/usecases/user/DfFindAllUserWithFundingStatus";
+import { FundingRepository } from "@/domain/repositories/FundingRepository";
 import { UserRepository } from "@/domain/repositories/UserRepository";
+import { PrFundingRepository } from "@/infrastructure/repositories/PrFundingRepository";
 import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
   try {
     const userRepository: UserRepository = new PrUserRepository();
-    const findAllUserUsecase = new DfFindAllUserUsecase(userRepository);
+    const fundingRepository: FundingRepository = new PrFundingRepository();
+    const findAllUserWithFundingStatusUsecase =
+      new DfFindAllUserWithFundingStatus(userRepository, fundingRepository);
 
-    const users = await findAllUserUsecase.execute();
+    const users = await findAllUserWithFundingStatusUsecase.execute();
 
     if (users) {
       return NextResponse.json({ users }, { status: 200 });
