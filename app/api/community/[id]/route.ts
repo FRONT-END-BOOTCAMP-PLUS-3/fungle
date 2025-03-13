@@ -10,7 +10,7 @@ import { getParamsFromRequest } from "@/utils/params/requestParams";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest) => {
-  const { id } = getParamsFromRequest(request, ["episodeId"]);
+  const { id } = getParamsFromRequest(request, ["id"]);
 
   if (!id) {
     return NextResponse.json(

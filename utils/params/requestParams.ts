@@ -2,11 +2,13 @@ export const getParamsFromRequest = (
   request: Request,
   paramKeys: string[]
 ): Record<string, string | null> => {
-  const urlParts = request.url.split("/");
+  const urlParts = request.url.split("/").filter(Boolean);
   const params: Record<string, string | null> = {};
 
+  const numericValues = urlParts.filter((part) => /^\d+$/.test(part));
+
   paramKeys.forEach((key, index) => {
-    params[key] = urlParts[urlParts.length - paramKeys.length + index] || null;
+    params[key] = numericValues[index] || null;
   });
 
   return params;

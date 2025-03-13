@@ -16,7 +16,11 @@ import { loginProc } from "./actions/loginProc";
 import useAuthStore from "@/store/useAuthStore";
 import Image from "next/image";
 
-const initialState = { message: null, isLoggedIn: false, redirectUrl: "" };
+const initialState = {
+  message: null,
+  isLoggedIn: false,
+  redirectUrl: "",
+};
 
 const Page = () => {
   const router = useRouter();
@@ -34,7 +38,7 @@ const Page = () => {
 
       state.redirectUrl = "";
     }
-  }, [state, state.isLoggedIn, state.user, setUser, router]);
+  }, [state, state?.isLoggedIn, state?.user, setUser, router]);
 
   useEffect(() => {
     const alertMessage = document.cookie

@@ -68,10 +68,22 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
       };
     }
 
+    const lastUserId = cookieStore.get("lastUserId")?.value;
+    const currentUserId = data.id;
+
+    cookieStore.set("lastUserId", currentUserId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+      maxAge: 30 * 24 * 60 * 60, // 30일 유지
+    });
+
     const returnUrl = cookieStore.get("returnUrl")?.value;
-    const redirectUrl: string | null = returnUrl
-      ? decodeURIComponent(returnUrl)
-      : "/user/novel";
+    const redirectUrl =
+      returnUrl && lastUserId === currentUserId
+        ? decodeURIComponent(returnUrl)
+        : "/user/novel";
 
     cookieStore.delete("returnUrl");
 

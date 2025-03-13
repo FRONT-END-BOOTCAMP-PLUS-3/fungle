@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi";
-import { getParamsFromRequest } from "@/utils/params/requestParams";
 
 export const GET = async (req: NextRequest) => {
   try {
-    const { day } = getParamsFromRequest(req, ["day"]);
+    const urlParts = req.nextUrl.pathname.split("/").filter(Boolean);
+    const dayIndex = urlParts.indexOf("serial-day") + 1;
+    const day =
+      dayIndex > 0 && dayIndex < urlParts.length ? urlParts[dayIndex] : null;
 
     if (!day) {
       return NextResponse.json(

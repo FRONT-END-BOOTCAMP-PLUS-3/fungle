@@ -5,6 +5,7 @@ export const CommentFlexWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  padding-bottom: 1rem;
 `;
 export const CommunityLikeButton = styled.button`
   display: flex;
