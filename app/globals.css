@@ -226,6 +226,7 @@ td {
 .admin-container {
   display: flex;
   flex-direction: row;
-  width: 100vw;
+  min-width: 100vw;
+  overflow: hidden;
   background-color: var(--white-color);
 }

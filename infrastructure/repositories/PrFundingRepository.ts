@@ -14,4 +14,13 @@ export class PrFundingRepository implements FundingRepository {
 
     return funding;
   }
+
+  async getFundingStatus(): Promise<string[]> {
+    const ongoingFundings = await prisma.funding.findMany({
+      where: { status: "ongoing" },
+      select: { userId: true },
+    });
+
+    return ongoingFundings.map((funding) => funding.userId);
+  }
 }
