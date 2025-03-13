@@ -8,7 +8,7 @@ on:
 jobs:
   # 빌드 단계
   build:
-    runs-on: [self-hosted, fungle-server] # 직접 관리하는 서버에서 실행
+    runs-on: [self-hosted, fungle-runner] # 직접 관리하는 서버에서 실행
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
 
   deploy:
       needs: build  # 빌드가 완료된 후 배포 실행
-      runs-on: [self-hosted, fungle-server]
+      runs-on: [self-hosted, fungle-runner]
       steps:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
