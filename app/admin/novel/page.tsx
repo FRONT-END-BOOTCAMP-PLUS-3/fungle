@@ -11,16 +11,16 @@ import { EPISODE_STATUS } from "@/constants/EPISODE_STATUS";
 import { useModalStore } from "@/store/useModalStore";
 import Button from "@/components/button/Button";
 import Modal from "@/components/modal/Modal";
-import RejectionButton from "./components/RejectionButton";
 import { useAdminNovelStore } from "@/store/useAdminNovelStore";
 import { EpisodeWithUserInfo } from "@/application/usecases/novel/dto/EpisodeWithUserInfo";
-import ApproveButton from "./components/ApproveButton";
 import {
   AdminHeader,
   AdminMain,
   Table,
   TableWrapper,
 } from "../AdminPage.styled";
+import NovelRejectionButton from "./components/NovelRejectionButton";
+import NovelApproveButton from "./components/NovelApproveButton";
 
 const Page = () => {
   const { episodes, setEpisodes } = useAdminNovelStore();
@@ -130,8 +130,8 @@ const Page = () => {
               </p>
             </div>
             <ButtonWrapper>
-              <RejectionButton episodeId={selectedEpisode.episodeId} />
-              <ApproveButton episodeId={selectedEpisode.episodeId} />
+              <NovelRejectionButton episodeId={selectedEpisode.episodeId} />
+              <NovelApproveButton episodeId={selectedEpisode.episodeId} />
             </ButtonWrapper>
           </ModalContentWrapper>
         </Modal>

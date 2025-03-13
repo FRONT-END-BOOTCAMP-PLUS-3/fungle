@@ -2,7 +2,7 @@ import Button from "@/components/button/Button";
 import { useAdminNovelStore } from "@/store/useAdminNovelStore";
 import { useModalStore } from "@/store/useModalStore";
 
-const RejectionButton = ({ episodeId }: { episodeId: number }) => {
+const NovelRejectionButton = ({ episodeId }: { episodeId: number }) => {
   const { onClose } = useModalStore();
   const { removeEpisode } = useAdminNovelStore();
   const handleButtonClick = async () => {
@@ -29,4 +29,4 @@ const RejectionButton = ({ episodeId }: { episodeId: number }) => {
   );
 };
 
-export default RejectionButton;
+export default NovelRejectionButton;
