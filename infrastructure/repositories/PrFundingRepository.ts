@@ -23,4 +23,26 @@ export class PrFundingRepository implements FundingRepository {
 
     return ongoingFundings.map((funding) => funding.userId);
   }
+
+  async findAllFunding(): Promise<
+    | Omit<
+        Funding,
+        "createdAt" | "endDate" | "goalAmount" | "currentAmount" | "rewardType"
+      >[]
+    | null
+  > {
+    const fundings = await prisma.funding.findMany({
+      select: {
+        id: true,
+        userId: true,
+        novelId: true,
+        status: true,
+        introduce: true,
+      },
+    });
+
+    if (!fundings) return null;
+
+    return fundings;
+  }
 }

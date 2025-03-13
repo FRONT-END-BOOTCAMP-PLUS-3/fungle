@@ -48,8 +48,12 @@ const Page = () => {
 
           setEpisodes(formattedData);
         }
-      } catch {
-        throw new Error("데이터를 가져오는 데 실패했습니다.");
+      } catch (error: unknown) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : "데이터를 가져오는 데 실패했습니다."
+        );
       }
     };
 
