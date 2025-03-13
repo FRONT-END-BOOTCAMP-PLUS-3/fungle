@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import {
   CloseButton,
   DesContainer,
@@ -13,6 +13,7 @@ import {
 } from "./FundingModal.styled";
 import Button from "@/components/button/Button";
 import Input from "@/components/input/Input";
+import { loadTossPayments } from "@tosspayments/payment-sdk";
 
 interface FundingModalProps {
   isOpen: boolean;
@@ -21,17 +22,43 @@ interface FundingModalProps {
 
 const FundingModal: React.FC<FundingModalProps> = (props) => {
   const { isOpen, onClose } = props;
-  const router = useRouter();
   const [additionalAmount, setAdditionalAmount] = useState("");
-
+  const { novelId } = useParams();
   if (!isOpen) return null;
 
   const handleClose = () => onClose();
+  const handlePayment = async () => {
+    const baseAmount = 1;
+    const additional = isNaN(Number(additionalAmount))
+      ? 0
+      : Number(additionalAmount);
+    const totalAmount = baseAmount + additional;
 
-  const handlePayment = () => {
-    alert(`기본 10,000원 + 추가 ${additionalAmount}원 결제 진행`);
-    onClose();
-    router.push("/");
+    if (totalAmount <= 0) {
+      alert("올바른 금액을 입력해주세요!");
+      return;
+    }
+
+    const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY ?? "";
+    if (!clientKey) {
+      alert("결제 시스템 오류: 환경변수를 확인해주세요.");
+      return;
+    }
+
+    try {
+      const tossPayments = await loadTossPayments(clientKey);
+      await tossPayments.requestPayment("카드", {
+        amount: totalAmount,
+        orderId: `order-${Date.now()}`,
+        orderName: `${novelId} 소설 펀딩`,
+        successUrl: window.location.origin + "/funding/success",
+        failUrl: window.location.origin + "/funding/fail",
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    }
   };
 
   return (

@@ -1,6 +1,7 @@
 "use client";
+
 import React, { useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Container,
@@ -13,20 +14,16 @@ import {
 } from "./StartFunding.styled";
 import Button from "@/components/button/Button";
 import Textarea from "@/components/textarea/Textarea";
+import useAuthStore from "@/store/useAuthStore";
 
 const Page: React.FC = (): React.ReactElement => {
-  const { novelId } = useParams();
-  const router = useRouter();
   const [fundingIntro, setFundingIntro] = useState("");
+  const router = useRouter();
+  const { user } = useAuthStore();
 
-  const handleStart = (): void => {
-    alert(
-      `목표 금액: 50,000원\n펀딩 소개: ${fundingIntro}\nnovelId: ${novelId}`
-    );
-    router.push("/");
+  const handleCancel = (): void => {
+    router.back();
   };
-
-  const handleCancel = (): void => router.back();
 
   return (
     <Container>
@@ -40,7 +37,10 @@ const Page: React.FC = (): React.ReactElement => {
         />
       </ImageContainer>
 
-      <Title>{"{user.nickname}"} 작가님</Title>
+      <Title>
+        {user ? `${user.nickname} 작가님` : "유저 정보를 가져오는 중..."}
+      </Title>
+
       <SubTitle>
         소설 <strong>{"{novel.title}"}</strong>의 마지막화가 승인
         처리되었습니다.
@@ -51,7 +51,7 @@ const Page: React.FC = (): React.ReactElement => {
       </SubTitle>
 
       <Label>목표 금액</Label>
-      <Amount>50,000원</Amount>
+      <Amount>{Amount.toLocaleString()}원</Amount>
 
       <Label>펀딩 소개</Label>
       <Textarea
@@ -64,20 +64,8 @@ const Page: React.FC = (): React.ReactElement => {
       />
 
       <ButtonRow>
-        <Button
-          buttonSize="big"
-          fontSize="medium"
-          backgroudColor="primary"
-          onClick={handleStart}
-        >
-          펀딩 시작
-        </Button>
-        <Button
-          buttonSize="big"
-          fontSize="medium"
-          backgroudColor="white"
-          onClick={handleCancel}
-        >
+        <Button buttonSize="big">펀딩 시작</Button>
+        <Button buttonSize="big" onClick={handleCancel}>
           취소
         </Button>
       </ButtonRow>
