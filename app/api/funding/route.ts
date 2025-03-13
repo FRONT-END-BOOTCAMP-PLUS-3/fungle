@@ -1,18 +1,28 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { paymentKey, orderId, amount } = await req.json();
+    const { paymentKey, orderId, amount, customerName } = await req.json();
 
-    if (!paymentKey || !orderId || !amount) {
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
+    if (!paymentKey || !orderId || !amount || !customerName) {
+      console.error("❌ [API] 필수 값 누락:", {
+        paymentKey,
+        orderId,
+        amount,
+        customerName,
+      });
+      return NextResponse.json(
+        { success: false, error: "필수 값이 누락되었습니다." },
+        { status: 400 }
       );
     }
+
+    console.log("📩 [API] 결제 승인 요청:", {
+      paymentKey,
+      orderId,
+      amount,
+      customerName,
+    });
 
     const response = await fetch(
       "https://api.tosspayments.com/v1/payments/confirm",
@@ -30,35 +40,24 @@ export async function POST(req: NextRequest) {
 
     const result = await response.json();
 
-    if (response.ok) {
-      return new Response(JSON.stringify({ success: true, data: result }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
-    } else {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: result.message || "결제 승인 실패",
-        }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
+    if (!response.ok) {
+      console.error("❌ [API] 토스 결제 승인 실패:", result);
+      return NextResponse.json(
+        { success: false, error: result.message || "결제 승인 실패" },
+        { status: 400 }
       );
     }
+
+    console.log("✅ [API] 결제 승인 성공:", result);
+    return NextResponse.json({ success: true, data: result, customerName });
   } catch (error) {
     console.error("❌ [API] 서버 오류 발생:", error);
-
-    return new Response(
-      JSON.stringify({
+    return NextResponse.json(
+      {
         success: false,
         error: error instanceof Error ? error.message : "서버 오류 발생",
-      }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
+      },
+      { status: 500 }
     );
   }
 }
