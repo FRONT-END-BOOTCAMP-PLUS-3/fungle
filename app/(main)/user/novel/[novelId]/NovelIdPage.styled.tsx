@@ -67,7 +67,6 @@ export const NovelHeader = styled.div`
   .body1 {
     margin: 1rem 3rem 0 3rem;
     color: var(--white-color);
-    white-space: pre-line;
   }
 
   .novel-image{
