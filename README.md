@@ -44,56 +44,28 @@
 | [정현수(T)](https://github.com/hyun9758)| [김민경](https://github.com/m01310g) | [손혜인](https://github.com/hyein07100) | [빈운기](https://github.com/goorm12) |
 | -- | -- | -- | -- |
 | <img src="https://avatars.githubusercontent.com/u/82191626?v=4" width="200"> | <img src="https://avatars.githubusercontent.com/u/162336698?v=4" width="200"> | <img src="https://avatars.githubusercontent.com/u/130124509?v=4" width="200"> | <img src="https://avatars.githubusercontent.com/u/170397987?v=4" width="200"> |
-
-
-
-
-## 기능 영상
-### 회원가입 & 로그인
-
-
-
+## 📺 기능 영상
+### 1️⃣ 회원가입 & 로그인
 https://github.com/user-attachments/assets/dd0eb116-f429-4040-8506-43eff3d0d4bf
 
-
-### 메인 페이지 
-
-
+### 2️⃣ 메인 페이지 
 https://github.com/user-attachments/assets/be429225-2e59-4624-aee5-ffb37f97ee38
 
-
-
-### 소설 책 생성 & 에피소드 등록
-
-
+### 3️⃣ 소설 책 생성 & 에피소드 등록
 https://github.com/user-attachments/assets/b54db9b7-13a9-42c5-99b4-eaa2355ed7bc
 
-
-
-### 커뮤니티 리스트
-
-
+### 4️⃣ 커뮤니티 리스트
 https://github.com/user-attachments/assets/3f92dfa4-7f54-4c87-a69f-a08ce72b7d6b
- ### 커뮤니티 페이지 네이션
 
+### 5️⃣ 커뮤니티 페이지 네이션
 https://github.com/user-attachments/assets/5a7330e9-139e-427c-9ae9-80e794052380
 
-
-
-### 커뮤니티 작성 & 수정 & 삭제 
-
-
+### 6️⃣ 커뮤니티 작성 & 수정 & 삭제 
 https://github.com/user-attachments/assets/e036051d-b0aa-4c99-baea-65052925c28c
 
-
-### 커뮤니티 댓글 작성 & 수정 & 삭제
-
-
+### 7️⃣ 커뮤니티 댓글 작성 & 수정 & 삭제
 https://github.com/user-attachments/assets/10e2689b-bfff-4a90-a8a4-1ff2a5c30c03
 
-
-### 마이페이지 유저 수정 & 탈퇴
-
-
+### 8️⃣ 마이페이지 유저 수정 & 탈퇴
 https://github.com/user-attachments/assets/faaf9c76-4136-44c4-bef3-0e001a2126e0
 
