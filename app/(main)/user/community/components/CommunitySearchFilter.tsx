@@ -100,51 +100,57 @@ const CommunitySearchFilter = ({ onSearch }: CommunitySearchFilterProps) => {
         })}
       </SearchFieldUl>
       <SearchBox>
-        <Dropdown
-          options={COMMUNITY_POST}
-          onSelect={setSelectedSearchField}
-          selected={selectedSearchField}
-          size="small"
-        />
-        <Input
-          label="검색 내용"
-          hideLabel={true}
-          placeholder={PLACEHOLDER_MAP[selectedSearchField]}
-          src="/icon/search.svg"
-          value={currentSearchValue}
-          onChange={(e) => {
-            if (selectedSearchField === "title") {
-              setSearchTitle(e.target.value);
-            } else if (selectedSearchField === "author") {
-              setSearchAuthor(e.target.value);
-            } else if (selectedSearchField === "content") {
-              setSearchContent(e.target.value);
-            }
-          }}
-        />
+        <div style={{ width: "10rem" }}>
+          <Dropdown
+            options={COMMUNITY_POST}
+            onSelect={setSelectedSearchField}
+            selected={selectedSearchField}
+          />
+        </div>
+        <div style={{ width: "100%" }}>
+          <Input
+            label="검색 내용"
+            hideLabel={true}
+            placeholder={PLACEHOLDER_MAP[selectedSearchField]}
+            src="/icon/search.svg"
+            value={currentSearchValue}
+            onChange={(e) => {
+              if (selectedSearchField === "title") {
+                setSearchTitle(e.target.value);
+              } else if (selectedSearchField === "author") {
+                setSearchAuthor(e.target.value);
+              } else if (selectedSearchField === "content") {
+                setSearchContent(e.target.value);
+              }
+            }}
+          />
+        </div>
       </SearchBox>
       <RecruitmentWrapper>
-        <Dropdown
-          options={RECRUITMENT_FIELDS}
-          onSelect={handleRecruitmentSelect}
-          selected={searchRecruitment}
-          size="small"
-        />
-        <Input
-          label="모집분야"
-          hideLabel={true}
-          placeholder="모집분야를 입력하세요"
-          iconPosition="left"
-          src="/icon/hashtag.svg"
-          value={searchRecruitment}
-          onChange={(e) => {
-            const newArray = e.target.value
-              .split(",")
-              .map((str) => str.trim())
-              .filter((str) => str.length > 0);
-            setSearchRecruitment(newArray);
-          }}
-        />
+        <div style={{ width: "10rem" }}>
+          <Dropdown
+            options={RECRUITMENT_FIELDS}
+            onSelect={handleRecruitmentSelect}
+            selected={searchRecruitment}
+          />
+        </div>
+        <div style={{ width: "100%" }}>
+          <Input
+            label="모집분야"
+            hideLabel={true}
+            placeholder="모집분야를 입력하세요"
+            iconPosition="left"
+            src="/icon/hashtag.svg"
+            value={searchRecruitment}
+            onChange={(e) => {
+              const newArray = e.target.value
+                .split(",")
+                .map((str) => str.trim())
+                .filter((str) => str.length > 0);
+              setSearchRecruitment(newArray);
+            }}
+          />
+        </div>
       </RecruitmentWrapper>
       <Button buttonSize="big">검색</Button>
     </Form>
