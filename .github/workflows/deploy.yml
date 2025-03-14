@@ -27,17 +27,6 @@ jobs:
   # 세번째 단계: 배포
   deploy:
     runs-on: [self-hosted, fungle-server]
-
-    env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-      EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
-      EMAIL_USER: ${{ secrets.EMAIL_USER }}
-      EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-      NEXT_PUBLIC_BASE_URL: ${{  secrets.NEXT_PUBLIC_BASE_URL }}
-      ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
-      REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
-
     
     steps:
       - name: Deploy Next.js Project
