@@ -51,7 +51,7 @@ export const AuthorMeta = styled.div`
 export const Content = styled.div`
   font-size: var(--font-size-base);
   margin-bottom: 5rem;
-  white-space: pre-line;
+  white-space: pre-line; //개행 처리
 `
 
 export const CommentWrapper = styled.div`
