@@ -52,6 +52,10 @@
 ### 회원가입 & 로그인
 
 
+
+https://github.com/user-attachments/assets/dd0eb116-f429-4040-8506-43eff3d0d4bf
+
+
 ### 메인 페이지 
 
 
@@ -81,3 +85,7 @@ https://github.com/user-attachments/assets/10e2689b-bfff-4a90-a8a4-1ff2a5c30c03
 
 
 ### 마이페이지 유저 수정 & 탈퇴
+
+
+https://github.com/user-attachments/assets/faaf9c76-4136-44c4-bef3-0e001a2126e0
+
