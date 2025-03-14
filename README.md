@@ -59,7 +59,15 @@ https://github.com/user-attachments/assets/dd0eb116-f429-4040-8506-43eff3d0d4bf
 ### 메인 페이지 
 
 
+https://github.com/user-attachments/assets/be429225-2e59-4624-aee5-ffb37f97ee38
+
+
+
 ### 소설 책 생성 & 에피소드 등록
+
+
+https://github.com/user-attachments/assets/b54db9b7-13a9-42c5-99b4-eaa2355ed7bc
+
 
 
 ### 커뮤니티 리스트
