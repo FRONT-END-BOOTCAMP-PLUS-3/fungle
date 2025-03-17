@@ -6,7 +6,7 @@
 <br><br>
 우리는 단순한 연재 플랫폼이 아닌 펀딩 시스템을 통해 작가가 정식 데뷔할 수 있도록 지원하는 새로운 형태의 창작 생태계를 제공하기 위해 <strong>'펀글'</strong> 을 만들었습니다.<br>
 <a href="https://fungle.site" target="_blank"><strong>Fungle 이용하러 가기 ➡️</strong></a>
-</div align=center>
+</div>
 
 ## 🛠️ 기술 스택
 - **프레임워크**: ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=Next.js&logoColor=white)
@@ -76,6 +76,25 @@ https://github.com/user-attachments/assets/faaf9c76-4136-44c4-bef3-0e001a2126e0
 ├── 📂 utils           # 공통적으로 사용하는 유틸리티 함수
 └── 📜 README.md       # 프로젝트 설명
 ```
+## ‼️ 설치 가이드
+1. 저장소 클론
+```plaintext
+git clone https://github.com/FRONT-END-BOOTCAMP-PLUS-3/fungle.git
+```
+2. 의존성 설치
+```plaintext
+npm install
+```
+3. 실행
+```plaintext
+npm run dev
+```
+
+## 👷 버전 기록
+| 버전 | 업데이트 내용 | 업데이트 날짜 |
+| :--: | :--: | :--: |
+| `v1.0.0` | Fungle 서비스 오픈 | 25.03.14 |
+
 ## 🧑‍🧑‍🧒 프로젝트 구성원
 | [정현수(T)](https://github.com/hyun9758)| [김민경](https://github.com/m01310g) | [손혜인](https://github.com/hyein07100) | [빈운기](https://github.com/goorm12) |
 | -- | -- | -- | -- |
