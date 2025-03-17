@@ -23,6 +23,8 @@ export const ListItem = styled.div<ListItemProps>`
 export const Rank = styled.span`
   font-size: var(--font-size-xxl);
   font-weight: bold;
+  width: 2rem;
+  text-align: center;
 `;
 
 export const Thumbnail = styled.div`
