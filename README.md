@@ -104,5 +104,3 @@ fungle123!
 | [정현수(T)](https://github.com/hyun9758)| [김민경](https://github.com/m01310g) | [손혜인](https://github.com/hyein07100) | [빈운기](https://github.com/goorm12) |
 | -- | -- | -- | -- |
 | <img src="https://avatars.githubusercontent.com/u/82191626?v=4" width="200"> | <img src="https://avatars.githubusercontent.com/u/162336698?v=4" width="200"> | <img src="https://avatars.githubusercontent.com/u/130124509?v=4" width="200"> | <img src="https://avatars.githubusercontent.com/u/170397987?v=4" width="200"> |
-
-
