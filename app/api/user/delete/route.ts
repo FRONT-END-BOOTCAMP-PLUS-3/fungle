@@ -13,7 +13,7 @@ export const DELETE = async () => {
       );
     }
 
-    const isSuccess = await userDi.deleteUserUsecase.execute(userId);
+    const isSuccess = await userDi.deleteUserByUserIdUsecase.execute(userId);
 
     if (!isSuccess)
       return NextResponse.json(

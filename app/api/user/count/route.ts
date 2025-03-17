@@ -1,7 +1,4 @@
-import { DfGetUserStatsUsecase } from "@/application/usecases/user/DfGetUserStatsUsecase";
 import { userDi } from "@/infrastructure/config/userDi";
-import { PrCommunityPostRepository } from "@/infrastructure/repositories/PrCommunityPostRepository";
-import { PrNovelRepository } from "@/infrastructure/repositories/PrNovelRepostiory";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
@@ -15,15 +12,7 @@ export const GET = async () => {
   }
 
   try {
-    const novelRepository = new PrNovelRepository();
-    const communityPostRepository = new PrCommunityPostRepository();
-
-    const getUserStatsUsecase = new DfGetUserStatsUsecase(
-      novelRepository,
-      communityPostRepository
-    );
-
-    const counts = await getUserStatsUsecase.execute(userId);
+    const counts = await userDi.getUserStatsByUserIdUsecase.execute(userId);
 
     return NextResponse.json({ counts }, { status: 200 });
   } catch (error: unknown) {

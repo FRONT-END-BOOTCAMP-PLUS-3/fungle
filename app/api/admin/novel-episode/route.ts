@@ -1,16 +1,11 @@
-import { DfNovelEpisodeWithUserInfoUsecase } from "@/application/usecases/novel/DfNovelEpisodeWithUserInfoUsecase";
 import { NovelEpisodeWithUserInfo } from "@/application/usecases/novel/dto/NovelEpisodeWithUserInfo";
-import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelEpisodeRepository";
+import { adminDi } from "@/infrastructure/config/adminDi";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
   try {
-    const novelEpisodeRepository = new PrNovelEpisodeRepository();
-    const novelEpisodeWithUserInfoUsecase =
-      new DfNovelEpisodeWithUserInfoUsecase(novelEpisodeRepository);
-
     const data: NovelEpisodeWithUserInfo[] =
-      await novelEpisodeWithUserInfoUsecase.execute();
+      await adminDi.novelEpisodeWithUserInfoUsecase.execute();
 
     return NextResponse.json({ success: true, data }, { status: 200 });
   } catch {

@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import { DfLikedCommunityPostsUsecase } from "@/application/usecases/community/DfLikedCommunityPostsUsecase";
-import { PrCommunityPostLikeRepository } from "@/infrastructure/repositories/PrCommunityPostLikeRepository";
 import { userDi } from "@/infrastructure/config/userDi";
 import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community/dto/PostWithCountAndRecruitmentDto";
 
@@ -14,13 +12,8 @@ export const GET = async () => {
       );
     }
 
-    const communityPostLikeRepository = new PrCommunityPostLikeRepository();
-    const likedCommunityPostsUsecase = new DfLikedCommunityPostsUsecase(
-      communityPostLikeRepository
-    );
-
     const likedPosts: PostWithCountAndRecruitmentDto[] =
-      await likedCommunityPostsUsecase.execute(userId);
+      await userDi.likedCommunityPostsUsecase.execute(userId);
 
     return NextResponse.json({ likedPosts }, { status: 200 });
   } catch (error: unknown) {

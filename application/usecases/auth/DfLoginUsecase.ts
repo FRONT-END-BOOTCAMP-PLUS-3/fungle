@@ -5,7 +5,7 @@ import { LoginResponseDto } from "./dto/LoginResponseDto";
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { AuthRepository } from "@/domain/repositories/AuthRepository";
 
-export class LoginUsecase {
+export class DfLoginUsecase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly authRepository: AuthRepository,

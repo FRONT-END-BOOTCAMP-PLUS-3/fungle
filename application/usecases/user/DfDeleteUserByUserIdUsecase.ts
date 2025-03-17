@@ -1,16 +1,16 @@
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { FileService } from "@/infrastructure/services/FileService";
 import path from "path";
-import { DfNovelByUserIdUsecase } from "../novel/DfNovelByUserIdUsecase";
+import { DfGetNovelByUserIdUsecase } from "../novel/DfGetNovelByUserIdUsecase";
 import { NovelsByUserIdDto } from "../novel/dto/NovelsByUserId";
-import { DfFundingUsecase } from "../funding/DfFundingUsecase";
+import { DfGetFundingByUserIdUsecase } from "../funding/DfGetFundingByNovelIdUsecase";
 
-export class DfDeleteUserUsecase {
+export class DfDeleteUserByUserIdUsecase {
   constructor(
     private userRepository: UserRepository,
-    private readonly novelByUserIdUsecase: DfNovelByUserIdUsecase,
+    private readonly novelByUserIdUsecase: DfGetNovelByUserIdUsecase,
     private fileService: FileService,
-    private readonly fundingUsecase: DfFundingUsecase
+    private readonly getFundingByUserIdUsecase: DfGetFundingByUserIdUsecase
   ) {}
 
   async execute(userId: string): Promise<boolean> {
@@ -18,7 +18,7 @@ export class DfDeleteUserUsecase {
       (await this.novelByUserIdUsecase.execute(userId)) || [];
 
     const fundingResults = await Promise.all(
-      novels.map((novel) => this.fundingUsecase.execute(novel.id))
+      novels.map((novel) => this.getFundingByUserIdUsecase.execute(novel.id))
     );
 
     for (let i = 0; i < novels.length; i++) {

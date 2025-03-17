@@ -1,6 +1,6 @@
 import { UserRepository } from "@/domain/repositories/UserRepository";
 
-export class DfUpdateIntroduceUsecase {
+export class DfUpdateIntroduceByUserIdUsecase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(userId: string, introduce: string) {

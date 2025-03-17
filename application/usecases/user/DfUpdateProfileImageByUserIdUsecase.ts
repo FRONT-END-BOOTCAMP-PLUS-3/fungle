@@ -2,7 +2,7 @@ import { UserRepository } from "@/domain/repositories/UserRepository";
 import { UpdateProfileImageDto } from "./dto/UpdateProfileImage";
 import { FileService } from "@/infrastructure/services/FileService";
 
-export class DfUpdateProfileImage {
+export class DfUpdateProfileImageByUserId {
   constructor(
     private userRepository: UserRepository,
     private fileService: FileService

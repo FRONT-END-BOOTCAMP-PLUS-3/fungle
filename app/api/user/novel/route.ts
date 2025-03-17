@@ -1,17 +1,5 @@
-import { DfFundingUsecase } from "@/application/usecases/funding/DfFundingUsecase";
-import { DfDeleteNovelUsecase } from "@/application/usecases/novel/DfDeleteNovelUsecase";
-import { DfEpisodeByUserIdUsecase } from "@/application/usecases/novel/DfEpisodeByUserIdUsecase";
-import { DfNovelByUserIdUsecase } from "@/application/usecases/novel/DfNovelByUserIdUsecase";
-import { DfUpdateNovelSerialStatusUsecase } from "@/application/usecases/novel/DfUpdateNovelSerialStatusUsecase";
 import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUserId";
-import { FundingRepository } from "@/domain/repositories/FundingRepository";
-import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
-import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { userDi } from "@/infrastructure/config/userDi";
-import { PrFundingRepository } from "@/infrastructure/repositories/PrFundingRepository";
-import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelEpisodeRepository";
-import { PrNovelRepository } from "@/infrastructure/repositories/PrNovelRepostiory";
-import { FileService } from "@/infrastructure/services/FileService";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async () => {
@@ -25,22 +13,8 @@ export const GET = async () => {
       );
     }
 
-    const novelRepository: NovelRepository = new PrNovelRepository();
-    const episodeRepository: NovelEpisodeRepository =
-      new PrNovelEpisodeRepository();
-    const fundingRepository: FundingRepository = new PrFundingRepository();
-
-    const novelEpisodeByUserIdUsecase = new DfEpisodeByUserIdUsecase(
-      episodeRepository
-    );
-    const novelByUserIdUsecase = new DfNovelByUserIdUsecase(
-      novelRepository,
-      novelEpisodeByUserIdUsecase
-    );
-    const fundingUsecase = new DfFundingUsecase(fundingRepository);
-
     const novels: NovelsByUserIdDto[] | null =
-      await novelByUserIdUsecase.execute(userId);
+      await userDi.getNovelByUserIdUsecase.execute(userId);
 
     if (!novels) {
       return NextResponse.json({ novels: null }, { status: 400 });
@@ -48,7 +22,9 @@ export const GET = async () => {
 
     const novelsWithFunding = await Promise.all(
       novels.map(async (novel) => {
-        const funding = await fundingUsecase.execute(novel.id);
+        const funding = await userDi.getFundingByUserIdUsecase.execute(
+          novel.id
+        );
         return {
           ...novel,
           hasActiveFunding: funding?.hasActiveFunding ?? false,
@@ -88,14 +64,7 @@ export const DELETE = async (req: NextRequest) => {
       );
     }
 
-    const novelRepository: NovelRepository = new PrNovelRepository();
-    const fileService = new FileService();
-    const deleteNovelUsecase = new DfDeleteNovelUsecase(
-      novelRepository,
-      fileService
-    );
-
-    const result = await deleteNovelUsecase.execute(novelId);
+    const result = await userDi.deleteNovelByNovelIdUsecase.execute(novelId);
 
     if (!result.success) {
       return NextResponse.json({ error: result.message }, { status: 400 });
@@ -140,12 +109,7 @@ export const PATCH = async (req: NextRequest) => {
       );
     }
 
-    const novelRepository: NovelRepository = new PrNovelRepository();
-    const updateNovelSerialStatusUsecase = new DfUpdateNovelSerialStatusUsecase(
-      novelRepository
-    );
-
-    const result = await updateNovelSerialStatusUsecase.execute(
+    const result = await userDi.updateNovelSerialStatusByNovelIdUsecase.execute(
       novelId,
       status
     );
