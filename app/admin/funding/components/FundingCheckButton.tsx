@@ -11,7 +11,7 @@ import FundingApproveButton from "./FundingApproveButton";
 import FundingRejectionButton from "./FundingRejectionButton";
 
 const FundingCheckButton = () => {
-  const { isOpen, openModal, onClose } = useModalStore();
+  const { isOpen, openModal } = useModalStore();
 
   return (
     <>
