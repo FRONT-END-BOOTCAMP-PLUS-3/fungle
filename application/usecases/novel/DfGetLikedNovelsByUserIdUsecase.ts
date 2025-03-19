@@ -1,7 +1,7 @@
 import { NovelLikeRepository } from "@/domain/repositories/NoveLikeRepository";
 import { LikedNovelDto } from "./dto/LikedNovel";
 
-export class DfLikedNovelsUsecase {
+export class DfGetLikedNovelsByUserIdUsecase {
   constructor(private readonly novelLikeRepository: NovelLikeRepository) {}
 
   async execute(userId: string): Promise<LikedNovelDto[]> {

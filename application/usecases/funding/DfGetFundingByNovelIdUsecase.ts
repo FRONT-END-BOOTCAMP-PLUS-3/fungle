@@ -1,7 +1,7 @@
 import { FundingRepository } from "@/domain/repositories/FundingRepository";
 import { FundingDto } from "./dto/Funding";
 
-export class DfFundingUsecase {
+export class DfGetFundingByUserIdUsecase {
   constructor(private readonly fundingRepository: FundingRepository) {}
 
   async execute(novelId: number): Promise<FundingDto | null> {

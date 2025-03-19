@@ -1,7 +1,4 @@
-import { DfDeleteNovelEpisodeUsecase } from "@/application/usecases/novel/DfDeleteNovelEpisodeUsecase";
-import { DfUpdateNovelEpisodeStatusUsecase } from "@/application/usecases/novel/DfUpdateNovelEpisodeStatusUsecase";
-import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
-import { PrNovelEpisodeRepository } from "@/infrastructure/repositories/PrNovelEpisodeRepository";
+import { adminDi } from "@/infrastructure/config/adminDi";
 import { getParamsFromRequest } from "@/utils/params/requestParams";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,12 +13,9 @@ export const DELETE = async (request: NextRequest) => {
   }
 
   try {
-    const novelEpisodeRepository = new PrNovelEpisodeRepository();
-    const deleteNovelEpisodeUsecase = new DfDeleteNovelEpisodeUsecase(
-      novelEpisodeRepository
+    await adminDi.deleteNovelEpisodeByEpisodeIdUsecase.execute(
+      Number(episodeId)
     );
-
-    await deleteNovelEpisodeUsecase.execute(Number(episodeId));
     return NextResponse.json(
       { message: "에피소드가 성공적으로 삭제되었습니다." },
       { status: 200 }
@@ -45,13 +39,9 @@ export const PATCH = async (request: NextRequest) => {
   }
 
   try {
-    const novelEpisodeRepository: NovelEpisodeRepository =
-      new PrNovelEpisodeRepository();
-    const updateNovelEpisodeStatus = new DfUpdateNovelEpisodeStatusUsecase(
-      novelEpisodeRepository
+    await adminDi.updateNovelEpisodesStatusByEpisodeIdUsecase.execute(
+      Number(episodeId)
     );
-
-    await updateNovelEpisodeStatus.execute(Number(episodeId));
     return NextResponse.json(
       { message: "에피소드가 성공적으로 등록되었습니다." },
       { status: 200 }

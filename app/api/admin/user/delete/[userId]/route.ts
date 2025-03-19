@@ -1,4 +1,4 @@
-import { userDi } from "@/infrastructure/config/userDi";
+import { adminDi } from "@/infrastructure/config/adminDi";
 import { NextRequest, NextResponse } from "next/server";
 
 export const DELETE = async (req: NextRequest) => {
@@ -13,7 +13,7 @@ export const DELETE = async (req: NextRequest) => {
   }
 
   try {
-    const isSuccess = await userDi.deleteUserUsecase.execute(userId);
+    const isSuccess = await adminDi.deleteUserByUserIdUsecase.execute(userId);
     if (!isSuccess)
       return NextResponse.json(
         {

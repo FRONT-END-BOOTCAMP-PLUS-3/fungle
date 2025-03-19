@@ -1,7 +1,4 @@
-import { DfUpdateNicknameUsecase } from "@/application/usecases/user/DfUpdateNicknameUsecase";
-import { UserRepository } from "@/domain/repositories/UserRepository";
 import { userDi } from "@/infrastructure/config/userDi";
-import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 import { NicknameError } from "@/application/usecases/user/error/NicknameError";
 
@@ -14,13 +11,10 @@ export const PATCH = async (req: NextRequest) => {
     );
   }
 
-  const userRepository: UserRepository = new PrUserRepository();
-
   const { newNickname } = await req.json();
-  const updateNicknameUsecase = new DfUpdateNicknameUsecase(userRepository);
 
   try {
-    const updatedNickname = await updateNicknameUsecase.execute(
+    const updatedNickname = await userDi.updateNicknameByUserIdUsecase.execute(
       userId,
       newNickname
     );

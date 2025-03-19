@@ -1,7 +1,7 @@
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { NicknameError } from "./error/NicknameError";
 
-export class DfUpdateNicknameUsecase {
+export class DfUpdateNicknameByUserIdUsecase {
   constructor(private userRepository: UserRepository) {}
 
   async execute(userId: string, newNickname: string) {

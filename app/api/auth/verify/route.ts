@@ -1,9 +1,4 @@
-import { DfRefreshTokenUsecase } from "@/application/usecases/auth/DfRefreshTokenUsecase";
-import { DfVerifyAccessTokenUsecase } from "@/application/usecases/auth/DfVerifyAccessTokenUsecase";
-import { AuthRepository } from "@/domain/repositories/AuthRepository";
-import { UserRepository } from "@/domain/repositories/UserRepository";
-import { PrAuthRepository } from "@/infrastructure/repositories/PrAuthRepository";
-import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
+import { authDi } from "@/infrastructure/config/authDi";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -16,19 +11,11 @@ export async function GET() {
     return NextResponse.json({ user: null }, { status: 401 });
   }
 
-  const userRepository: UserRepository = new PrUserRepository();
-  const authRepository: AuthRepository = new PrAuthRepository();
-
-  const verifyAccessTokenUsecase = new DfVerifyAccessTokenUsecase(
-    userRepository
-  );
-  const refreshTokenUsecase = new DfRefreshTokenUsecase(authRepository);
-
   let verifiedUser = null;
   let decodedAccessToken = null;
 
   if (accessToken) {
-    const result = await verifyAccessTokenUsecase.execute(accessToken);
+    const result = await authDi.verifyAccessTokenUsecase.execute(accessToken);
     verifiedUser = result?.verifiedUser;
     decodedAccessToken = result?.decodedAccessToken;
 
@@ -41,9 +28,8 @@ export async function GET() {
   }
 
   try {
-    const { accessToken: newAccessToken } = await refreshTokenUsecase.execute(
-      refreshToken
-    );
+    const { accessToken: newAccessToken } =
+      await authDi.refreshTokenUsecase.execute(refreshToken);
 
     cookieStore.set("accessToken", newAccessToken, {
       httpOnly: true,
