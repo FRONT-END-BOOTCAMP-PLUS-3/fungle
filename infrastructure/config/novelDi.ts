@@ -18,13 +18,13 @@ import { DfBannerNovelsUsecase } from "@/application/usecases/novel/DfBannerNove
 import { DfEpisodeByIdUsecase } from "@/application/usecases/novel/DfEpisodeByIdUsecase";
 import { DfTopNovelsUsecase } from "@/application/usecases/novel/DfTopNovelsUsecase";
 import { DfSearchNovelsUsecase } from "@/application/usecases/novel/DfSearchNovelsUsecase";
-
 import { DfNovelCommentCountUsecase } from "@/application/usecases/novel/comments/DfNovelCommentCountUsecase";
 import { DfNovelCommentCreateUsecase } from "@/application/usecases/novel/comments/DfNovelCommentCreateUsecase";
 import { DfNovelCommentDeleteUsecase } from "@/application/usecases/novel/comments/DfNovelCommentDeleteUsecase";
 import { DfNovelCommentUpdateUsecase } from "@/application/usecases/novel/comments/DfNovelCommentUpdateUsecase";
 import { DfNovelToggleCommentUsecase } from "@/application/usecases/novel/comments/DfNovelToggleCommentUsecase";
 import { DfgetNovelCommentUsecase } from "@/application/usecases/novel/comments/DfNovelgetCommentUsecase";
+import { DfCheckNovelLikeStatusUsecase } from "@/application/usecases/novel/DfCheckNovelLikeStatusUsecase";
 
 export const novelDi = {
   novelRepository: new PrNovelRepository(),
@@ -103,5 +103,8 @@ export const novelDi = {
   toggleCommentLikeUsecase: new DfNovelToggleCommentUsecase(
     new PrNovelCommentLikeRepository()
   ),
+  checkNovelLikeStatusUsecase: new DfCheckNovelLikeStatusUsecase(
+    new PrNovelLikeRepository()
+  )
 
 };

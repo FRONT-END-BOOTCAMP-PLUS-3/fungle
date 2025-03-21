@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { novelDi } from "@/infrastructure/config/novelDi";
+import { userDi } from "@/infrastructure/config/userDi";
 import { getParamsFromRequest } from "@/utils/params/requestParams";
 
 export const GET = async (req: NextRequest) => {
@@ -32,7 +33,16 @@ export const GET = async (req: NextRequest) => {
     const episodes = await novelDi.getEpisodesByNovelIdUseCase.execute(
       parsedNovelId
     );
-    return NextResponse.json({ ...novel, episodes }, { status: 200 });
+
+    const userId = await userDi.getUserIdUsecase.execute();
+    let isLiked = false;
+
+    if (userId) {
+      isLiked = await novelDi.checkNovelLikeStatusUsecase.execute(parsedNovelId, userId);
+    }
+
+    
+    return NextResponse.json({ ...novel, episodes, isLiked }, { status: 200 });
   } catch (error) {
     console.error("소설 조회 오류:", error);
     return NextResponse.json({ error: "서버 내부 오류" }, { status: 500 });

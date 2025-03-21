@@ -81,4 +81,10 @@ export class PrNovelLikeRepository implements NovelLikeRepository {
       nickname: like.novel.user.nickname,
     }));
   }
+  async isNovelLikedByUser(novelId: number, userId: string): Promise<boolean> {
+    const existing = await prisma.novelLike.findUnique({
+      where: { userId_novelId: { userId, novelId } },
+    });
+    return !!existing;
+  }
 }

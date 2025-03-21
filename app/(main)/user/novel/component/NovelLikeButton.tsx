@@ -11,10 +11,11 @@ import {
 interface LikeButtonProps {
   novelId: number;
   initialLikeCount: number;
+  initialIsLiked: boolean;
 }
 
-const LikeButton = ({ novelId, initialLikeCount }: LikeButtonProps) => {
-  const [liked, setLiked] = useState(false);
+const LikeButton = ({ novelId, initialLikeCount,initialIsLiked  }: LikeButtonProps) => {
+  const [liked, setLiked] = useState(initialIsLiked);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
 
   const toggleLike = async () => {

@@ -5,4 +5,5 @@ export interface NovelLikeRepository {
   toggleLike(novelId: number, userId: string): Promise<ToggleNovelLikeDto>;
   getLikeCountByNovelId(novelId: number): Promise<number>;
   getLikedNovelsByUserId(userId: string): Promise<LikedNovelDto[]>;
+  isNovelLikedByUser(novelId: number, userId: string): Promise<boolean>;
 }
