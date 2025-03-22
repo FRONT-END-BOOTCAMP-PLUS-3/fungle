@@ -45,7 +45,7 @@ const Page = () => {
           throw new Error(`Failed to fetch novel: ${response.statusText}`);
         }
 
-        const data: NovelDto & { isLiked?: boolean } = await response.json();
+        const data: NovelDto & { isLiked: boolean } = await response.json();
 
         const formattedEpisodes = data.episodes.map((episode) => ({
           ...episode,
