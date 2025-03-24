@@ -1,28 +1,3 @@
-/* font faces */
-@font-face {
-  font-family: "Pretendard";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
-    format("woff");
-  font-weight: 400; /* Regular */
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Pretendard";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff")
-    format("woff");
-  font-weight: 600; /* Semi-Bold */
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Pretendard";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff")
-    format("woff");
-  font-weight: 700; /* Bold */
-  font-style: normal;
-}
-
 /* initial reset */
 * {
   padding: 0;
@@ -57,6 +32,8 @@ body {
   --font-size-xl: 1.25rem;
   --font-size-xxl: 1.5rem;
   --font-size-sm: 0.625rem;
+
+  --font-family: var(--font-pretendard);
 
   --white-color: #ffffff;
   --black-color: #212121;
@@ -93,7 +70,7 @@ body {
 
 /*typography*/
 body {
-  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family: var(--font-family), -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
   line-height: 2;
