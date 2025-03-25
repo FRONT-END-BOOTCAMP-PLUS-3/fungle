@@ -2,12 +2,14 @@ import { FundingRepository } from "@/domain/repositories/FundingRepository";
 import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { FindAllFundingWithNovelDto } from "./dto/FindAllFundingWithNovel";
 import { FundingStageRepository } from "@/domain/repositories/FundingStageRepository";
+import { UserRepository } from "@/domain/repositories/UserRepository";
 
 export class DfFindAllFundingWithNovelUsecase {
   constructor(
     private readonly novelRepository: NovelRepository,
     private readonly fundingRepository: FundingRepository,
-    private readonly fundingStageRepository: FundingStageRepository
+    private readonly fundingStageRepository: FundingStageRepository,
+    private readonly userRepository: UserRepository
   ) {}
 
   async execute(): Promise<FindAllFundingWithNovelDto[] | null> {
@@ -26,9 +28,12 @@ export class DfFindAllFundingWithNovelUsecase {
               String(funding.id)
             );
 
+          const user = await this.userRepository.getUserById(funding.userId);
+
           return fundingStages.map((stage) => ({
             id: funding.id,
             userId: funding.userId,
+            userNickname: user?.nickname || "",
             novelId: funding.novelId,
             status: funding.status,
             introduce: funding.introduce,
