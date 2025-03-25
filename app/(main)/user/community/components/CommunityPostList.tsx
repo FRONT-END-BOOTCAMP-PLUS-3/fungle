@@ -23,8 +23,8 @@ import CommunityPostStats from "./CommunityPostStats";
 import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community/dto/PostWithCountAndRecruitmentDto";
 import CommunityPagination from "./CommunityPagination";
 import { SearchParams } from "../page";
-import Loading from "../loading";
 import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
+import PostSkeleton from "./skeleton/PostSkeleton";
 
 interface CommunityPostListProps {
   searchParams: SearchParams;
@@ -116,7 +116,7 @@ const CommunityPostList = ({
   }
 
   if (isLoading) {
-    return <Loading />;
+    return <PostSkeleton />;
   }
 
   if (posts.length === 0) {
