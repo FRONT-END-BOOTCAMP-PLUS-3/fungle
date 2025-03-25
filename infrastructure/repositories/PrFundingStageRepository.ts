@@ -2,7 +2,7 @@ import { FundingStageRepository } from "@/domain/repositories/FundingStageReposi
 import { prisma } from "../config/prisma";
 import { FundingStage } from "@prisma/client";
 
-export class PrFundingStage implements FundingStageRepository {
+export class PrFundingStageRepository implements FundingStageRepository {
   async getFundingStageByFundingId(
     fundingId: string
   ): Promise<Omit<FundingStage, "id" | "fundingId">[]> {
