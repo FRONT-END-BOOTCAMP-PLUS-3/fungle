@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import CommunityPostSkeleton from "./components/CommunityPostSkeleton";
+import CommunityPostSkeleton from "./CommunityPostSkeleton";
 
-const Loading = () => {
+const PostSkeleton = () => {
   const [skeletonCount, setSkeletonCount] = useState(0);
 
   useEffect(() => {
@@ -24,4 +24,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default PostSkeleton;
