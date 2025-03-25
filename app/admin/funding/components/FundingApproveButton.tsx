@@ -1,6 +1,8 @@
 "use client";
 
+import { FindAllFundingWithNovelDto } from "@/application/usecases/funding/dto/FindAllFundingWithNovel";
 import Button from "@/components/button/Button";
+import { useAdminFundingStore } from "@/store/useAdminFundingStore";
 import { useModalStore } from "@/store/useModalStore";
 
 interface FundingApproveButtonProps {
@@ -9,6 +11,7 @@ interface FundingApproveButtonProps {
 
 const FundingApproveButton = ({ id }: FundingApproveButtonProps) => {
   const { onClose } = useModalStore();
+  const { setFundings } = useAdminFundingStore();
 
   const handleApproveButtonClick = async () => {
     try {
@@ -26,6 +29,11 @@ const FundingApproveButton = ({ id }: FundingApproveButtonProps) => {
       }
 
       alert(data.message);
+      setFundings((prevFundings: FindAllFundingWithNovelDto[]) => {
+        return prevFundings.map((funding: FindAllFundingWithNovelDto) =>
+          funding.stageId === id ? { ...funding, isActive: true } : funding
+        );
+      });
       onClose();
     } catch (error: unknown) {
       alert(

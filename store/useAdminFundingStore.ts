@@ -8,18 +8,18 @@ interface FundingState {
       | FindAllFundingWithNovelDto[]
       | ((prev: FindAllFundingWithNovelDto[]) => FindAllFundingWithNovelDto[])
   ) => void;
-  removeFunding: (fundingId: string) => void;
+  removeFunding: (stageId: number) => void;
 }
 
-export const useFundingState = create<FundingState>((set) => ({
+export const useAdminFundingStore = create<FundingState>((set) => ({
   fundings: [],
   setFundings: (fundings) =>
     set((state) => ({
       fundings:
         typeof fundings === "function" ? fundings(state.fundings) : fundings,
     })),
-  removeFunding: (fundingId) =>
+  removeFunding: (stageId: number) =>
     set((state) => ({
-      fundings: state.fundings.filter((funding) => funding.id !== fundingId),
+      fundings: state.fundings.filter((funding) => funding.stageId !== stageId),
     })),
 }));

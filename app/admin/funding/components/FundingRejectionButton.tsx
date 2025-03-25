@@ -1,4 +1,5 @@
 import Button from "@/components/button/Button";
+import { useAdminFundingStore } from "@/store/useAdminFundingStore";
 import { useModalStore } from "@/store/useModalStore";
 
 interface FundingRejectionButtonProps {
@@ -7,6 +8,7 @@ interface FundingRejectionButtonProps {
 
 const FundingRejectionButton = ({ id }: FundingRejectionButtonProps) => {
   const { onClose } = useModalStore();
+  const { removeFunding } = useAdminFundingStore();
 
   const handleDeleteButtonClick = async () => {
     const confirmed = confirm("펀딩을 거절하시겠습니까?");
@@ -29,6 +31,7 @@ const FundingRejectionButton = ({ id }: FundingRejectionButtonProps) => {
     }
 
     alert(data.message);
+    removeFunding(id);
     onClose();
   };
 

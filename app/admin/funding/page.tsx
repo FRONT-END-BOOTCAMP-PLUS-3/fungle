@@ -7,11 +7,10 @@ import { useModalStore } from "@/store/useModalStore";
 import Button from "@/components/button/Button";
 import FundingDetailModal from "./components/FundingDetailModal";
 import { FundingTable } from "./AdminFundingPage.styled";
+import { useAdminFundingStore } from "@/store/useAdminFundingStore";
 
 const Page = () => {
-  const [fundings, setFundings] = useState<FindAllFundingWithNovelDto[] | null>(
-    null
-  );
+  const { fundings, setFundings } = useAdminFundingStore();
   const [selectedFunding, setSelectedFunding] =
     useState<FindAllFundingWithNovelDto | null>(null);
   const { isOpen, openModal } = useModalStore();
