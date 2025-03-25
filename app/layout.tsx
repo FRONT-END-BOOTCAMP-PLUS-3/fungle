@@ -1,5 +1,6 @@
 import { pretendard } from "./fonts/pretendard";
 import "./globals.css";
+import StyledComponentsRegistry from "./lib/registry";
 
 export const metadata = {
   title: "Fungle",
@@ -44,7 +45,9 @@ export default function RootLayout({
           content="지금 바로 작가가 될 수 있습니다.! 지금 함께 사용해보세요."
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+      </body>
     </html>
   );
 }
