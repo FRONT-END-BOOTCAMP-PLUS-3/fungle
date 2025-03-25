@@ -12,7 +12,14 @@ export const GET = async () => {
     }
 
     return NextResponse.json({ fundings }, { status: 200 });
-  } catch (error) {}
+  } catch (error: unknown) {
+    return NextResponse.json({
+      message:
+        error instanceof Error
+          ? error.message
+          : "펀딩을 가져오는 중 오류가 발생했습니다.",
+    });
+  }
 };
 
 export const PATCH = async (req: NextRequest) => {
