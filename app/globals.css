@@ -51,7 +51,7 @@ body {
 
   --error-color: #ff0000;
   --leave-color: #f44336;
-  --success-color: #00c471;
+  --success-color: #007a4d;
 }
 
 /* 태블릿 */
@@ -70,8 +70,8 @@ body {
 
 /*typography*/
 body {
-  font-family: var(--font-family), -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-pretendard), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 1rem;
   line-height: 2;
   letter-spacing: 0.05em;
