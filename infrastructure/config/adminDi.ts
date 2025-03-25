@@ -14,6 +14,7 @@ import { DfUpdateNovelEpisodeStatusByEpisodeIdUsecase } from "@/application/usec
 import { DfFindAllFundingWithNovelUsecase } from "@/application/usecases/funding/DfFindAllFundingWithNovelUsecase";
 import { PrFundingStageRepository } from "../repositories/PrFundingStageRepository";
 import { DfDeleteFundingByIdUsecase } from "@/application/usecases/funding/DfDeleteFundingByIdUsecase";
+import { DfActiveFundingStageById } from "@/application/usecases/funding/DfUpdateFundingStatusByIdUsecase";
 
 export const adminDi = {
   findAllUserWithFundingStatusUsecase: new DfFindAllUserWithFundingStatus(
@@ -45,6 +46,9 @@ export const adminDi = {
     new PrUserRepository()
   ),
   deleteFundingByIdUsecase: new DfDeleteFundingByIdUsecase(
+    new PrFundingStageRepository()
+  ),
+  activeFundingStageByIdUsecase: new DfActiveFundingStageById(
     new PrFundingStageRepository()
   ),
 };

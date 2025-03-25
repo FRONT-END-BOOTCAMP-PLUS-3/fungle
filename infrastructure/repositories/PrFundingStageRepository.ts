@@ -16,4 +16,11 @@ export class PrFundingStageRepository implements FundingStageRepository {
       where: { id: id },
     });
   }
+
+  async activeFundingStageById(id: number): Promise<void> {
+    await prisma.fundingStage.update({
+      where: { id: id },
+      data: { isActive: true },
+    });
+  }
 }

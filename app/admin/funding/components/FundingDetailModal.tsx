@@ -33,7 +33,7 @@ const FundingDetailModal = ({ funding }: FundingDetailModalProps) => {
         </p>
         <ButtonWrapper>
           <FundingRejectionButton id={funding.stageId} />
-          <FundingApproveButton />
+          <FundingApproveButton id={funding.stageId} />
         </ButtonWrapper>
       </ModalContentWrapper>
     </Modal>

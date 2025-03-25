@@ -1,5 +1,5 @@
 import { adminDi } from "@/infrastructure/config/adminDi";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async () => {
   try {
@@ -13,4 +13,34 @@ export const GET = async () => {
 
     return NextResponse.json({ fundings }, { status: 200 });
   } catch (error) {}
+};
+
+export const PATCH = async (req: NextRequest) => {
+  try {
+    const { id } = await req.json();
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "id가 유효하지 않습니다." },
+        { status: 400 }
+      );
+    }
+
+    await adminDi.activeFundingStageByIdUsecase.execute(id);
+
+    return NextResponse.json(
+      { message: "펀딩 상태를 성공적으로 변경했습니다." },
+      { status: 200 }
+    );
+  } catch (error: unknown) {
+    return NextResponse.json(
+      {
+        message:
+          error instanceof Error
+            ? error.message
+            : "펀딩 상태 중 오류가 발생했습니다.",
+      },
+      { status: 500 }
+    );
+  }
 };
