@@ -32,6 +32,7 @@ export class DfFindAllFundingWithNovelUsecase {
 
           return fundingStages.map((stage) => ({
             id: funding.id,
+            stageId: stage.id,
             userId: funding.userId,
             userNickname: user?.nickname || "",
             novelId: funding.novelId,

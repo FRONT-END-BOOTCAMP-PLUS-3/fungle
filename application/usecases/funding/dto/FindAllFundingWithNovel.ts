@@ -1,5 +1,6 @@
 export interface FindAllFundingWithNovelDto {
   id: string;
+  stageId: number;
   userId: string;
   userNickname: string;
   novelId: number;

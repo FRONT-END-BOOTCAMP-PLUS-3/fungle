@@ -13,6 +13,7 @@ import { DfDeleteNovelEpisodeByEpisodeIdUsecase } from "@/application/usecases/n
 import { DfUpdateNovelEpisodeStatusByEpisodeIdUsecase } from "@/application/usecases/novel/DfUpdateNovelEpisodeStatusByEpisodeIdUsecase";
 import { DfFindAllFundingWithNovelUsecase } from "@/application/usecases/funding/DfFindAllFundingWithNovelUsecase";
 import { PrFundingStageRepository } from "../repositories/PrFundingStageRepository";
+import { DfDeleteFundingByIdUsecase } from "@/application/usecases/funding/DfDeleteFundingByIdUsecase";
 
 export const adminDi = {
   findAllUserWithFundingStatusUsecase: new DfFindAllUserWithFundingStatus(
@@ -42,5 +43,8 @@ export const adminDi = {
     new PrFundingRepository(),
     new PrFundingStageRepository(),
     new PrUserRepository()
+  ),
+  deleteFundingByIdUsecase: new DfDeleteFundingByIdUsecase(
+    new PrFundingStageRepository()
   ),
 };
