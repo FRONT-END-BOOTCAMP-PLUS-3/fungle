@@ -64,11 +64,10 @@ const Page = () => {
           <tbody>
             {fundings && fundings.length > 0 ? (
               fundings?.map((funding) => (
-                <tr key={funding.id}>
+                <tr key={funding.stageId}>
                   <td>{funding.userId}</td>
                   <td>{funding.novelTitle}</td>
                   <td>
-                    {" "}
                     <div className="introduce">
                       {funding.introduce || "등록된 소설 소개가 없습니다."}
                     </div>
