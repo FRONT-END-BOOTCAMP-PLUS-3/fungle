@@ -1,5 +1,6 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
+
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION!,
@@ -56,4 +57,27 @@ export class FileService {
 
     return `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
   }
+
+  static async deleteExistingProfileImage(userId: string): Promise<void> {
+    const prefix = `profileImage/${userId}-`; 
+  
+    const listCommand = new ListObjectsV2Command({
+      Bucket: BUCKET_NAME,
+      Prefix: prefix,
+    });
+  
+    const listResponse = await s3.send(listCommand);
+  
+    const target = listResponse.Contents?.[0]; 
+  
+    if (target?.Key) {
+      const deleteCommand = new DeleteObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: target.Key,
+      });
+  
+      await s3.send(deleteCommand);
+    }
+  }
+  
 }
