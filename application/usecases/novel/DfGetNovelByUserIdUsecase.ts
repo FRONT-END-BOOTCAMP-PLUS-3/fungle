@@ -2,7 +2,7 @@ import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { NovelsByUserIdDto } from "./dto/NovelsByUserId";
 import { DfEpisodeByUserIdUsecase } from "./DfEpisodeByUserIdUsecase";
 
-export class DfNovelByUserIdUsecase {
+export class DfGetNovelByUserIdUsecase {
   constructor(
     private readonly novelRepository: NovelRepository,
     private dfEpisodesByUserId: DfEpisodeByUserIdUsecase

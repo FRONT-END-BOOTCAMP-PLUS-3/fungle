@@ -29,6 +29,7 @@ const Page = () => {
   const [novel, setNovel] = useState<NovelDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     if (isNaN(novelId)) {
@@ -44,7 +45,8 @@ const Page = () => {
           throw new Error(`Failed to fetch novel: ${response.statusText}`);
         }
 
-        const data: NovelDto = await response.json();
+        const data: NovelDto & { isLiked: boolean } = await response.json();
+
         const formattedEpisodes = data.episodes.map((episode) => ({
           ...episode,
           createdAt: new Date(episode.createdAt)
@@ -76,9 +78,12 @@ const Page = () => {
           genres: genreLabels,
           episodes: formattedEpisodes,
         });
-      } catch (error) {
-        console.error("Error fetching novel:", error);
-        setError("소설 정보를 불러오는 중 오류가 발생했습니다.");
+
+        setIsLiked(data.isLiked ?? false);
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          throw new Error(`Failed to parse JSON response: ${error.message}`);
+        }
       } finally {
         setLoading(false);
       }
@@ -141,6 +146,7 @@ const Page = () => {
                 <LikeButton
                   novelId={novel.id}
                   initialLikeCount={novel.likeCount}
+                  initialIsLiked={isLiked}
                 />
               </div>
             </UploadInfo>

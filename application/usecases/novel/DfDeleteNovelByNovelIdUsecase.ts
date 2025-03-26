@@ -2,7 +2,7 @@ import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { novelDi } from "@/infrastructure/config/novelDi";
 import { FileService } from "@/infrastructure/services/FileService";
 
-export class DfDeleteNovelUsecase {
+export class DfDeleteNovelByNovelIdUsecase {
   constructor(
     private novelRepository: NovelRepository,
     private fileService: FileService

@@ -1,6 +1,4 @@
-import { UserRepository } from "@/domain/repositories/UserRepository";
 import { userDi } from "@/infrastructure/config/userDi";
-import { PrUserRepository } from "@/infrastructure/repositories/PrUserRepository";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PATCH = async (req: NextRequest) => {
@@ -13,11 +11,9 @@ export const PATCH = async (req: NextRequest) => {
       );
     }
 
-    const userRepository: UserRepository = new PrUserRepository();
-
     const { introduce } = await req.json();
 
-    await userRepository.updateIntroduce(userId, introduce);
+    await userDi.updateIntroduceByUserIdUsecase.execute(userId, introduce);
     return NextResponse.json(
       {
         message: "작가 소개가 정상적으로 수정되었습니다!",

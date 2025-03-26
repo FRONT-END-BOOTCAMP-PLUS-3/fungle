@@ -47,7 +47,7 @@ export const PostStatus = styled.div<{ status: string }>`
   width: 2.8125rem;
   height: 1.25rem;
   background-color: ${({ status }) =>
-    status === "recruiting" ? "var(--success-color)" : "var(--gray-500)"};
+    status === "recruiting" ? "var(--success-color)" : "var(--gray-700)"};
   border-radius: 1.25rem;
   color: white;
   font-size: 0.625rem;

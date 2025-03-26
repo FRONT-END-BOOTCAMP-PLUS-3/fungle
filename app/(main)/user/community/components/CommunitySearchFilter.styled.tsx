@@ -21,7 +21,7 @@ export const SearchFieldButton = styled.button<{ $isActive: boolean }>`
   padding: 0.3125rem 0.125rem;
   position: relative;
   color: ${({ $isActive }) =>
-    $isActive ? "var(--primary-color)" : "var(--gray-500)"};
+    $isActive ? "var(--primary-color)" : "var(--gray-700)"};
 
   &::after {
     content: "";

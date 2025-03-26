@@ -2,7 +2,7 @@ import { CommunityPostRepository } from "@/domain/repositories/CommunityPostRepo
 import { NovelRepository } from "@/domain/repositories/NovelRepository";
 import { UserStatsDto } from "./dto/UserStats";
 
-export class DfGetUserStatsUsecase {
+export class DfGetUserStatsByUserIdUsecase {
   constructor(
     private readonly novelRepository: NovelRepository,
     private readonly communityPostRepository: CommunityPostRepository

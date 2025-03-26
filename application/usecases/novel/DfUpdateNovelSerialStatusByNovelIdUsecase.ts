@@ -1,7 +1,7 @@
 import { SERIAL_STATUS } from "@/constants/STATUS";
 import { NovelRepository } from "@/domain/repositories/NovelRepository";
 
-export class DfUpdateNovelSerialStatusUsecase {
+export class DfUpdateNovelSerialStatusByNovelIdUsecase {
   constructor(private novelRepository: NovelRepository) {}
 
   async execute(novelId: number, status: string) {

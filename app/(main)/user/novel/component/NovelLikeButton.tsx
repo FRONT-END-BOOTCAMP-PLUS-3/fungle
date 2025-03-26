@@ -11,10 +11,11 @@ import {
 interface LikeButtonProps {
   novelId: number;
   initialLikeCount: number;
+  initialIsLiked: boolean;
 }
 
-const LikeButton = ({ novelId, initialLikeCount }: LikeButtonProps) => {
-  const [liked, setLiked] = useState(false);
+const LikeButton = ({ novelId, initialLikeCount,initialIsLiked  }: LikeButtonProps) => {
+  const [liked, setLiked] = useState(initialIsLiked);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
 
   const toggleLike = async () => {
@@ -30,10 +31,12 @@ const LikeButton = ({ novelId, initialLikeCount }: LikeButtonProps) => {
         setLiked(isLiked);
         setLikeCount(likeCount);
       } else {
-        console.error("좋아요 요청 실패:", await response.text());
+        throw new Error(`서버 연결 실패: ${response.status}`);
       }
-    } catch (error) {
-      console.error("좋아요 요청 오류:", error);
+    } catch (error:unknown) {
+      if (error instanceof Error) {
+        throw new Error(`Failed to parse JSON response: ${error.message}`);
+      }
     }
   };
 

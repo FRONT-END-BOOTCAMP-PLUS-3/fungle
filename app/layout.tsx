@@ -1,4 +1,6 @@
+import { pretendard } from "./fonts/pretendard";
 import "./globals.css";
+import StyledComponentsRegistry from "./lib/registry";
 
 export const metadata = {
   title: "Fungle",
@@ -10,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={pretendard.variable}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,7 +45,9 @@ export default function RootLayout({
           content="지금 바로 작가가 될 수 있습니다.! 지금 함께 사용해보세요."
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+      </body>
     </html>
   );
 }

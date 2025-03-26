@@ -23,8 +23,8 @@ import CommunityPostStats from "./CommunityPostStats";
 import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community/dto/PostWithCountAndRecruitmentDto";
 import CommunityPagination from "./CommunityPagination";
 import { SearchParams } from "../page";
-import Loading from "../loading";
 import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
+import PostSkeleton from "./skeleton/PostSkeleton";
 
 interface CommunityPostListProps {
   searchParams: SearchParams;
@@ -116,7 +116,7 @@ const CommunityPostList = ({
   }
 
   if (isLoading) {
-    return <Loading />;
+    return <PostSkeleton />;
   }
 
   if (posts.length === 0) {
@@ -128,50 +128,53 @@ const CommunityPostList = ({
   }
 
   return (
-    <PostListContainer ref={listRef}>
-      {posts.map((post) => (
-        <PostListWrapper key={post.id}>
-          <Link href={`/user/community/${post.id}`}>
-            <PostBox>
-              <PostStatusWithNickname>
-                <PostStatus status={post.status}>
-                  {post.status === "recruiting" ? "모집중" : "모집완료"}
-                </PostStatus>
-              </PostStatusWithNickname>
-              <p>{post.title}</p>
-              <PostContent>{post.content}</PostContent>
-              {post.recruitmentNames.length > 0 && (
-                <PostRecruitment>
-                  {post.recruitmentNames
-                    .map((name) => {
-                      const field = RECRUITMENT_FIELDS.find(
-                        (f) => f.value === name
-                      );
-                      return field ? field.label : name;
-                    })
-                    .join(", ")}
-                </PostRecruitment>
-              )}
-              <PostFooter>
-                <PostInfo>
-                  <PostUserNickname>{post.userNickname}</PostUserNickname>
-                  <PostTime>{realTimeView(new Date(post.createdAt))}</PostTime>
-                </PostInfo>
-                <PostStats>
-                  <CommunityPostStats post={post} />
-                </PostStats>
-              </PostFooter>
-            </PostBox>
-          </Link>
-        </PostListWrapper>
-      ))}
-
+    <>
+      <PostListContainer ref={listRef}>
+        {posts.map((post) => (
+          <PostListWrapper key={post.id}>
+            <Link href={`/user/community/${post.id}`}>
+              <PostBox>
+                <PostStatusWithNickname>
+                  <PostStatus status={post.status}>
+                    {post.status === "recruiting" ? "모집중" : "모집완료"}
+                  </PostStatus>
+                </PostStatusWithNickname>
+                <p>{post.title}</p>
+                <PostContent>{post.content}</PostContent>
+                {post.recruitmentNames.length > 0 && (
+                  <PostRecruitment>
+                    {post.recruitmentNames
+                      .map((name) => {
+                        const field = RECRUITMENT_FIELDS.find(
+                          (f) => f.value === name
+                        );
+                        return field ? field.label : name;
+                      })
+                      .join(", ")}
+                  </PostRecruitment>
+                )}
+                <PostFooter>
+                  <PostInfo>
+                    <PostUserNickname>{post.userNickname}</PostUserNickname>
+                    <PostTime>
+                      {realTimeView(new Date(post.createdAt))}
+                    </PostTime>
+                  </PostInfo>
+                  <PostStats>
+                    <CommunityPostStats post={post} />
+                  </PostStats>
+                </PostFooter>
+              </PostBox>
+            </Link>
+          </PostListWrapper>
+        ))}
+      </PostListContainer>
       <CommunityPagination
         currentPage={searchParams.page}
         totalPages={totalPages}
         onPageChange={hadleChangePage}
       />
-    </PostListContainer>
+    </>
   );
 };
 

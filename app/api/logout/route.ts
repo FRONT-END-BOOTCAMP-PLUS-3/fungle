@@ -1,6 +1,4 @@
-import { DfLogoutUsecase } from "@/application/usecases/auth/DfLogoutUsecase";
-import { AuthRepository } from "@/domain/repositories/AuthRepository";
-import { PrAuthRepository } from "@/infrastructure/repositories/PrAuthRepository";
+import { userDi } from "@/infrastructure/config/userDi";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -8,11 +6,8 @@ export const POST = async () => {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  const authRepository: AuthRepository = new PrAuthRepository();
-  const logoutUsecase = new DfLogoutUsecase(authRepository);
-
   if (refreshToken) {
-    await logoutUsecase.execute(refreshToken);
+    await userDi.logoutUsecase.execute(refreshToken);
   }
 
   const response = NextResponse.json(

@@ -1,9 +1,9 @@
 import { NovelEpisodeRepository } from "@/domain/repositories/NovelEpisodeRepository";
 
-export class DfUpdateNovelEpisodeStatusUsecase {
+export class DfDeleteNovelEpisodeByEpisodeIdUsecase {
   constructor(private novelEpisodeRepository: NovelEpisodeRepository) {}
 
   async execute(episodeId: number) {
-    await this.novelEpisodeRepository.updateNovelEpisodeStatus(episodeId);
+    await this.novelEpisodeRepository.deleteEpisode(episodeId);
   }
 }
