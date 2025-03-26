@@ -1,6 +1,7 @@
 import AdminSidebar from "./components/AdminSidebar";
 import "../globals.css";
 import AuthInitializer from "@/components/authInitializer/AuthInitializer";
+import StyledComponentsRegistry from "../lib/registry";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -8,7 +9,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="admin-container">
         <AuthInitializer />
         <AdminSidebar />
-        {children}
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </div>
     </>
   );

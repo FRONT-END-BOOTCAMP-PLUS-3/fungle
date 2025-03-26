@@ -11,16 +11,16 @@ import { EPISODE_STATUS } from "@/constants/EPISODE_STATUS";
 import { useModalStore } from "@/store/useModalStore";
 import Button from "@/components/button/Button";
 import Modal from "@/components/modal/Modal";
-import RejectionButton from "./components/RejectionButton";
 import { useAdminNovelStore } from "@/store/useAdminNovelStore";
 import { EpisodeWithUserInfo } from "@/application/usecases/novel/dto/EpisodeWithUserInfo";
-import ApproveButton from "./components/ApproveButton";
 import {
   AdminHeader,
   AdminMain,
   Table,
   TableWrapper,
 } from "../AdminPage.styled";
+import NovelRejectionButton from "./components/NovelRejectionButton";
+import NovelApproveButton from "./components/NovelApproveButton";
 
 const Page = () => {
   const { episodes, setEpisodes } = useAdminNovelStore();
@@ -48,8 +48,12 @@ const Page = () => {
 
           setEpisodes(formattedData);
         }
-      } catch {
-        throw new Error("데이터를 가져오는 데 실패했습니다.");
+      } catch (error: unknown) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : "데이터를 가져오는 데 실패했습니다."
+        );
       }
     };
 
@@ -88,7 +92,7 @@ const Page = () => {
                   <td>{episode.novelTitle}</td>
                   <td>{episode.episodeTitle}</td>
                   <td>{new Date(episode.createdAt).toLocaleString()}</td>
-                  <StatusText status={episode.status}>
+                  <StatusText $status={episode.status}>
                     {episode.statusLabel}
                     {episode.status === "pending" && (
                       <Button
@@ -126,8 +130,8 @@ const Page = () => {
               </p>
             </div>
             <ButtonWrapper>
-              <RejectionButton episodeId={selectedEpisode.episodeId} />
-              <ApproveButton episodeId={selectedEpisode.episodeId} />
+              <NovelRejectionButton episodeId={selectedEpisode.episodeId} />
+              <NovelApproveButton episodeId={selectedEpisode.episodeId} />
             </ButtonWrapper>
           </ModalContentWrapper>
         </Modal>

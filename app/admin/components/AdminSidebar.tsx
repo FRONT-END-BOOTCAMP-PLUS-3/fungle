@@ -43,6 +43,14 @@ const AdminSidebar = () => {
             커뮤니티 관리
           </MenuItem>
         </UnstyledLink>
+        <UnstyledLink href={"/admin/funding"}>
+          <MenuItem
+            $isSelected={selectedMenu === "펀딩 관리"}
+            onClick={() => handleMenuClick("펀딩 관리")}
+          >
+            펀딩 관리
+          </MenuItem>
+        </UnstyledLink>
       </ul>
     </SidebarContainer>
   );
