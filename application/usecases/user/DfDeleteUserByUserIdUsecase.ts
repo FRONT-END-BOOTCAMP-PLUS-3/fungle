@@ -1,6 +1,5 @@
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { FileService } from "@/infrastructure/services/FileService";
-import path from "path";
 import { DfGetNovelByUserIdUsecase } from "../novel/DfGetNovelByUserIdUsecase";
 import { NovelsByUserIdDto } from "../novel/dto/NovelsByUserId";
 import { DfGetFundingByUserIdUsecase } from "../funding/DfGetFundingByNovelIdUsecase";
@@ -33,8 +32,7 @@ export class DfDeleteUserByUserIdUsecase {
       )
     );
 
-    const profileImageDir = path.join(process.cwd(), "public", "profileImage");
-    await FileService.deleteExistingProfileImage(userId, profileImageDir);
+    await FileService.deleteExistingProfileImage(userId);
 
     await this.userRepository.deleteUser(userId);
 
