@@ -92,7 +92,7 @@ const Page = () => {
                   <td>{episode.novelTitle}</td>
                   <td>{episode.episodeTitle}</td>
                   <td>{new Date(episode.createdAt).toLocaleString()}</td>
-                  <StatusText status={episode.status}>
+                  <StatusText $status={episode.status}>
                     {episode.statusLabel}
                     {episode.status === "pending" && (
                       <Button

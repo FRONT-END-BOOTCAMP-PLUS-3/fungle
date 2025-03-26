@@ -14,8 +14,8 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export const StatusText = styled.td<{ status: string }>`
-  color: ${({ status }) => getStatusColor(status)};
+export const StatusText = styled.td<{ $status: string }>`
+  color: ${({ $status }) => getStatusColor($status)};
   font-weight: 700;
 `;
 
