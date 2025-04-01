@@ -3,7 +3,7 @@ import Button from "@/components/button/Button";
 import { useAdminNovelStore } from "@/store/useAdminNovelStore";
 import { useModalStore } from "@/store/useModalStore";
 
-const ApproveButton = ({ episodeId }: { episodeId: number }) => {
+const NovelApproveButton = ({ episodeId }: { episodeId: number }) => {
   const { onClose } = useModalStore();
   const { setEpisodes } = useAdminNovelStore();
 
@@ -43,4 +43,4 @@ const ApproveButton = ({ episodeId }: { episodeId: number }) => {
   );
 };
 
-export default ApproveButton;
+export default NovelApproveButton;

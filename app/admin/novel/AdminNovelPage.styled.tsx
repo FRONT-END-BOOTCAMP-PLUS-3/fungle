@@ -14,12 +14,13 @@ const getStatusColor = (status: string) => {
   }
 };
 
-export const StatusText = styled.td<{ status: string }>`
-  color: ${({ status }) => getStatusColor(status)};
+export const StatusText = styled.td<{ $status: string }>`
+  color: ${({ $status }) => getStatusColor($status)};
   font-weight: 700;
 `;
 
 export const ModalContentWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   max-height: 80vh;

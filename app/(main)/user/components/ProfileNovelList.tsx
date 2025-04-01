@@ -15,10 +15,14 @@ import { NovelsByUserIdDto } from "@/application/usecases/novel/dto/NovelsByUser
 import StatusUpdateButton from "./StatusUpdateButton";
 import { ErrorMessage } from "./PostAndLikedListWrapper.styled";
 
+interface NovelData extends NovelsByUserIdDto {
+  redirectUrl: string;
+}
+
 const ProfileNovelList = () => {
   const [isOpenMap, setIsOpenMap] = useState<{ [key: string]: boolean }>({});
   const [novels, setNovels] = useState<
-    (NovelsByUserIdDto & { episodes: NovelEpisodesByUserIdDto[] })[]
+    (NovelData & { episodes: NovelEpisodesByUserIdDto[] })[]
   >([]);
   const [error, setError] = useState<string>("");
 
@@ -45,6 +49,10 @@ const ProfileNovelList = () => {
             month: "2-digit",
             day: "2-digit",
           }),
+          redirectUrl:
+            novel.serialStatus === "completed"
+              ? `/user/funding/${novel.id}/create`
+              : `/user/novel/${novel.id}`,
         }));
 
         setNovels(formattedData);
@@ -159,7 +167,7 @@ const ProfileNovelList = () => {
               <div className="novel-title-status">
                 <div className="episode-info">
                   <div className="novel-title">
-                    <Link href={`/user/novel/${novel.id}`} passHref>
+                    <Link href={novel.redirectUrl} passHref>
                       <p className="episode-title">{novel.title}</p>
                     </Link>
                     <ArrowWrapper
