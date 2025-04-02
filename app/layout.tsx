@@ -1,6 +1,7 @@
 import { pretendard } from "./fonts/pretendard";
 import "./globals.css";
 import StyledComponentsRegistry from "./lib/registry";
+import ReactQueryProvider from "./providers/reactQueryProvider";
 
 export const metadata = {
   title: "Fungle",
@@ -46,7 +47,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
