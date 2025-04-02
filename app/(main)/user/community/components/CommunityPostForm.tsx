@@ -8,6 +8,7 @@ import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
 import { useEffect, useState } from "react";
 import { ButtonBox, TextAreaWrapper, Form } from "./CommunityPostForm.styled";
 import { ErrorMessage } from "../[id]/edit/components/CommunityEdit.styled";
+import { useRouter } from "next/navigation";
 
 type CommunityPostFormProps = {
   mode: "create" | "edit";
@@ -33,6 +34,7 @@ const CommunityPostForm = ({
   const [title, setTitle] = useState<string>(initalTitle);
   const [content, setContent] = useState<string>(initalContent);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     setTitle(initalTitle);
@@ -91,6 +93,10 @@ const CommunityPostForm = ({
     }
   };
 
+  const handleCancle = () => {
+    if (confirm("취소 하시겠습니까?")) return router.back();
+  };
+
   return (
     <>
       {errorMessage ? (
@@ -120,7 +126,13 @@ const CommunityPostForm = ({
               defaultValue={content}
             />
             <ButtonBox>
-              <Button backgroudColor={"white"}>취소</Button>
+              <Button
+                backgroudColor={"white"}
+                type="button"
+                onClick={handleCancle}
+              >
+                취소
+              </Button>
               <Button>{mode === "create" ? "작성" : "수정"}</Button>
             </ButtonBox>
           </TextAreaWrapper>
