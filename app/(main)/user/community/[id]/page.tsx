@@ -1,7 +1,7 @@
 import CommunityPostContainer from "./components/CommunityPostContainer";
 
-const Page = ({ params }: { params: { id: string } }) => {
-  const postId = params.id;
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id: postId } = await params;
   return <CommunityPostContainer postId={postId} />;
 };
 
