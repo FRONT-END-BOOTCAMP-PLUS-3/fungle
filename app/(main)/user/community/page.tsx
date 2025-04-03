@@ -3,8 +3,9 @@ import { Main } from "./CommunityList.styled";
 
 import CommunitySearchFilter from "./components/CommunitySearchFilter";
 import CommunityListFilter from "./components/CommunityListFilter";
-import CommunityPostList from "./components/CommunityPostList";
+
 import { useState } from "react";
+import CommunityPostListContainer from "./components/CommunityPostListContainer";
 
 export interface SearchParams {
   selectedCommunity: string;
@@ -41,7 +42,7 @@ const Page = () => {
         selectedSort={searchParams.sort}
       />
 
-      <CommunityPostList
+      <CommunityPostListContainer
         searchParams={searchParams}
         setSearchParams={setSearchParams}
       />

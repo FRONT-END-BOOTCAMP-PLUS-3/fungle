@@ -14,119 +14,29 @@ import {
   PostUserNickname,
   PostStatus,
   PostTime,
-  PostList,
-  EmptyStateContainer,
 } from "./CommunityPostList.styled";
-import { realTimeView } from "../utils/realTimeView";
-import { useEffect, useRef, useState } from "react";
-import CommunityPostStats from "./CommunityPostStats";
-import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community/dto/PostWithCountAndRecruitmentDto";
-import CommunityPagination from "./CommunityPagination";
-import { SearchParams } from "../page";
+
 import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
-import PostSkeleton from "./skeleton/PostSkeleton";
-
-interface CommunityPostListProps {
+import { realTimeView } from "../utils/realTimeView";
+import CommunityPostStats from "./CommunityPostStats";
+import CommunityPagination from "./CommunityPagination";
+import { PostWithCountAndRecruitmentDto } from "@/application/usecases/community/dto/PostWithCountAndRecruitmentDto";
+import { SearchParams } from "../page";
+interface CommunityPostListViewProps {
+  posts: PostWithCountAndRecruitmentDto[];
+  handleChangePage: (page: number) => void;
   searchParams: SearchParams;
-  setSearchParams: React.Dispatch<React.SetStateAction<SearchParams>>;
+  totalPages: number;
+  listRef: React.RefObject<HTMLUListElement | null>;
 }
+
 const CommunityPostList = ({
+  posts,
+  handleChangePage,
   searchParams,
-  setSearchParams,
-}: CommunityPostListProps) => {
-  const [posts, setPosts] = useState<PostWithCountAndRecruitmentDto[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const listRef = useRef<HTMLUListElement | null>(null);
-
-  const hadleChangePage = (newPage: number) => {
-    setSearchParams((prev) => ({ ...prev, page: newPage }));
-    listRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const query = new URLSearchParams();
-
-        query.set("filter", searchParams.selectedCommunity || "all");
-
-        query.set("page", searchParams.page.toString());
-        if (searchParams.sort && searchParams.sort !== "latest") {
-          query.set("sort", searchParams.sort);
-        }
-
-        const {
-          selectedSearchField,
-          searchTitle,
-          searchAuthor,
-          searchContent,
-        } = searchParams;
-
-        if (selectedSearchField) {
-          query.set("searchField", selectedSearchField);
-        }
-
-        if (selectedSearchField === "title" && searchTitle.trim() !== "") {
-          query.set("search", searchTitle.trim());
-        } else if (
-          selectedSearchField === "author" &&
-          searchAuthor.trim() !== ""
-        ) {
-          query.set("search", searchAuthor.trim());
-        } else if (
-          selectedSearchField === "content" &&
-          searchContent.trim() !== ""
-        ) {
-          query.set("search", searchContent.trim());
-        }
-
-        if (searchParams.searchRecruitment.length > 0) {
-          query.set("recruitment", searchParams.searchRecruitment.join(", "));
-        }
-
-        const response = await fetch(`/api/community?${query.toString()}`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch: ${response.status}`);
-        }
-        const data = await response.json();
-        setPosts(data.posts);
-
-        setTotalPages(data.totalPages);
-        setIsLoading(false);
-      } catch (error: unknown) {
-        const errorMessage =
-          error instanceof Error ? error.message : "Unknow Error";
-        setError(errorMessage);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [searchParams]);
-
-  if (error) {
-    return (
-      <EmptyStateContainer>
-        <PostList>{error}</PostList>
-      </EmptyStateContainer>
-    );
-  }
-
-  if (isLoading) {
-    return <PostSkeleton />;
-  }
-
-  if (posts.length === 0) {
-    return (
-      <EmptyStateContainer>
-        <PostList>게시글이 없습니다.</PostList>
-      </EmptyStateContainer>
-    );
-  }
-
+  totalPages,
+  listRef,
+}: CommunityPostListViewProps) => {
   return (
     <>
       <PostListContainer ref={listRef}>
@@ -172,7 +82,7 @@ const CommunityPostList = ({
       <CommunityPagination
         currentPage={searchParams.page}
         totalPages={totalPages}
-        onPageChange={hadleChangePage}
+        onPageChange={handleChangePage}
       />
     </>
   );
