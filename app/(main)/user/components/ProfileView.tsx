@@ -16,6 +16,7 @@ import Input from "@/components/input/Input";
 import ProfileMoreOptions from "./ProfileMoreOptions";
 import { UserDeletionModal } from "./UserDeletionModal";
 import { useRouter } from "next/navigation";
+import useNicknameEdit from "./hooks/useNicknameEdit";
 
 const ProfileView = () => {
   const { user, setUser } = useAuthStore();
@@ -26,6 +27,16 @@ const ProfileView = () => {
   const [previewImage, setPreviewImage] = useState<string>(profileImage);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const router = useRouter();
+  const { mutate: updateNickname } = useNicknameEdit(
+    setNicknameError,
+    setIsEditing,
+    setNicknameInput,
+    (updatedNickname: string) => {
+      if (user) {
+        setUser({ ...user, nickname: updatedNickname });
+      }
+    }
+  );
 
   useEffect(() => {
     if (user?.nickname) {
@@ -42,41 +53,6 @@ const ProfileView = () => {
       return "닉네임은 한글 또는 영어만 사용 가능하며, 1~6자로 입력해주세요.";
     }
     return null;
-  };
-
-  const updateNickname = async (newNickname: string) => {
-    try {
-      const response = await fetch("/api/user/nickname", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user?.id, newNickname }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        if (data.type === "DUPLICATE_NICKNAME") {
-          setNicknameError(data.error);
-          return null;
-        }
-        throw new Error(data.error || "닉네임 변경에 실패했습니다.");
-      }
-
-      alert("닉네임이 성공적으로 변경되었습니다!");
-      setNicknameError(""); // 닉네임 변경 성공 시 오류 초기화
-      setIsEditing(false);
-
-      return data.nickname;
-    } catch (error: unknown) {
-      // 실패 시 null 반환
-      if (error instanceof Error) {
-        setNicknameError(error.message);
-        return null;
-      } else {
-        alert("알 수 없는 오류가 발생했습니다.");
-        return null;
-      }
-    }
   };
 
   const handleEditClick = async () => {
@@ -97,19 +73,10 @@ const ProfileView = () => {
         return;
       }
 
-      // 조건을 만족할 경우 닉네임 변경 api 호출
-      const updatedNickname = await updateNickname(trimmedNickname);
-      if (!updatedNickname) {
-        return;
-      }
-
-      setNicknameInput(updatedNickname);
-      // zustand 닉네임 상태 변경
-      if (user) {
-        setUser({ ...user, nickname: updatedNickname });
-      }
+      updateNickname({ nickname: trimmedNickname });
+    } else {
+      setIsEditing(true);
     }
-    setIsEditing(!isEditing);
   };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -4,7 +4,7 @@ import { NicknameError } from "./error/NicknameError";
 export class DfUpdateNicknameByUserIdUsecase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(userId: string, newNickname: string) {
+  async execute(userId: string, newNickname: string): Promise<string> {
     // 사용자의 현재 닉네임 조회
     const user = await this.userRepository.getUserById(userId);
     if (!user) {
@@ -27,6 +27,7 @@ export class DfUpdateNicknameByUserIdUsecase {
 
     try {
       await this.userRepository.updateNickname(userId, newNickname);
+      return newNickname;
     } catch (error) {
       throw new NicknameError(
         "UNKNOWN_ERROR",
