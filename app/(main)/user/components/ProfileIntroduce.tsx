@@ -9,45 +9,28 @@ import useAuthStore from "@/store/useAuthStore";
 import Modal from "@/components/modal/Modal";
 import Textarea from "@/components/textarea/Textarea";
 import { useModalStore } from "@/store/useModalStore";
-import { useRouter } from "next/navigation";
+import useIntroduceEdit from "./hooks/useIntroduceEdit";
 
 const ProfileIntroduce = () => {
-  const router = useRouter();
   const { user, setUser } = useAuthStore();
   const { isOpen, openModal, onClose } = useModalStore();
   const introduce =
     user?.introduce || "소개글이 비어있습니다.\n나를 나타내는 글을 적어주세요.";
 
-  const updateIntroduce = async (newIntroduce: string) => {
-    try {
-      const response = await fetch("/api/user/introduce", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ introduce: newIntroduce }),
-      });
-
-      if (response.status === 401) {
-        alert("로그인이 필요합니다. 다시 로그인해 주세요.");
-        router.replace("/login");
-        return null;
+  const { mutate: updateIntroduce } = useIntroduceEdit(
+    (updatedIntroduce: string) => {
+      if (user) {
+        setUser({ ...user, introduce: updatedIntroduce });
       }
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(data.error || "소개글 변경에 실패했습니다.");
-      }
-
-      return data.message;
-    } catch (error: unknown) {
+    },
+    (error: Error) => {
       alert(
         error instanceof Error
           ? error.message
-          : "알 수 없는 오류가 발생했습니다."
+          : "소개글 변경 중 알 수 없는 오류가 발생했습니다."
       );
-      return null;
     }
-  };
+  );
 
   const handleIntroduceSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,14 +43,8 @@ const ProfileIntroduce = () => {
       return;
     }
 
-    const response = await updateIntroduce(newIntroduce);
+    updateIntroduce(newIntroduce);
 
-    if (response) {
-      if (user) {
-        setUser({ ...user, introduce: newIntroduce });
-        alert(response);
-      }
-    }
     onClose();
   };
 
