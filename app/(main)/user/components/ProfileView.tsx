@@ -9,6 +9,7 @@ import ProfileMoreOptions from "./ProfileMoreOptions";
 import { UserDeletionModal } from "./UserDeletionModal";
 import { useRouter } from "next/navigation";
 import ProfileNickname from "./ProfileNickname";
+import ProfileImage from "./ProfileImage";
 
 const ProfileView = () => {
   const { user, setUser } = useAuthStore();
@@ -58,21 +59,10 @@ const ProfileView = () => {
             onDeleteClick={() => setIsDeleteModalOpen(true)}
           />
         </MoreOptionsButtonWrapper>
-        <ProfileContainer>
-          <Image
-            src={previewImage}
-            alt="프로필 이미지"
-            fill
-            style={{ objectFit: "cover" }}
-          />
-          <label htmlFor="image-upload" />
-          <input
-            id="image-upload"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </ProfileContainer>
+        <ProfileImage
+          previewImage={previewImage}
+          setPreviewImage={setPreviewImage}
+        />
       </ProfileWrapper>
 
       <ProfileNickname
