@@ -36,6 +36,13 @@ const ProfileView = () => {
       if (user) {
         setUser({ ...user, nickname: updatedNickname });
       }
+    },
+    (error: Error) => {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "닉네임 변경 중 알 수 없는 오류가 발생했습니다."
+      );
     }
   );
 

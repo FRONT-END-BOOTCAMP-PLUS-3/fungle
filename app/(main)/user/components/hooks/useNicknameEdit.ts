@@ -36,7 +36,8 @@ const useNicknameEdit = (
   setNicknameError: Dispatch<SetStateAction<string>>,
   setIsEditing: Dispatch<SetStateAction<boolean>>,
   setNicknameInput: Dispatch<SetStateAction<string>>,
-  onSuccess: (nickname: string) => void
+  onSuccess: (nickname: string) => void,
+  onError: (error: Error) => void
 ) => {
   return useMutation({
     mutationFn: ({ nickname }: NicknameEditData) =>
@@ -47,6 +48,10 @@ const useNicknameEdit = (
       setNicknameInput(nickname);
       setIsEditing(false);
       onSuccess(nickname);
+    },
+    onError: (error: Error) => {
+      setIsEditing(true);
+      onError(error);
     },
   });
 };
