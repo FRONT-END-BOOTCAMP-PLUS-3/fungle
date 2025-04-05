@@ -17,6 +17,7 @@ import ProfileMoreOptions from "./ProfileMoreOptions";
 import { UserDeletionModal } from "./UserDeletionModal";
 import { useRouter } from "next/navigation";
 import useNicknameEdit from "./hooks/useNicknameEdit";
+import useProfileImageEdit from "./hooks/useProfileImageEdit";
 
 const ProfileView = () => {
   const { user, setUser } = useAuthStore();
@@ -35,6 +36,22 @@ const ProfileView = () => {
       if (user) {
         setUser({ ...user, nickname: updatedNickname });
       }
+    }
+  );
+
+  const { mutate: updateProfileImage } = useProfileImageEdit(
+    (updatedProfileImage: string) => {
+      if (user) {
+        setUser({ ...user, profileImage: updatedProfileImage });
+      }
+      alert("프로필 이미지가 성공적으로 변경되었습니다!");
+    },
+    (error: Error) => {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "프로필 이미지 변경 중 알 수 없는 오류가 발생했습니다."
+      );
     }
   );
 
@@ -85,38 +102,7 @@ const ProfileView = () => {
 
     const imageUrl = URL.createObjectURL(file);
     setPreviewImage(imageUrl);
-    await uploadProfileImage(file);
-  };
-
-  const uploadProfileImage = async (file: File) => {
-    if (!user) return;
-
-    const formData = new FormData();
-    formData.append("userId", user.id);
-    formData.append("profileImage", file);
-
-    try {
-      const response = await fetch("/api/user/profile-image", {
-        method: "PATCH",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "프로필 이미지 변경에 실패했습니다.");
-      }
-
-      setUser({ ...user, profileImage: data.profileImage });
-
-      alert("프로필 이미지가 성공적으로 변경되었습니다!");
-    } catch (error: unknown) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : "알 수 없는 오류가 발생했습니다."
-      );
-    }
+    updateProfileImage(file);
   };
 
   const handleDeleteUser = async () => {
