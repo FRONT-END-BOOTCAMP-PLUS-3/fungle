@@ -17,6 +17,7 @@ export const PATCH = async (req: NextRequest) => {
     return NextResponse.json(
       {
         message: "작가 소개가 정상적으로 수정되었습니다!",
+        introduce,
       },
       { status: 200 }
     );
