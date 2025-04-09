@@ -16,82 +16,34 @@ import {
   NoPosts,
   PostAndLikedListWrapper,
 } from "./PostAndLikedListWrapper.styled";
-import useAuthStore from "@/store/useAuthStore";
-import { useEffect, useState } from "react";
 import { PostWithRecruitmentDto } from "@/application/usecases/community/dto/PostWithRecruitmentDto";
 import { RECRUITMENT_FIELDS } from "@/constants/RECRUITMENT_FIELDS";
 import Button from "@/components/button/Button";
+import { useUserPostList } from "./hooks/useUserPostList";
 
 const ProfilePostList = () => {
-  const { user } = useAuthStore();
-  const [posts, setPosts] = useState<PostWithRecruitmentDto[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const { posts, error, isLoading, completeRecruitment } = useUserPostList();
 
-  useEffect(() => {
-    if (!user) return;
-
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch("/api/user/community", {
-          method: "GET",
-        });
-
-        if (!response.ok) throw new Error("게시글을 불러오는 데 실패했습니다.");
-
-        const data = await response.json();
-        setPosts(data.posts);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        }
-        setError("게시글을 불러오는 중 오류가 발생했습니다.");
-      }
-    };
-
-    fetchPosts();
-  }, [user]);
-
-  const handleButtonClick = async (e: React.MouseEvent, postId: number) => {
+  const handleButtonClick = (e: React.MouseEvent, postId: number) => {
     e.preventDefault();
-
     const isConfirmed = confirm("상태를 모집 완료로 변경하시겠습니까?");
-    if (!isConfirmed) return;
-
-    try {
-      const response = await fetch("/api/user/community", {
-        method: "PATCH",
-
-        body: JSON.stringify({
-          postId,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("모집 상태 변경에 실패했습니다.");
-      }
-
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post.id === postId ? { ...post, status: "completed" } : post
-        )
-      );
-
-      const result = await response.json();
-      alert(result.message);
-    } catch (error: unknown) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : "오류가 발생했습니다. 다시 시도해주세요."
-      );
-    }
+    if (isConfirmed) completeRecruitment(postId);
   };
 
-  if (posts.length === 0) return <NoPosts>작성한 게시글이 없습니다.</NoPosts>;
+  if (!posts || posts.length === 0)
+    return <NoPosts>작성한 게시글이 없습니다.</NoPosts>;
+
+  if (isLoading) return <div>로딩중</div>;
 
   return (
     <>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {error && (
+        <ErrorMessage>
+          {error instanceof Error
+            ? `에러 발생: ${error.message}`
+            : "게시글을 가져오는 중 알 수 없는 오류가 발생했습니다. 다시 시도해주세요."}
+        </ErrorMessage>
+      )}
       {posts.map((post: PostWithRecruitmentDto) => (
         <PostAndLikedListWrapper key={post.id}>
           <Link href={`/user/community/${post.id}`}>
