@@ -35,15 +35,18 @@ const ProfilePostList = () => {
 
   if (isLoading) return <div>로딩중</div>;
 
+  if (error) {
+    return (
+      <ErrorMessage>
+        {error instanceof Error
+          ? `에러 발생: ${error.message}`
+          : "게시글을 가져오는 중 알 수 없는 오류가 발생했습니다. 다시 시도해주세요."}
+      </ErrorMessage>
+    );
+  }
+
   return (
     <>
-      {error && (
-        <ErrorMessage>
-          {error instanceof Error
-            ? `에러 발생: ${error.message}`
-            : "게시글을 가져오는 중 알 수 없는 오류가 발생했습니다. 다시 시도해주세요."}
-        </ErrorMessage>
-      )}
       {posts.map((post: PostWithRecruitmentDto) => (
         <PostAndLikedListWrapper key={post.id}>
           <Link href={`/user/community/${post.id}`}>
