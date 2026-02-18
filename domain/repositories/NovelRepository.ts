@@ -21,6 +21,11 @@ export interface NovelRepository {
   deleteNovelById(novelId: number): Promise<boolean>;
   updateNovelSerialStatus(novelId: number, status: string): Promise<boolean>;
   getAllNovels(): Promise<Novel[]>;
-  getNovelsBySearch(searchQuery: string, filter: string, novelIds: number[],  userIds: string[] ): Promise<Novel[]>;
+  getNovelsBySearch(
+    searchQuery: string,
+    filter: string,
+    novelIds: number[],
+    userIds: string[],
+  ): Promise<Novel[]>;
   getNovelCountByUserId(userId: string): Promise<number>;
 }

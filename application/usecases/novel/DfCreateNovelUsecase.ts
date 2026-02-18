@@ -3,38 +3,47 @@ import { GenreRepository } from "@/domain/repositories/GenreRepository";
 import { FileService } from "@/infrastructure/services/FileService";
 import { CreateNovelDto } from "@/application/usecases/novel/dto/CreateNovel";
 import { NovelResponseDto } from "@/application/usecases/novel/dto/NovelResponse";
+import { GENRES } from "@/constants/GENRES";
 
 export class DfCreateNovelUsecase {
   constructor(
     private novelRepository: NovelRepository,
     private genreRepository: GenreRepository,
-    private fileService: FileService
+    private fileService: FileService,
   ) {}
 
   async execute(data: CreateNovelDto): Promise<NovelResponseDto> {
-    const genreRecords = await this.genreRepository.getGenreIdsByNames(data.genres);
+    // 영어 장르 값을 한글 장르 이름으로 변환
+    const koreanGenres = data.genres.map(genreValue => {
+      const genre = GENRES.find(g => g.value === genreValue);
+      return genre ? genre.label : genreValue;
+    });
+    
+    const genreRecords = await this.genreRepository.getGenreIdsByNames(
+      koreanGenres,
+    );
     const genreIds = genreRecords.map((genre) => genre.id);
-  
+
     if (genreIds.length === 0) {
       throw new Error("선택한 장르가 존재하지 않습니다.");
     }
-  
+
     let coverImageUrl = null;
     if (data.coverImage) {
       coverImageUrl = await FileService.saveCoverImage(data.coverImage);
     }
-  
+
     const novel = await this.novelRepository.createNovel({
       title: data.title,
       novelIntroduce: data.description,
       serialDay: data.serialDay,
       userId: data.userId,
       image: coverImageUrl,
-      serialStatus: "ongoing", 
+      serialStatus: "ongoing",
     });
-  
+
     await this.novelRepository.addGenres(novel.id, genreIds);
-  
+
     return new NovelResponseDto(novel, data.genres);
-  }  
+  }
 }

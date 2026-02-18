@@ -6,7 +6,13 @@
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cleanup:dummy": "tsx scripts/cleanup-dummy-data.ts",
+    "migrate:banner": "tsx scripts/apply-banner-migration.ts",
+    "migrate:comments": "tsx scripts/apply-comment-migration.ts",
+    "migrate:all": "tsx scripts/apply-banner-migration.ts && tsx scripts/apply-comment-migration.ts",
+    "prisma:refresh": "prisma generate && tsx scripts/refresh-prisma.ts",
+    "test:db": "tsx scripts/test-db-connection.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.775.0",

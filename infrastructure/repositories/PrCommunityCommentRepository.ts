@@ -4,9 +4,7 @@ import {
 } from "@/domain/repositories/CommunityCommentRepository";
 import { prisma } from "../config/prisma";
 
-export class PrCommunityCommentRepository
-  implements CommunityCommentRepository
-{
+export class PrCommunityCommentRepository implements CommunityCommentRepository {
   async findAll(id: string, userId?: string): Promise<CommentWithRelations[]> {
     const postId = Number(id);
     try {
@@ -58,7 +56,7 @@ export class PrCommunityCommentRepository
     id: string,
     userId: string,
     comment: string,
-    parentId: string
+    parentId: string,
   ): Promise<boolean> {
     const postId = Number(id);
     const parent = Number(parentId);
@@ -82,7 +80,7 @@ export class PrCommunityCommentRepository
   async commentUpdate(
     id: string,
     userId: string,
-    content: string
+    content: string,
   ): Promise<boolean> {
     const commentId = Number(id);
     try {

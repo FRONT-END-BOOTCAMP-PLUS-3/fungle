@@ -4,9 +4,68 @@ import { Novel, Prisma } from "@prisma/client";
 
 export class PrNovelRepository implements NovelRepository {
   async getNovelById(novelId: number): Promise<Novel | null> {
-    return await prisma.novel.findUnique({
-      where: { id: novelId },
-    });
+    try {
+      return await prisma.novel.findUnique({
+        where: { id: novelId },
+      });
+    } catch (error: any) {
+      // bannerImage 컬럼이 없을 경우를 대비해 raw query 사용
+      if (
+        error?.message?.includes("bannerImage") ||
+        error?.code === "P2021" ||
+        error?.message?.includes("does not exist")
+      ) {
+        try {
+          // 컬럼이 없으면 bannerImage 없이 조회
+          const result = await prisma.$queryRaw<
+            Array<{
+              id: number;
+              createdAt: Date;
+              image: string | null;
+              title: string;
+              serialDay: string;
+              novelIntroduce: string;
+              serialStatus: string;
+              userId: string;
+              bannerImage: string | null;
+            }>
+          >`
+            SELECT id, "createdAt", image, title, "serialDay", "novelIntroduce", 
+                   "serialStatus", "userId", NULL::text as "bannerImage"
+            FROM novel
+            WHERE id = ${novelId}
+          `;
+
+          if (!result || result.length === 0 || !result[0]) {
+            return null;
+          }
+
+          const novel = result[0];
+          return {
+            id: novel.id,
+            createdAt: novel.createdAt,
+            image: novel.image,
+            title: novel.title,
+            serialDay: novel.serialDay,
+            novelIntroduce: novel.novelIntroduce,
+            serialStatus: novel.serialStatus,
+            userId: novel.userId,
+            bannerImage: novel.bannerImage,
+          } as Novel;
+        } catch (rawError) {
+          console.error(
+            `[PrNovelRepository] Raw query 오류 (소설 ID ${novelId}):`,
+            rawError,
+          );
+          return null;
+        }
+      }
+      console.error(
+        `[PrNovelRepository] 소설 조회 오류 (ID ${novelId}):`,
+        error,
+      );
+      return null;
+    }
   }
 
   async createNovel(data: {
@@ -22,7 +81,7 @@ export class PrNovelRepository implements NovelRepository {
 
   async addGenres(
     novelId: number,
-    genres: number[]
+    genres: number[],
   ): Promise<Prisma.BatchPayload> {
     return await prisma.novelGenre.createMany({
       data: genres.map((genreId) => ({
@@ -44,9 +103,14 @@ export class PrNovelRepository implements NovelRepository {
     }
   }
   async getNovelsBySerialDay(serialDay: string): Promise<Novel[]> {
-    return await prisma.novel.findMany({
-      where: { serialDay: serialDay },
-    });
+    try {
+      return await prisma.novel.findMany({
+        where: { serialDay: serialDay },
+      });
+    } catch (error) {
+      console.error("요일별 소설 조회 오류:", error);
+      return [];
+    }
   }
 
   async deleteNovelById(novelId: number): Promise<boolean> {
@@ -79,7 +143,7 @@ export class PrNovelRepository implements NovelRepository {
 
   async updateNovelSerialStatus(
     novelId: number,
-    status: string
+    status: string,
   ): Promise<boolean> {
     try {
       const updatedNovel = await prisma.novel.update({
@@ -98,14 +162,31 @@ export class PrNovelRepository implements NovelRepository {
   }
 
   async getAllNovels(): Promise<Novel[]> {
-    return await prisma.novel.findMany();
+    try {
+      console.log("[PrNovelRepository] getAllNovels 호출");
+      const novels = await prisma.novel.findMany({
+        orderBy: { createdAt: "desc" },
+      });
+      console.log(`[PrNovelRepository] 조회된 소설 수: ${novels.length}`);
+      return novels;
+    } catch (error) {
+      console.error("[PrNovelRepository] 전체 소설 조회 오류:", error);
+      if (error instanceof Error) {
+        console.error(
+          "[PrNovelRepository] 오류 상세:",
+          error.message,
+          error.stack,
+        );
+      }
+      return [];
+    }
   }
 
   async getNovelsBySearch(
     searchQuery: string,
     filter: string,
     novelIds: number[],
-    userIds: string[]
+    userIds: string[],
   ): Promise<Novel[]> {
     return await prisma.novel.findMany({
       where: {

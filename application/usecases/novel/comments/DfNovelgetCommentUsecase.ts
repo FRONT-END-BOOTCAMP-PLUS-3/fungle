@@ -6,8 +6,8 @@ export class DfgetNovelCommentUsecase {
 
   async execute(
     id: string,
-    userId: string
-  ): Promise< PostNovelDetailCommentsWithUserDto[]> {
+    userId: string,
+  ): Promise<PostNovelDetailCommentsWithUserDto[]> {
     try {
       const comments = await this.novelCommentRepository.findAll(id, userId);
 
@@ -18,12 +18,12 @@ export class DfgetNovelCommentUsecase {
         createdAt: comment.createdAt,
         parentId: comment.parentId ?? null,
         novelId: comment.novelId,
-        episodeId: comment.episodeId, 
+        episodeId: comment.episodeId,
         userNickname: comment.user.nickname,
         profileImage: comment.user.profileImage,
-        likes: comment._count.novelCommentLike, 
+        likes: comment._count.novelCommentLike,
         replies: comment.replies ? comment.replies.length : 0,
-        isLiked: comment.novelCommentLike.length > 0, 
+        isLiked: comment.novelCommentLike.length > 0,
       }));
 
       return flatComments;

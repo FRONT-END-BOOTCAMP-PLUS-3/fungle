@@ -67,31 +67,33 @@ export class PrNovelCommentRepository implements NovelCommentRepository {
     userId: string,
     comment: string,
     parentId: string | null,
-    novelId: number  
+    novelId: number,
   ): Promise<boolean> {
     const epId = Number(episodeId);
     const parent = parentId ? Number(parentId) : null;
-  
+
     try {
       const newData = await prisma.novelComment.create({
         data: {
           comment: comment,
           episodeId: epId,
-          novelId: novelId, 
+          novelId: novelId,
           userId: userId,
           parentId: parent,
         },
       });
-  
+
       return !!newData;
     } catch (error) {
       throw new Error("infra : 댓글을 작성하는 데 실패했습니다.");
     }
   }
-  
-  
 
-  async commentUpdate(id: string, userId: string, comment: string): Promise<boolean> {
+  async commentUpdate(
+    id: string,
+    userId: string,
+    comment: string,
+  ): Promise<boolean> {
     const commentId = Number(id);
     try {
       const existingComment = await prisma.novelComment.findUnique({

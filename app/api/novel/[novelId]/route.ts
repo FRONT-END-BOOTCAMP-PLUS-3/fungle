@@ -10,7 +10,7 @@ export const GET = async (req: NextRequest) => {
     if (!novelId) {
       return NextResponse.json(
         { error: "요청에 id를 포함해야 합니다." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest) => {
     if (isNaN(parsedNovelId)) {
       return NextResponse.json(
         { error: "잘못된 소설 ID입니다." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -26,25 +26,27 @@ export const GET = async (req: NextRequest) => {
     if (!novel) {
       return NextResponse.json(
         { error: "소설을 찾을 수 없습니다." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
-    const episodes = await novelDi.getEpisodesByNovelIdUseCase.execute(
-      parsedNovelId
-    );
+    const episodes =
+      await novelDi.getEpisodesByNovelIdUseCase.execute(parsedNovelId);
 
     const userId = await userDi.getUserIdUsecase.execute();
     let isLiked = false;
 
     if (userId) {
-      isLiked = await novelDi.checkNovelLikeStatusUsecase.execute(parsedNovelId, userId);
+      isLiked = await novelDi.checkNovelLikeStatusUsecase.execute(
+        parsedNovelId,
+        userId,
+      );
     }
 
-    
     return NextResponse.json({ ...novel, episodes, isLiked }, { status: 200 });
-  } catch (error) {
-    console.error("소설 조회 오류:", error);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("소설 조회 오류:", errorMessage);
     return NextResponse.json({ error: "서버 내부 오류" }, { status: 500 });
   }
 };

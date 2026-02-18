@@ -36,10 +36,10 @@ export const novelDi = {
   genreRepository: new PrGenreRepository(),
 
   getEpisodesByNovelIdUseCase: new DfEpisodesByNovelIdUsecase(
-    new PrNovelEpisodeRepository()
+    new PrNovelEpisodeRepository(),
   ),
   getEpisodeByIdUseCase: new DfEpisodeByIdUsecase(
-    new PrNovelEpisodeRepository()
+    new PrNovelEpisodeRepository(),
   ),
 
   getNovelByIdUseCase: new DfNovelByIdUseCase(
@@ -47,27 +47,27 @@ export const novelDi = {
     new PrNovelGenreRepository(),
     new PrUserRepository(),
     new PrNovelLikeRepository(),
-    new DfEpisodesByNovelIdUsecase(new PrNovelEpisodeRepository())
+    new DfEpisodesByNovelIdUsecase(new PrNovelEpisodeRepository()),
   ),
 
   createNovelUseCase: new DfCreateNovelUsecase(
     new PrNovelRepository(),
     new PrGenreRepository(),
-    FileService
+    FileService,
   ),
 
   createEpisodeUseCase: new DfCreateEpisodeUseCase(
     new PrNovelEpisodeRepository(),
-    new PrNovelRepository()
+    new PrNovelRepository(),
   ),
 
   increaseViewCountUseCase: new DfIncreaseViewCountUsecase(
-    new PrNovelEpisodeRepository()
+    new PrNovelEpisodeRepository(),
   ),
 
   getNovelsBySerialDayUseCase: new DfNovelsBySerialDayUsecase(
     new PrNovelRepository(),
-    new PrUserRepository()
+    new PrUserRepository(),
   ),
   getBannerNovelsUsecase: new DfBannerNovelsUsecase(new PrNovelRepository()),
 
@@ -76,35 +76,34 @@ export const novelDi = {
     new PrNovelGenreRepository(),
     new PrUserRepository(),
     new PrNovelLikeRepository(),
-    new PrNovelEpisodeRepository()
+    new PrNovelEpisodeRepository(),
   ),
 
   searchNovelsUsecase: new DfSearchNovelsUsecase(
     new PrNovelRepository(),
     new PrGenreRepository(),
     new PrNovelGenreRepository(),
-    new PrUserRepository()
+    new PrUserRepository(),
   ),
-  getCommentsUsecase: new DfgetNovelCommentUsecase(  
-    new PrNovelCommentRepository()
+  getCommentsUsecase: new DfgetNovelCommentUsecase(
+    new PrNovelCommentRepository(),
   ),
   getCommentCountUsecase: new DfNovelCommentCountUsecase(
-    new PrNovelCommentRepository()
+    new PrNovelCommentRepository(),
   ),
   createCommentUsecase: new DfNovelCommentCreateUsecase(
-    new PrNovelCommentRepository()
+    new PrNovelCommentRepository(),
   ),
   updateCommentUsecase: new DfNovelCommentUpdateUsecase(
-    new PrNovelCommentRepository()
+    new PrNovelCommentRepository(),
   ),
   deleteCommentUsecase: new DfNovelCommentDeleteUsecase(
-    new PrNovelCommentRepository()
+    new PrNovelCommentRepository(),
   ),
   toggleCommentLikeUsecase: new DfNovelToggleCommentUsecase(
-    new PrNovelCommentLikeRepository()
+    new PrNovelCommentLikeRepository(),
   ),
   checkNovelLikeStatusUsecase: new DfCheckNovelLikeStatusUsecase(
-    new PrNovelLikeRepository()
-  )
-
+    new PrNovelLikeRepository(),
+  ),
 };

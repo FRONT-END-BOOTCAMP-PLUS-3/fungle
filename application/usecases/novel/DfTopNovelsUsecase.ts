@@ -15,36 +15,56 @@ export class DfTopNovelsUsecase {
   ) {}
 
   async execute(limit: number = 10): Promise<TopListDTO[]> {
-    const novels = await this.novelRepository.getAllNovels();
+    try {
+      console.log("[Top10] 전체 소설 조회 시작...");
+      const novels = await this.novelRepository.getAllNovels();
+      console.log(`[Top10] 조회된 소설 수: ${novels?.length ?? 0}`);
+      
+      if (!novels || novels.length === 0) {
+        console.log("[Top10] 소설이 없어 빈 배열 반환");
+        return [];
+      }
 
-    const novelData = await Promise.all(
-      novels.map(async (novel) => {
-        try {
-          const [user, genres, likeCount, totalViews] = await Promise.all([
-            this.userRepository.getUserById(novel.userId),
-            this.novelGenreRepository.getGenresByNovelId(novel.id),
-            this.novelLikeRepository.getLikeCountByNovelId(novel.id),
-            this.novelEpisodeRepository.getTotalViewsByNovelId(novel.id),
-          ]);
+      console.log(`[Top10] ${novels.length}개 소설의 점수 계산 시작...`);
+      const novelData = await Promise.all(
+        novels.map(async (novel) => {
+          try {
+            const [user, genres, likeCount, totalViews] = await Promise.all([
+              this.userRepository.getUserById(novel.userId).catch(() => null),
+              this.novelGenreRepository.getGenresByNovelId(novel.id).catch(() => []),
+              this.novelLikeRepository.getLikeCountByNovelId(novel.id).catch(() => 0),
+              this.novelEpisodeRepository.getTotalViewsByNovelId(novel.id).catch(() => 0),
+            ]);
 
-          return {
-            id: novel.id,
-            title: novel.title,
-            author: user?.nickname ?? "Unknown",
-            image: novel.image || "/image/book.svg",
-            tags: genres ?? [], 
-            score: totalViews + likeCount,
-          } as TopListDTO;
-        } catch (error) {
-          console.error(`소설 ID ${novel.id} 점수 계산 오류:`, error);
-          return null;
-        }
-      })
-    );
+            console.log(`[Top10] 소설 ${novel.id} 장르:`, genres);
 
-    return novelData
-      .filter((novel) => novel !== null)
-      .sort((a, b) => b!.score - a!.score)
-      .slice(0, limit) as TopListDTO[];
+            return {
+              id: novel.id,
+              title: novel.title,
+              author: user?.nickname ?? "Unknown",
+              image: novel.image || "/image/book.svg",
+              tags: genres && genres.length > 0 ? genres : [], 
+              score: (totalViews ?? 0) + (likeCount ?? 0),
+            } as TopListDTO;
+          } catch (error) {
+            console.error(`[Top10] 소설 ID ${novel.id} 점수 계산 오류:`, error);
+            return null;
+          }
+        })
+      );
+
+      const validNovels = novelData.filter((novel) => novel !== null);
+      console.log(`[Top10] 유효한 소설 수: ${validNovels.length}/${novels.length}`);
+      
+      const sorted = validNovels
+        .sort((a, b) => b!.score - a!.score)
+        .slice(0, limit) as TopListDTO[];
+      
+      console.log(`[Top10] 최종 반환 소설 수: ${sorted.length}`);
+      return sorted;
+    } catch (error) {
+      console.error("[Top10] Top 10 소설 조회 오류:", error);
+      return [];
+    }
   }
 }

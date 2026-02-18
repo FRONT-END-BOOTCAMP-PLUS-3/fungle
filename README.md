@@ -76,6 +76,13 @@ https://github.com/user-attachments/assets/faaf9c76-4136-44c4-bef3-0e001a2126e0
 ├── 📂 utils           # 공통적으로 사용하는 유틸리티 함수
 └── 📜 README.md       # 프로젝트 설명
 ```
+## 🚀 배포 (GitHub + Vercel)
+
+개인 GitHub 저장소에 올린 뒤 Vercel로 배포하려면 **[DEPLOYMENT.md](./DEPLOYMENT.md)** 를 참고하세요.
+
+- 환경 변수 템플릿: `.env.example` 복사 후 `.env.local`에 값 채우기
+- Vercel 대시보드에서 동일한 환경 변수 설정 필요
+
 ## ‼️ 설치 가이드
 1. 저장소 클론
 ```plaintext

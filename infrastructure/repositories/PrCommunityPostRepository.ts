@@ -179,7 +179,7 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
     userId: string,
     title: string,
     content: string,
-    selectedFields: string[]
+    selectedFields: string[],
   ): Promise<number> {
     try {
       const post = await prisma.communityPost.create({
@@ -227,7 +227,7 @@ export class PrCommunityPostRepository implements CommunityPostRepository {
     id: string,
     title: string,
     content: string,
-    selectedFields: string[]
+    selectedFields: string[],
   ): Promise<number> {
     const postId = Number(id);
     try {

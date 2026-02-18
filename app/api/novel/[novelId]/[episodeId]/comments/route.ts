@@ -14,7 +14,7 @@ export const GET = async (request: NextRequest) => {
   if (!episodeId || isNaN(novelIdNumber)) {
     return NextResponse.json(
       { error: "유효하지 않은 novelId 또는 episodeId 값입니다." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -23,23 +23,23 @@ export const GET = async (request: NextRequest) => {
     if (!userId) {
       return NextResponse.json(
         { error: "유효하지 않은 사용자" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const comments = await novelDi.getCommentsUsecase.execute(
       episodeId,
-      userId
+      userId,
     );
     const count = await novelDi.getCommentCountUsecase.execute(episodeId);
     const episode = await novelDi.getEpisodeByIdUseCase.execute(
-      Number(episodeId)
+      Number(episodeId),
     );
 
     if (!episode) {
       return NextResponse.json(
         { error: "해당 에피소드를 찾을 수 없습니다." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -51,7 +51,7 @@ export const GET = async (request: NextRequest) => {
   } catch (error: unknown) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "서버 오류" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };
@@ -67,7 +67,7 @@ export const POST = async (request: NextRequest) => {
   if (!episodeId || isNaN(novelIdNumber)) {
     return NextResponse.json(
       { error: "유효하지 않은 novelId 또는 episodeId 값입니다." },
-      { status: 400 }
+      { status: 400 },
     );
   }
   const body = await request.json();
@@ -78,7 +78,7 @@ export const POST = async (request: NextRequest) => {
     if (!userId) {
       return NextResponse.json(
         { error: "유효하지 않은 사용자" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -87,14 +87,14 @@ export const POST = async (request: NextRequest) => {
       userId,
       comment,
       parentId,
-      novelIdNumber
+      novelIdNumber,
     );
 
     return NextResponse.json({ result });
   } catch (error: unknown) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "서버 오류" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

@@ -6,7 +6,7 @@ export class DfPostDetailCommentUsecase {
 
   async execute(
     id: string,
-    userId: string
+    userId: string,
   ): Promise<PostDetailCommentsWithUserDto[]> {
     try {
       const comments = await this.communityPostRepository.findAll(id, userId);

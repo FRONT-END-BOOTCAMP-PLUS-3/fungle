@@ -1,3 +1,4 @@
+import { safeParseJson } from "@/utils/fetch/safeParseResponse";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -30,8 +31,8 @@ const useAuthStore = create<AuthState>()(
             return;
           }
 
-          const data = await response.json();
-          set({ user: data.user, isLoggedIn: true });
+          const data = await safeParseJson<{ user: User | null }>(response);
+          set({ user: data?.user ?? null, isLoggedIn: !!data?.user });
         } catch (error) {
           console.error("인증 확인 실패:", error);
           set({ user: null, isLoggedIn: false });

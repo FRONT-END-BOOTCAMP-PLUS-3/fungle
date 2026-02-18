@@ -28,10 +28,8 @@ export interface NovelCommentRepository {
     userId: string,
     comment: string,
     parentId: string | null,
-    novelId: number // ✅ novelId 추가
+    novelId: number, // ✅ novelId 추가
   ): Promise<boolean>;
   commentUpdate(id: string, userId: string, content: string): Promise<boolean>;
   commentDelete(id: string, userId: string): Promise<boolean>;
 }
-
-

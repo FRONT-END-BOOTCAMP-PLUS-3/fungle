@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
 import {
   MenuItem,
   SidebarContainer,
@@ -9,40 +9,25 @@ import {
 import Image from "next/image";
 
 const AdminSidebar = () => {
-  const [selectedMenu, setSelectedMenu] = useState<string>("소설 검토");
+  const pathname = usePathname();
 
-  const handleMenuClick = (menu: string) => {
-    setSelectedMenu(menu);
-  };
+  const menuItems = [
+    { href: "/admin/novel", label: "소설 검토" },
+    { href: "/admin/user", label: "회원 관리" },
+    { href: "/admin/community", label: "커뮤니티 관리" },
+  ];
 
   return (
     <SidebarContainer>
       <Image src={"/logo/FUNGLE.svg"} alt="펀글 로고" width={180} height={90} />
       <ul>
-        <UnstyledLink href={"/admin/novel"}>
-          <MenuItem
-            $isSelected={selectedMenu === "소설 검토"}
-            onClick={() => handleMenuClick("소설 검토")}
-          >
-            소설 검토
-          </MenuItem>
-        </UnstyledLink>
-        <UnstyledLink href={"/admin/user"}>
-          <MenuItem
-            $isSelected={selectedMenu === "회원 관리"}
-            onClick={() => handleMenuClick("회원 관리")}
-          >
-            회원 관리
-          </MenuItem>
-        </UnstyledLink>
-        <UnstyledLink href={"/admin/community"}>
-          <MenuItem
-            $isSelected={selectedMenu === "커뮤니티 관리"}
-            onClick={() => handleMenuClick("커뮤니티 관리")}
-          >
-            커뮤니티 관리
-          </MenuItem>
-        </UnstyledLink>
+        {menuItems.map((item) => (
+          <UnstyledLink key={item.href} href={item.href}>
+            <MenuItem $isSelected={pathname === item.href}>
+              {item.label}
+            </MenuItem>
+          </UnstyledLink>
+        ))}
       </ul>
     </SidebarContainer>
   );

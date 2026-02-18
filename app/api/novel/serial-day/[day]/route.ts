@@ -16,13 +16,15 @@ export const GET = async (req: NextRequest) => {
     }
 
     const novels = await novelDi.getNovelsBySerialDayUseCase.execute(day);
-    return NextResponse.json({ novels }, { status: 200 });
+    return NextResponse.json({ novels: novels ?? [] }, { status: 200 });
   } catch (error: unknown) {
+    console.error("요일별 소설 API 오류:", error);
     if (error instanceof Error) {
       return NextResponse.json(
-        { message: `오류 발생 ${error.message}` },
-        { status: 500 }
+        { novels: [], message: `오류 발생 ${error.message}` },
+        { status: 200 }
       );
     }
+    return NextResponse.json({ novels: [] }, { status: 200 });
   }
 };

@@ -1,6 +1,7 @@
 "use server";
 
 import { LoginRequestDto } from "@/application/usecases/auth/dto/LoginRequestDto";
+import { safeParseJson } from "@/utils/fetch/safeParseResponse";
 import { cookies } from "next/headers";
 
 interface User {
@@ -33,17 +34,33 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
       }
     );
 
-    const data = await response.json();
+    const data = await safeParseJson<{
+      error?: string;
+      id?: string;
+      nickname?: string;
+      introduce?: string;
+      profileImage?: string;
+      accessToken?: string;
+      refreshToken?: string;
+    }>(response);
 
     if (!response.ok) {
       return {
-        message: data.error || "로그인 실패",
+        message: data?.error || "로그인 실패",
         isLoggedIn: false,
         redirectUrl: "",
       };
     }
 
     const cookieStore = await cookies();
+
+    if (!data) {
+      return {
+        message: "서버 응답을 읽을 수 없습니다.",
+        isLoggedIn: false,
+        redirectUrl: "",
+      };
+    }
 
     if (data.refreshToken && data.accessToken) {
       cookieStore.set("refreshToken", data.refreshToken, {
@@ -69,7 +86,7 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
     }
 
     const lastUserId = cookieStore.get("lastUserId")?.value;
-    const currentUserId = data.id;
+    const currentUserId = data.id ?? "";
 
     cookieStore.set("lastUserId", currentUserId, {
       httpOnly: true,
@@ -92,10 +109,10 @@ export const loginProc = async (state: LoginState, formData: FormData) => {
       isLoggedIn: true,
       redirectUrl,
       user: {
-        id: data.id,
-        nickname: data.nickname,
-        introduce: data.introduce,
-        profileImage: data.profileImage,
+        id: data.id ?? "",
+        nickname: data.nickname ?? "",
+        introduce: data.introduce ?? "",
+        profileImage: data.profileImage ?? "",
       },
     };
   } catch (error: unknown) {

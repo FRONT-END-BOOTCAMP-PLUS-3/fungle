@@ -10,21 +10,21 @@ export const GET = async (request: NextRequest) => {
   if (!id) {
     return NextResponse.json(
       { error: "요청에 id를 포함해야 합니다." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   try {
     const commentPostRepository = new PrCommunityCommentRepository();
     const postCommentUsecase = new DfPostDetailCommentUsecase(
-      commentPostRepository
+      commentPostRepository,
     );
 
     const userId = await userDi.getUserIdUsecase.execute();
     if (!userId) {
       return NextResponse.json(
         { error: "유효하지 않은 사용자" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
