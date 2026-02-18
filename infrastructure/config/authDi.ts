@@ -5,7 +5,7 @@ import { PrAuthRepository } from "../repositories/PrAuthRepository";
 
 export const authDi = {
   verifyAccessTokenUsecase: new DfVerifyAccessTokenUsecase(
-    new PrUserRepository(),
+    new PrUserRepository()
   ),
   refreshTokenUsecase: new DfRefreshTokenUsecase(new PrAuthRepository()),
 };

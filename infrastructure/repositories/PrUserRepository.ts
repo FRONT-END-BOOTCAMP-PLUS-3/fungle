@@ -35,22 +35,19 @@ export class PrUserRepository implements UserRepository {
   }
 
   async findAll(): Promise<Omit<User, "password">[] | null> {
-    try {
-      const users = await prisma.user.findMany({
-        select: {
-          id: true,
-          userEmail: true,
-          nickname: true,
-          createdAt: true,
-          type: true,
-          introduce: true,
-          profileImage: true,
-        },
-      });
-      return users.length ? users : null;
-    } catch {
-      return null;
-    }
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        userEmail: true,
+        nickname: true,
+        createdAt: true,
+        type: true,
+        introduce: true,
+        profileImage: true,
+      },
+    });
+
+    return users.length ? users : null;
   }
 
   async getUserById(

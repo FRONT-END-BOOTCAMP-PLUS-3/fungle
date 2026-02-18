@@ -24,9 +24,9 @@ const Page = () => {
         const data = await response.json();
 
         if (!response.ok) {
-          setError(data.error ?? "요청 처리에 실패했습니다.");
+          setError(data.error);
         }
-        setUsers(Array.isArray(data?.users) ? data.users : []);
+        setUsers(data.users);
       } catch (error: unknown) {
         setError(
           error instanceof Error
@@ -88,9 +88,7 @@ const Page = () => {
               ))
             ) : (
               <tr>
-                <td colSpan={7}>
-                  {error || "등록된 회원이 없습니다."}
-                </td>
+                <td colSpan={6}>{error}</td>
               </tr>
             )}
           </tbody>

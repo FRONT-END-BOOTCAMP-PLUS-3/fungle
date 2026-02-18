@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model CommunityComment {
@@ -83,8 +82,6 @@ model Funding {
   novel        Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
   fundingUsers FundingUser[] @relation("FundingUsers")
   fundingStages FundingStage[] @relation("FundingStages")
-
-  @@map("funding")
 }
 
 model FundingStage {
@@ -95,8 +92,6 @@ model FundingStage {
   
 
   funding Funding @relation("FundingStages", fields: [fundingId], references: [id], onDelete: Cascade)
-
-  @@map("fundingStage")
 }
 
 model FundingUser {
@@ -109,7 +104,6 @@ model FundingUser {
   user      User?    @relation("UserFundings", fields: [userId], references: [id])
 
   @@unique([userId, fundingId])
-  @@map("fundingUser")
 }
 
 model Genre {
@@ -134,8 +128,6 @@ model Novel {
   novelEpisodes  NovelEpisode[] @relation("NovelEpisodes")
   novelGenres    NovelGenre[]   @relation("NovelGenres")
   novelLikes     NovelLike[]    @relation("NovelLikes")
-
-  @@map("novel")
 }
 
 model NovelComment {
@@ -150,11 +142,9 @@ model NovelComment {
   parent           NovelComment?      @relation("CommentReplies", fields: [parentId], references: [id])
   replies          NovelComment[]     @relation("CommentReplies")
   episode          NovelEpisode       @relation("NovelComments", fields: [episodeId], references: [id], onDelete: Cascade)
-  novel            Novel              @relation("NovelComments", fields: [novelId], references: [id], onDelete: Cascade)
+  novel            Novel              @relation("NovelComments", fields: [novelId], references: [id], onDelete: Cascade)  // ✅ 반대 관계 추가
   user             User               @relation("UserNovelComments", fields: [userId], references: [id], onDelete: Cascade)
   novelCommentLike NovelCommentLike[] @relation("NovelCommentLike")
-
-  @@map("novelComment")
 }
 
 
@@ -184,7 +174,6 @@ model NovelEpisode {
   user         User           @relation("UserNovelEpisodes", fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([novelId, episode])
-  @@map("novelEpisode")
 }
 
 model NovelGenre {
@@ -194,7 +183,6 @@ model NovelGenre {
   novel   Novel @relation("NovelGenres", fields: [novelId], references: [id], onDelete: Cascade)
 
   @@id([genreId, novelId])
-  @@map("novelGenre")
 }
 
 model NovelLike {
@@ -204,7 +192,6 @@ model NovelLike {
   user    User   @relation("UserNovelLikes", fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, novelId])
-  @@map("novelLike")
 }
 
 model User {
@@ -227,8 +214,6 @@ model User {
   novelEpisodes         NovelEpisode[]         @relation("UserNovelEpisodes")
   novelLikes            NovelLike[]            @relation("UserNovelLikes")
   RefreshToken          RefreshToken?
-
-  @@map("user")
 }
 
 model RefreshToken {

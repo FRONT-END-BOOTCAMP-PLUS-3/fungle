@@ -11,7 +11,7 @@ export class DfNovelByIdUseCase {
     private novelGenreRepository: NovelGenreRepository,
     private userRepository: UserRepository,
     private novelLikeRepository: NovelLikeRepository,
-    private dfEpisodesByNovelIdUseCase: DfEpisodesByNovelIdUsecase,
+    private dfEpisodesByNovelIdUseCase: DfEpisodesByNovelIdUsecase 
   ) {}
 
   async execute(novelId: number): Promise<NovelDto | null> {
@@ -22,10 +22,9 @@ export class DfNovelByIdUseCase {
     if (!user) {
       throw new Error(`사용자를 찾을 수 없음`);
     }
-
+    
     const genres = await this.novelGenreRepository.getGenresByNovelId(novelId);
-    const likeCount =
-      await this.novelLikeRepository.getLikeCountByNovelId(novelId);
+    const likeCount = await this.novelLikeRepository.getLikeCountByNovelId(novelId);
     const episodes = await this.dfEpisodesByNovelIdUseCase.execute(novelId);
     return {
       id: novel.id,
@@ -35,10 +34,10 @@ export class DfNovelByIdUseCase {
       novelIntroduce: novel.novelIntroduce,
       serialStatus: novel.serialStatus,
       author: user.nickname,
-      profile: user?.profileImage ?? "/image/profile.svg",
+      profile:user?.profileImage?? "/image/profile.svg",
       userIntroduce: user?.introduce ?? null,
       likeCount,
-      episodes,
+      episodes, 
       genres,
     };
   }

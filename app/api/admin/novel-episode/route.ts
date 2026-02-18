@@ -6,8 +6,15 @@ export const GET = async () => {
   try {
     const data: NovelEpisodeWithUserInfo[] =
       await adminDi.novelEpisodeWithUserInfoUsecase.execute();
-    return NextResponse.json({ success: true, data: data ?? [] }, { status: 200 });
+
+    return NextResponse.json({ success: true, data }, { status: 200 });
   } catch {
-    return NextResponse.json({ success: true, data: [] }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: "소설 에피소드를 불러오는 데 실패했습니다.",
+      },
+      { status: 500 }
+    );
   }
 };

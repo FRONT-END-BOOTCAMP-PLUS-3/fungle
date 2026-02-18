@@ -50,7 +50,7 @@ const SerialDayBook: React.FC<SerialDayBookProps> = ({
 
         if (!response.ok) throw new Error("Failed to fetch novels");
         const data = await response.json();
-        setBooks(Array.isArray(data?.novels) ? data.novels : []);
+        setBooks(data.novels);
       } catch (error: unknown) {
         if (error instanceof Error) {
           throw new Error(`Failed to parse JSON response: ${error.message}`);

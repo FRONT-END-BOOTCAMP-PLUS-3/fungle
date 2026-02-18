@@ -27,7 +27,7 @@ export interface CommunityCommentRepository {
     id: string,
     userId: string,
     comment: string,
-    parentId: string,
+    parentId: string
   ): Promise<boolean>;
   commentUpdate(id: string, userId: string, content: string): Promise<boolean>;
   commentDelete(id: string, userId: string): Promise<boolean>;

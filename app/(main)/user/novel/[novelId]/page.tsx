@@ -68,7 +68,7 @@ const Page = () => {
           data.serialDay;
 
         const genreLabels = data.genres.map(
-          (genre) => GENRES.find((g) => g.value === genre)?.label || genre,
+          (genre) => GENRES.find((g) => g.value === genre)?.label || genre
         );
 
         setNovel({
@@ -80,7 +80,7 @@ const Page = () => {
         });
 
         setIsLiked(data.isLiked ?? false);
-      } catch (error: unknown) {
+      } catch (error:unknown) {
         if (error instanceof Error) {
           throw new Error(`Failed to parse JSON response: ${error.message}`);
         }

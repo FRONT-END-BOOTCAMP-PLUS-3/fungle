@@ -34,7 +34,7 @@ const Page = () => {
         const response = await fetch("/api/admin/novel-episode");
         const data = await response.json();
 
-        const episodesData = Array.isArray(data?.data) ? data.data : [];
+        const episodesData = data.data;
 
         if (response.ok) {
           const formattedData = episodesData.map(
@@ -43,7 +43,7 @@ const Page = () => {
               statusLabel:
                 EPISODE_STATUS.find((status) => status.value === episode.status)
                   ?.label || episode.status,
-            }),
+            })
           );
 
           setEpisodes(formattedData);
@@ -88,14 +88,15 @@ const Page = () => {
                   <td>{episode.novelTitle}</td>
                   <td>{episode.episodeTitle}</td>
                   <td>{new Date(episode.createdAt).toLocaleString()}</td>
-                  <StatusText status={episode.status} data-status={episode.statusLabel}>
+                  <StatusText status={episode.status}>
+                    {episode.statusLabel}
                     {episode.status === "pending" && (
                       <Button
                         buttonSize="small"
                         backgroudColor="primary"
                         onClick={() => handleReviewButtonClick(episode)}
                       >
-                        검토하기
+                        검토하러 가기
                       </Button>
                     )}
                   </StatusText>

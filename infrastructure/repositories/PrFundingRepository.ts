@@ -4,25 +4,23 @@ import { prisma } from "../config/prisma";
 
 export class PrFundingRepository implements FundingRepository {
   async getFundingByNovelId(novelId: number): Promise<Funding | null> {
-    try {
-      const funding = await prisma.funding.findUnique({
-        where: { novelId: novelId },
-      });
-      return funding ?? null;
-    } catch {
+    const funding = await prisma.funding.findUnique({
+      where: { novelId: novelId },
+    });
+
+    if (!funding) {
       return null;
     }
+
+    return funding;
   }
 
   async getFundingStatus(): Promise<string[]> {
-    try {
-      const ongoingFundings = await prisma.funding.findMany({
-        where: { status: "ongoing" },
-        select: { userId: true },
-      });
-      return ongoingFundings.map((funding) => funding.userId);
-    } catch {
-      return [];
-    }
+    const ongoingFundings = await prisma.funding.findMany({
+      where: { status: "ongoing" },
+      select: { userId: true },
+    });
+
+    return ongoingFundings.map((funding) => funding.userId);
   }
 }
